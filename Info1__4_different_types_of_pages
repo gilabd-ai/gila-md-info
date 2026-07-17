@@ -1,0 +1,32 @@
+## Page Types
+
+The website contains four page types:
+
+### 1. Knowledge Node
+The main content page.
+Each Knowledge Node represents one educational YouTube video.
+
+### 2. Homepage
+The main entry page of the knowledge library.
+
+The Homepage includes:
+- a brief introduction to the library
+- navigation to all Knowledge Centers
+- the site's search bar
+
+### 3. Knowledge Centers
+Topic pages that group all Knowledge Nodes related to a specific medical subject.
+
+Examples include:
+- Fertility & IVF
+- Menopause
+- Pregnancy & Birth
+- Contraception
+- Gynecology
+
+A single Knowledge Node may belong to more than one Knowledge Center.
+
+### 4. Medical Disclaimer
+A standalone page containing the complete medical disclaimer.
+
+Every Knowledge Node contains a link to this page, allowing users to access the full disclaimer without repeating the entire text on every Node.

@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{PAGE_TITLE}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#20302c;
+    --paper:#f6f3ec;
+    --paper-raised:#ffffff;
+    --teal:#1f4d46;
+    --teal-deep:#123230;
+    --blush:#e0785f;
+    --blush-deep:#c65f48;
+    --line: rgba(32,48,44,0.12);
+    --shadow: 0 8px 24px rgba(18,50,48,0.12);
+    --radius: 14px;
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding-top: 92px; /* space for sticky header + home-nav bar */
+  }
+  h1,h2,h3, .display{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    letter-spacing:-0.01em;
+  }
+  a{ color:inherit; }
+  button{ font-family:inherit; }
+
+  /* ---------- Home nav bar (attached under header) ---------- */
+  .home-nav-bar{
+    position:fixed;
+    top:56px; left:0; right:0;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:9px 16px;
+    background: rgba(242,90,166,0.10);
+    border-bottom: 1px solid rgba(242,90,166,0.25);
+    font-size:13.5px;
+    font-weight:600;
+    color: rgba(216,64,142,0.95);
+    text-decoration:none;
+    z-index:199;
+  }
+  .home-nav-bar svg{ width:16px; height:16px; flex:none; }
+
+  /* ---------- Sticky Header ---------- */
+  header.node-header{
+    position:fixed;
+    top:0; left:0; right:0;
+    min-height:50px;
+    background: linear-gradient(135deg, rgba(242,90,166,0.90), rgba(216,64,142,0.90));
+    color:#ffffff;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:2px 16px;
+    z-index:200;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+  }
+  .header-text-col{
+    flex:1;
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    gap:0px;
+  }
+  .header-bottom-row{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:8px;
+  }
+  .logo-avatar{
+    width:30px; height:30px;
+    border-radius:50%;
+    flex:none;
+    overflow:hidden;
+    background:#fff;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .logo-avatar img{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .header-name-block{ line-height:1.15; min-width:0; }
+  .header-name{
+    font-family:'Fraunces', serif;
+    font-size:15px;
+    font-weight:600;
+    line-height:1;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .header-role{
+    font-size:10.5px;
+    color:rgba(255,255,255,0.85);
+    letter-spacing:0.02em;
+  }
+  .header-icons{
+    display:flex;
+    gap:6px;
+    flex:none;
+  }
+  .icon-btn{
+    width:32px; height:32px;
+    border-radius:50%;
+    background: rgba(255,255,255,0.08);
+    display:flex; align-items:center; justify-content:center;
+    text-decoration:none;
+    color:#f6f3ec;
+    transition: background 0.15s ease;
+  }
+  .icon-btn:hover{ background: rgba(255,255,255,0.18); }
+  .icon-btn svg{ width:16px; height:16px; }
+
+  /* ---------- Layout ---------- */
+  main{
+    max-width:640px;
+    margin:0 auto;
+    padding: 20px 16px 56px;
+  }
+
+  .eyebrow{
+    font-size:11.5px;
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    color:var(--blush-deep);
+    font-weight:600;
+    margin-bottom:10px;
+  }
+
+  .article-title{
+    font-size:20px;
+    font-weight:700;
+    line-height:1.25;
+    margin:0 0 18px;
+    color:var(--teal-deep);
+  }
+
+  /* ---------- Summary / Read more ---------- */
+  .summary-block{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:16px 18px;
+    margin-bottom:26px;
+  }
+  .summary-text{
+    font-size:15px;
+    line-height:1.6;
+    margin:0;
+    display:-webkit-box;
+    -webkit-line-clamp:4;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+  }
+  .summary-text.expanded{
+    display:block;
+    -webkit-line-clamp:unset;
+  }
+  .read-more-btn{
+    background:none;
+    border:none;
+    color:var(--ink);
+    font-weight:600;
+    font-size:14px;
+    padding:10px 0 0;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+  }
+  .read-more-btn:hover{ text-decoration:underline; }
+
+  /* ---------- Video Section ---------- */
+  .video-section{ margin-bottom:16px; }
+  .section-label{
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    color:rgba(242,90,166,0.90);
+    font-weight:600;
+    margin:0 0 10px;
+  }
+  .video-thumb-wrap{
+    position:relative;
+    width:100%;
+    max-width:320px;
+    margin:0 auto;
+    aspect-ratio: 9 / 16;
+    border-radius: 18px;
+    overflow:hidden;
+    background:#0d1f1c;
+    box-shadow: var(--shadow);
+    cursor:pointer;
+  }
+  .video-thumb-wrap img{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+    opacity:0.88;
+    background: linear-gradient(160deg, #1f4d46, #123230);
+  }
+  .play-button{
+    position:absolute;
+    top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    width:64px; height:64px;
+    border-radius:50%;
+    background: rgba(255,255,255,0.94);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+    transition: transform 0.15s ease;
+  }
+  .video-thumb-wrap:hover .play-button{ transform:translate(-50%,-50%) scale(1.06); }
+  .play-button svg{ width:24px; height:24px; margin-left:3px; }
+  .video-caption{
+    text-align:center;
+    font-size:12.5px;
+    color:#5c6b64;
+    margin-top:10px;
+  }
+
+  /* ---------- Related Knowledge ---------- */
+  .related-section{ margin-bottom:22px; }
+  .related-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:10px;
+  }
+  .related-card{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:18px 10px;
+    height:234px;
+    min-width:0;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    text-decoration:none;
+    color:inherit;
+  }
+  .related-title{
+    font-size:14px;
+    font-weight:700;
+    line-height:1.3;
+    color:var(--ink);
+    display:-webkit-box;
+    -webkit-line-clamp:4;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+    margin-bottom:10px;
+  }
+  .related-desc{
+    font-size:11.5px;
+    font-weight:400;
+    line-height:1.4;
+    color:#5c6b64;
+    display:-webkit-box;
+    -webkit-line-clamp:3;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+  }
+
+  /* ---------- More link ---------- */
+  .more-link{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:fit-content;
+    margin:0 auto;
+    padding:14px 32px;
+    border-radius:12px;
+    background: linear-gradient(135deg, rgba(242,90,166,0.90), rgba(216,64,142,0.90));
+    color:#fff;
+    font-size:15px;
+    font-weight:600;
+    text-decoration:none;
+    transition:box-shadow 0.15s ease;
+  }
+  .more-link:hover{ box-shadow: 0 4px 14px rgba(0,0,0,0.2); }
+
+  .site-disclaimer{
+    font-family:'Inter', sans-serif;
+    font-size:12.5px;
+    font-weight:400;
+    color:#5c6b64;
+    line-height:1.6;
+    margin:28px 0 4px;
+    display:block;
+    text-decoration:none;
+  }
+  .disclaimer-underline{
+    text-decoration:underline;
+  }
+
+  /* ---------- Full-screen video viewer ---------- */
+  /* No vh/svh, no visualViewport, no page-relative math of any kind.
+     position:fixed + inset:0 covers the true viewport natively. Everything
+     — video, close button, end-of-video controls — lives inside ONE
+     bounded frame (.video-frame-box) that is capped to the overlay's own
+     height/width. There is no separate row for the close button anymore,
+     so nothing can push the total height past what's visible on screen. */
+  .modal-overlay{
+    position:fixed;
+    inset:0;
+    background:#0d1512;
+    z-index:500;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:12px;
+  }
+  .modal-overlay.open{ display:flex; }
+
+  .video-frame-box{
+    position:relative;
+    height:100%;
+    width:auto;
+    max-width:100%;
+    max-height:100%;
+    aspect-ratio: 9 / 16;
+  }
+  .video-frame-box iframe{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    border:none;
+    border-radius:10px;
+  }
+
+  .modal-close{
+    position:absolute;
+    top:8px; left:8px;
+    width:44px; height:44px;
+    border-radius:50%;
+    background: rgba(0,0,0,0.55);
+    border:none;
+    color:#f6f3ec;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    z-index:3;
+  }
+  .modal-close:hover{ background: rgba(0,0,0,0.7); }
+  .modal-close svg{ width:22px; height:22px; }
+
+  .end-overlay{
+    position:absolute;
+    inset:0;
+    background: rgba(10,20,18,0.88);
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+    padding: 0 24px;
+    text-align:center;
+  }
+  .end-overlay.show{ display:flex; }
+  .end-overlay p{
+    color:#e6e9e5;
+    font-size:13px;
+    margin:0 0 4px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+  }
+  .end-action{
+    width:100%;
+    max-width:280px;
+    padding:14px 18px;
+    border-radius:12px;
+    border:none;
+    font-size:15.5px;
+    font-weight:600;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+  }
+  .end-action.primary{
+    background:var(--blush);
+    color:#fff;
+  }
+  .end-action.primary:hover{ background:var(--blush-deep); }
+  .end-action.secondary{
+    background: rgba(255,255,255,0.1);
+    color:#f6f3ec;
+  }
+  .end-action.secondary:hover{ background: rgba(255,255,255,0.18); }
+</style>
+</head>
+<body>
+
+<header class="node-header">
+  <div class="logo-avatar"><img src="data:image/png;base64,{{SITE_LOGO_BASE64}}" alt="Gila MD logo"></div>
+  <div class="header-text-col">
+    <div class="header-name">{{SITE_HEADER_NAME}}</div>
+    <div class="header-bottom-row">
+      <div class="header-role">{{SITE_HEADER_ROLE}}</div>
+    <div class="header-icons">
+      <a class="icon-btn" href="{{SOCIAL_YOUTUBE_URL}}" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2s-.23-1.64-.94-2.36c-.9-.94-1.9-.95-2.36-1C16.9 2.5 12 2.5 12 2.5h-.01s-4.89 0-8.19.34c-.46.05-1.46.06-2.36 1-.71.72-.94 2.36-.94 2.36S0 8.13 0 10.06v1.87c0 1.93.23 3.86.23 3.86s.23 1.64.94 2.36c.9.94 2.08.91 2.6 1.01 1.89.18 8.02.34 8.23.34 0 0 4.9-.01 8.2-.35.46-.06 1.46-.07 2.36-1.01.71-.72.94-2.36.94-2.36s.23-1.93.23-3.86v-1.87c0-1.93-.23-3.86-.23-3.86zM9.55 14.6V7.3l6.27 3.66-6.27 3.64z"/></svg>
+      </a>
+      <a class="icon-btn" href="{{SOCIAL_INSTAGRAM_URL}}" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.97.24 2.43.4a4.9 4.9 0 0 1 1.77 1.15 4.9 4.9 0 0 1 1.15 1.77c.16.46.35 1.26.4 2.43.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.24 1.97-.4 2.43a4.9 4.9 0 0 1-1.15 1.77 4.9 4.9 0 0 1-1.77 1.15c-.46.16-1.26.35-2.43.4-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.97-.24-2.43-.4a4.9 4.9 0 0 1-1.77-1.15 4.9 4.9 0 0 1-1.15-1.77c-.16-.46-.35-1.26-.4-2.43C2.21 15.58 2.2 15.2 2.2 12s.01-3.58.07-4.85c.05-1.17.24-1.97.4-2.43a4.9 4.9 0 0 1 1.15-1.77A4.9 4.9 0 0 1 5.59 1.8c.46-.16 1.26-.35 2.43-.4C9.29 1.34 9.67 1.33 12 1.33Zm0 1.98c-3.15 0-3.5.01-4.74.07-1.02.05-1.58.21-1.94.35-.49.19-.84.42-1.21.79-.37.37-.6.72-.79 1.21-.14.36-.3.92-.35 1.94-.06 1.24-.07 1.59-.07 4.74s.01 3.5.07 4.74c.05 1.02.21 1.58.35 1.94.19.49.42.84.79 1.21.37.37.72.6 1.21.79.36.14.92.3 1.94.35 1.24.06 1.59.07 4.74.07s3.5-.01 4.74-.07c1.02-.05 1.58-.21 1.94-.35.49-.19.84-.42 1.21-.79.37-.37.6-.72.79-1.21.14-.36.3-.92.35-1.94.06-1.24.07-1.59.07-4.74s-.01-3.5-.07-4.74c-.05-1.02-.21-1.58-.35-1.94a3.26 3.26 0 0 0-.79-1.21 3.26 3.26 0 0 0-1.21-.79c-.36-.14-.92-.3-1.94-.35-1.24-.06-1.59-.07-4.74-.07Zm0 3.37a4.45 4.45 0 1 1 0 8.9 4.45 4.45 0 0 1 0-8.9Zm0 1.98a2.47 2.47 0 1 0 0 4.94 2.47 2.47 0 0 0 0-4.94Zm4.63-2.2a1.04 1.04 0 1 1 0 2.08 1.04 1.04 0 0 1 0-2.08Z"/></svg>
+      </a>
+      <a class="icon-btn" href="{{SOCIAL_FACEBOOK_URL}}" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.4 22v-8.4h2.8l.4-3.3h-3.2V8.1c0-.95.26-1.6 1.63-1.6h1.74V3.55C16.4 3.5 15.4 3.4 14.24 3.4c-2.42 0-4.08 1.48-4.08 4.2v2.7H7.35v3.3h2.8V22h3.24Z"/></svg>
+      </a>
+      <a class="icon-btn" href="{{SOCIAL_TIKTOK_URL}}" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.7 2h-3.1v13.7c0 1.5-1.2 2.75-2.75 2.75a2.75 2.75 0 0 1 0-5.5c.28 0 .55.04.8.11V9.9a5.86 5.86 0 0 0-.8-.05A5.85 5.85 0 1 0 16.7 15.7V9.1a7.4 7.4 0 0 0 4.3 1.37V7.4a4.3 4.3 0 0 1-4.3-4.3V2Z"/></svg>
+      </a>
+    </div>
+    </div>
+  </div>
+</header>
+<a class="home-nav-bar" href="{{HOME_NAV_URL}}">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+  {{HOME_NAV_TEXT}}
+</a>
+
+<main>
+  <h1 class="article-title">{{NODE_TITLE}}</h1>
+
+  <div class="summary-block">
+    <p class="summary-text" id="summaryText">
+      {{NODE_DESCRIPTION}}
+    </p>
+    <button class="read-more-btn" id="readMoreBtn" onclick="toggleSummary()">
+      <span id="readMoreLabel">{{UI_READ_MORE}}</span>
+      <svg id="readMoreIcon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+  </div>
+
+  <section class="video-section">
+    <p class="section-label">{{UI_WATCH_LABEL}}</p>
+    <div class="video-thumb-wrap" id="videoThumb" onclick="openModal()">
+      <img src="{{VIDEO_THUMBNAIL_URL}}" alt="Video thumbnail"
+           onerror="this.onerror=null; this.src='{{VIDEO_THUMBNAIL_FALLBACK_URL}}';">
+      <div class="play-button">
+        <svg viewBox="0 0 24 24" fill="#1f4d46"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </div>
+  </section>
+
+{{RELATED_SECTION_HTML}}
+
+  <a class="more-link" href="{{MORE_LINK_URL}}" onclick="return false;">{{MORE_LINK_TEXT}}</a>
+
+  <a class="site-disclaimer" href="{{DISCLAIMER_LINK_URL}}">{{DISCLAIMER_ICON}} {{DISCLAIMER_SHORT_TEXT}} <span class="disclaimer-underline">{{DISCLAIMER_LINK_PREFIX}} {{DISCLAIMER_LINK_TEXT}}</span>.</a>
+</main>
+
+<!-- Full-screen video viewer -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="video-frame-box" id="videoFrameBox">
+    <div id="playerHost" style="width:100%;height:100%;"></div>
+    <button class="modal-close" onclick="closeModal()" aria-label="{{UI_CLOSE_ARIA}}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="end-overlay" id="endOverlay">
+      <p>{{UI_VIDEO_ENDED}}</p>
+      <button class="end-action primary" onclick="watchAgain()">{{END_REPLAY_LABEL}}</button>
+      <button class="end-action secondary" onclick="closeModal()">{{END_CLOSE_LABEL}}</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const VIDEO_ID = '{{VIDEO_ID}}';
+  let player = null;
+  let apiReady = false;
+  let savedScrollY = 0;
+
+  // ---- Summary expand/collapse ----
+  function toggleSummary(){
+    const text = document.getElementById('summaryText');
+    const label = document.getElementById('readMoreLabel');
+    const icon = document.getElementById('readMoreIcon');
+    const expanded = text.classList.toggle('expanded');
+    label.textContent = expanded ? '{{UI_SHOW_LESS}}' : '{{UI_READ_MORE}}';
+    icon.style.transform = expanded ? 'rotate(180deg)' : 'rotate(0deg)';
+  }
+
+  // ---- YouTube IFrame API ----
+  const tag = document.createElement('script');
+  tag.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(tag);
+
+  function onYouTubeIframeAPIReady(){
+    apiReady = true;
+  }
+
+  function createPlayer(){
+    document.getElementById('playerHost').innerHTML = '';
+    document.getElementById('endOverlay').classList.remove('show');
+    player = new YT.Player('playerHost', {
+      videoId: VIDEO_ID,
+      playerVars: {
+        autoplay: 1,
+        playsinline: 1,
+        rel: 0,
+        modestbranding: 1
+      },
+      events: {
+        onStateChange: onPlayerStateChange
+      }
+    });
+  }
+
+  function onPlayerStateChange(event){
+    // 0 = ended
+    if (event.data === 0){
+      document.getElementById('endOverlay').classList.add('show');
+    }
+  }
+
+  // ---- Modal open/close ----
+  // No positioning logic here at all. The overlay is position:fixed + inset:0
+  // in CSS, which the browser anchors to the true viewport natively — so
+  // there's nothing to calculate, track, or get wrong.
+  function openModal(){
+    savedScrollY = window.scrollY;
+    document.body.style.overflow = 'hidden';
+    document.getElementById('modalOverlay').classList.add('open');
+
+    if (apiReady){
+      createPlayer();
+    } else {
+      // wait for API, then create
+      const check = setInterval(() => {
+        if (apiReady){
+          clearInterval(check);
+          createPlayer();
+        }
+      }, 100);
+    }
+  }
+
+  function closeModal(){
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+    if (player){
+      try{ player.stopVideo(); }catch(e){}
+      try{ player.destroy(); }catch(e){}
+    }
+    player = null;
+    // Fully remove the iframe from the DOM (not just clear it) so audio stops completely.
+    // We only replace the player element itself — the close button and
+    // end-overlay are permanent siblings inside the frame and must stay.
+    const oldHost = document.getElementById('playerHost');
+    if (oldHost && oldHost.parentNode){
+      const freshHost = document.createElement('div');
+      freshHost.id = 'playerHost';
+      freshHost.style.width = '100%';
+      freshHost.style.height = '100%';
+      oldHost.parentNode.replaceChild(freshHost, oldHost);
+    }
+    document.getElementById('endOverlay').classList.remove('show');
+    window.scrollTo({ top: savedScrollY, behavior: 'instant' });
+  }
+
+  function watchAgain(){
+    document.getElementById('endOverlay').classList.remove('show');
+    if (player && player.seekTo){
+      player.seekTo(0);
+      player.playVideo();
+    } else {
+      createPlayer();
+    }
+  }
+
+  // Close modal on overlay background click (not on panel itself)
+  document.getElementById('modalOverlay').addEventListener('click', function(e){
+    if (e.target === this){
+      closeModal();
+    }
+  });
+</script>
+
+</body>
+</html>
