@@ -16,26 +16,18 @@
   },
 
   "classification": {
-    "primaryCategoryId": "unassigned",
+    "primaryCategoryId": "gynecological-exams",
     "additionalCategoryIds": [],
     "tagIds": [],
-    "priority": null
+    "priority": "normal"
   },
 
   "clinical": {
-    "lastReviewedAt": null,
-    "status": null
+    "lastReviewedAt": "2026-07-18",
+    "status": "current"
   },
 
   "publishing": {
-    "status": "draft",
-    "publishedAt": null
+    "status": "published",
+    "publishedAt": "2026-07-18"
   },
-
-  "timestamps": {
-    "createdAt": null,
-    "updatedAt": null
-  },
-
-  "__notes": "YouTube metadata copied from the current YouTube listing. Dates and editorial classification remain null until confirmed."
-}
