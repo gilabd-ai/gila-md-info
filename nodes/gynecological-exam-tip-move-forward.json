@@ -31,3 +31,10 @@
     "status": "published",
     "publishedAt": "2026-07-18"
   },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  },
+
+  "__notes": "YouTube metadata copied manually; YouTube publication date and sync fields remain null."
+}
