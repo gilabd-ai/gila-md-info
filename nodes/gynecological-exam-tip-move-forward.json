@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0",
+
+  "id": "node-0002",
+  "slug": "gynecological-exam-tip-move-forward",
+
+  "youtube": {
+    "videoId": "fCOXHdMhQ6c",
+    "url": "https://youtube.com/shorts/fCOXHdMhQ6c",
+    "title": "דברים שכדאי לדעת לפני בדיקה גינקולוגית | חלק 1 התקדמות קטנה קדימה משנה את הבדיקה",
+    "description": "התקדמות קטנה קדימה על המיטה יכולה להפוך את הבדיקה לנוחה וקלה יותר. לפעמים דווקא הפרטים הקטנים עושים את כל ההבדל. 💜\n#בדיקהגינקולוגית\n#בריאותהאישה\n#רפואתנשים\n#גינקולוגיה\n#טיפיםלבריאות\n#בריאות\n#קצרים",
+    "publishedAt": null,
+    "thumbnailUrl": "https://img.youtube.com/vi/fCOXHdMhQ6c/hqdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": null
+  },
+
+  "classification": {
+    "primaryCategoryId": "unassigned",
+    "additionalCategoryIds": [],
+    "tagIds": [],
+    "priority": null
+  },
+
+  "clinical": {
+    "lastReviewedAt": null,
+    "status": null
+  },
+
+  "publishing": {
+    "status": "draft",
+    "publishedAt": null
+  },
+
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  },
+
+  "__notes": "YouTube metadata copied from the current YouTube listing. Dates and editorial classification remain null until confirmed."
+}
