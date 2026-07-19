@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0",
+
+  "id": "node-0003",
+  "slug": "knees-to-chest-gynecological-exam",
+
+  "youtube": {
+    "videoId": "x7PXWlZIKH0",
+    "url": "https://youtube.com/shorts/x7PXWlZIKH0",
+    "title": "הרמת הברכיים בבדיקה הגניקולוגית",
+    "description": "אם במהלך הבדיקה קשה לראות את צוואר הרחם, הרמת הברכיים לכיוון החזה עשויה לעזור לחשוף אותו טוב יותר ולהקל על הבדיקה. השינוי הקטן הזה בתנוחה יכול לעשות הבדל גדול.\n#בדיקהגינקולוגית\n#בריאותהאישה\n#רפואתנשים\n# כאב בבדיקה",
+    "publishedAt": null,
+    "thumbnailUrl": "https://img.youtube.com/vi/x7PXWlZIKH0/hqdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": null
+  },
+
+  "classification": {
+    "primaryCategoryId": "gynecological-exams",
+    "additionalCategoryIds": [],
+    "tagIds": [],
+    "priority": "normal"
+  },
+
+  "clinical": {
+    "lastReviewedAt": "2026-07-19",
+    "status": "current"
+  },
+
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-07-19"
+  },
+
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  },
+
+  "__notes": "YouTube metadata copied manually; YouTube publication date and sync fields remain null."
+}
