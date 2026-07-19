@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0",
+
+  "id": "node-0004",
+  "slug": "period-on-appointment-day-cancel-or-come",
+
+  "youtube": {
+    "videoId": "p_SGlX8aue4",
+    "url": "https://youtube.com/shorts/p_SGlX8aue4",
+    "title": "מחזור ביום התור - לבטל או להגיע?",
+    "description": "מחזור ביום התור? לפני שאת מבטלת – כדאי לראות את הסרטון הזה.\n#מחזור\n#רפואתנשים\n#בדיקהגינקולוגית",
+    "publishedAt": null,
+    "thumbnailUrl": "https://img.youtube.com/vi/p_SGlX8aue4/hqdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": null
+  },
+
+  "classification": {
+    "primaryCategoryId": "gynecological-exams",
+    "additionalCategoryIds": [],
+    "tagIds": [],
+    "priority": "normal"
+  },
+
+  "clinical": {
+    "lastReviewedAt": "2026-07-19",
+    "status": "current"
+  },
+
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-07-19"
+  },
+
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  },
+
+  "__notes": "YouTube metadata copied manually; YouTube publication date and sync fields remain null."
+}
