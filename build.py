@@ -27,7 +27,7 @@ the homepage + disclaimer page so links between pages work locally.
 Related cards in the preview only ever show targets that are
 themselves published, so the preview reflects what production would
 actually render:
-    python3 build.py --node does-a-gynecological-exam-hurt
+    python3 build.py --node gynecological-exam-tip-move-forward
 
 Output always goes to dist/:
     dist/index.html                           (real homepage)

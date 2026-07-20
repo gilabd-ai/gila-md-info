@@ -14,7 +14,7 @@ GitHub and hosted on Cloudflare Pages.
 
 HOW TO ADD A NEW KNOWLEDGE NODE
     1. Go into the nodes/ folder.
-    2. Copy the file nodes/does-a-gynecological-exam-hurt.json and
+    2. Copy the file nodes/gynecological-exam-tip-move-forward.json and
        rename the copy — the new file name becomes the Node's slug/URL,
        so use only English letters, numbers, and hyphens, e.g.
        nodes/how-to-prepare-for-an-ultrasound.json
@@ -198,7 +198,7 @@ status (drafts can be previewed this way); also refreshes the homepage
 and disclaimer page so links work locally. Related cards in the
 preview only ever show targets that are themselves published, so the
 preview reflects what production would actually show:
-    python3 build.py --node does-a-gynecological-exam-hurt
+    python3 build.py --node gynecological-exam-tip-move-forward
 
 Output always goes to dist/:
     dist/index.html                           (homepage)
@@ -240,8 +240,8 @@ separate, explicit go-ahead.
 6. VERIFICATION — WHAT WAS ACTUALLY RUN AND CONFIRMED
 -----------------------------------------------------------
 
-    - Dev build of the one existing (draft) Node: succeeded, produced
-      dist/nodes/does-a-gynecological-exam-hurt/index.html, and also
+    - Dev build of a single Node by slug (ignoring publishing status):
+      succeeded, produced dist/nodes/{slug}/index.html, and also
       refreshed the homepage + disclaimer page.
     - Production build with the Node still in "draft": succeeded,
       built 0 Nodes, explicitly listed the draft Node as excluded,
@@ -292,11 +292,6 @@ NEWLY BUILT in this pass:
       message, instead of crashing unpredictably partway through.
 
 STILL OPEN / needs a decision before real production publishing:
-    - The one real Node (does-a-gynecological-exam-hurt) is still
-      "draft" — classification.primaryCategoryId, priority, and
-      clinical.status are genuinely unset and need a human decision,
-      not a guess. See that Node's "_notes" field. This is why the
-      current production build correctly outputs zero published Nodes.
     - No Knowledge Centers (topic pages) or search bar exist yet —
       both need a topic/category data model that hasn't been designed.
       The homepage currently lists Nodes directly instead. This is a
