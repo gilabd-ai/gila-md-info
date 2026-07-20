@@ -3,9 +3,11 @@
 Knowledge Node build system.
 
 Reads the shared template.html + site-config.json (global site data) +
-Node data records (nodes/*.json, one file per node, Node Schema v1.0) +
-related-temp.json (DEVELOPMENT-ONLY placeholder related-content), and
-produces static HTML files — no server, no database, no framework.
+Node data records (nodes/*.json, one file per node, Node Schema v1.0),
+and produces static HTML files — no server, no database, no framework.
+Each Node's optional "relatedNodeIds" field (up to 3 other Node ids)
+drives its "Related Knowledge" section — see select_related_nodes()
+and render_related_section() below.
 
 This module is deliberately written as importable functions (not just a
 CLI script), so a future Node-creation interface can call build_node()
@@ -19,14 +21,13 @@ Build every published Node, the homepage, and the Medical Disclaimer
 page (production):
     python3 build.py --all
 
-Same, WITH development related-content fixtures visible on Node pages
-(for visual testing only — never use this output for real deploys):
-    python3 build.py --all --dev
-
 Build a single Node by slug, for development/testing (ignores its
 publishing status — drafts can be previewed this way). Also refreshes
-the homepage + disclaimer page so links between pages work locally:
-    python3 build.py --node does-a-gynecological-exam-hurt --dev
+the homepage + disclaimer page so links between pages work locally.
+Related cards in the preview only ever show targets that are
+themselves published, so the preview reflects what production would
+actually render:
+    python3 build.py --node does-a-gynecological-exam-hurt
 
 Output always goes to dist/:
     dist/index.html                           (real homepage)
@@ -38,8 +39,9 @@ ADDING A FUTURE NODE (until a real creation interface exists)
 ──────────────────────────────────────────────────────────────────────
     1. Create nodes/{new-slug}.json following Node Schema v1.0
        (copy an existing node file as a starting point).
-    2. Run: python3 build.py --all
-    3. Upload the contents of dist/ to GitHub as usual.
+    2. Optionally set "relatedNodeIds" to up to 3 existing Node ids.
+    3. Run: python3 build.py --all
+    4. Upload the contents of dist/ to GitHub as usual.
     No HTML editing required, ever.
 
 ──────────────────────────────────────────────────────────────────────
@@ -55,6 +57,7 @@ This was the convention already implied by the original project
 """
 
 import argparse
+import html
 import json
 import re
 import sys
@@ -63,6 +66,8 @@ from pathlib import Path
 BASE_DIR = Path(__file__).parent
 NODES_DIR = BASE_DIR / "nodes"
 DIST_DIR = BASE_DIR / "dist"
+
+MAX_RELATED_CARDS = 3
 
 
 # ──────────────────────────────────────────────────────────────────
@@ -123,6 +128,25 @@ def check_for_duplicate_slugs(nodes: list[dict]) -> None:
         )
 
 
+def check_for_duplicate_ids(nodes: list[dict]) -> None:
+    """Fail clearly and immediately if two node files share an id."""
+    seen: dict[str, str] = {}
+    conflicts = []
+    for node in nodes:
+        node_id = node.get("id")
+        if not node_id:
+            continue
+        if node_id in seen:
+            conflicts.append((node_id, seen[node_id], node["_sourceFile"]))
+        else:
+            seen[node_id] = node["_sourceFile"]
+    if conflicts:
+        lines = [f"  '{node_id}' used in both {a} AND {b}" for node_id, a, b in conflicts]
+        raise SystemExit(
+            "BUILD FAILED — duplicate Node id(s) detected:\n" + "\n".join(lines)
+        )
+
+
 def validate_for_publication(node: dict) -> list[str]:
     """
     Returns a list of human-readable problems for a Node that claims
@@ -170,47 +194,184 @@ def validate_for_publication(node: dict) -> list[str]:
     return errors
 
 
+def validate_related_node_ids(node: dict, nodes_by_id: dict[str, dict],
+                               enforce_published_targets: bool) -> list[str]:
+    """
+    Validates the optional "relatedNodeIds" field on a single Node.
+    Returns a list of human-readable problems; empty list means valid.
+    Kept as its own function (mirrors validate_for_publication) so it can
+    be called independently and doesn't entangle Related-specific rules
+    with the unrelated publication-readiness checks above.
+
+    enforce_published_targets=True is used for the production build: a
+    published Node that points at a Node which is not itself published
+    is treated as a build error (manual Related data is meant to be
+    exact, not silently drop a card with no explanation).
+    """
+    errors = []
+    slug = node.get("slug", "?")
+    source = node.get("_sourceFile", "?")
+    own_id = node.get("id")
+
+    related_ids = node.get("relatedNodeIds", [])
+    if related_ids is None:
+        related_ids = []
+
+    if not isinstance(related_ids, list):
+        return [
+            f"[{slug} — {source}] relatedNodeIds must be an array "
+            f"(got {type(related_ids).__name__})"
+        ]
+
+    if len(related_ids) > MAX_RELATED_CARDS:
+        errors.append(
+            f"[{slug} — {source}] relatedNodeIds has {len(related_ids)} entries, "
+            f"maximum allowed is {MAX_RELATED_CARDS}"
+        )
+
+    seen_ids: set[str] = set()
+    for related_id in related_ids:
+        if not isinstance(related_id, str):
+            errors.append(
+                f"[{slug} — {source}] relatedNodeIds contains a non-string value: {related_id!r}"
+            )
+            continue
+
+        if related_id == own_id:
+            errors.append(
+                f"[{slug} — {source}] relatedNodeIds contains id '{related_id}', "
+                "which is the Node's own id (a Node cannot be related to itself)"
+            )
+            continue
+
+        if related_id in seen_ids:
+            errors.append(
+                f"[{slug} — {source}] relatedNodeIds contains duplicate id '{related_id}'"
+            )
+            continue
+        seen_ids.add(related_id)
+
+        target = nodes_by_id.get(related_id)
+        if target is None:
+            errors.append(
+                f"[{slug} — {source}] relatedNodeIds contains id '{related_id}', "
+                "which does not match any existing Node"
+            )
+            continue
+
+        if enforce_published_targets and target.get("publishing", {}).get("status") != "published":
+            target_status = target.get("publishing", {}).get("status", "?")
+            errors.append(
+                f"[{slug} — {source}] relatedNodeIds contains id '{related_id}' "
+                f"(Node '{target.get('slug', '?')}'), which is not published "
+                f"(status: {target_status}) — a published Node cannot list an "
+                "unpublished Node as Related"
+            )
+
+    return errors
+
+
+def select_related_nodes(node: dict, nodes_by_id: dict[str, dict],
+                          published_only: bool) -> list[dict]:
+    """
+    Returns an ordered list of the actual related Node records for
+    `node`, ready to be rendered.
+
+    This is the ONLY place that decides *which* Nodes are related.
+    It currently just reads the manual "relatedNodeIds" field, in the
+    order the ids appear. This function is the intended seam for
+    swapping in automatic category/tag-based selection later — its
+    signature and return type (a list of real Node dicts) would not
+    need to change, so render_related_section() would not need to
+    change either.
+
+    Rules enforced here (defensively — real invalid data should already
+    have failed validate_related_node_ids() at production build time,
+    but this function must never crash or misrender for a preview of a
+    draft Node with imperfect/absent data):
+      - never include the Node itself
+      - only Nodes that actually exist
+      - only published Nodes, when published_only=True
+      - never the same Node twice
+      - capped at MAX_RELATED_CARDS, in declaration order
+    """
+    own_id = node.get("id")
+    related_ids = node.get("relatedNodeIds") or []
+    if not isinstance(related_ids, list):
+        return []
+
+    selected: list[dict] = []
+    seen_ids: set[str] = set()
+    for related_id in related_ids:
+        if not isinstance(related_id, str):
+            continue
+        if related_id == own_id:
+            continue
+        if related_id in seen_ids:
+            continue
+        target = nodes_by_id.get(related_id)
+        if target is None:
+            continue
+        if published_only and target.get("publishing", {}).get("status") != "published":
+            continue
+        seen_ids.add(related_id)
+        selected.append(target)
+        if len(selected) == MAX_RELATED_CARDS:
+            break
+
+    return selected
+
+
 # ──────────────────────────────────────────────────────────────────
 # Rendering
 # ──────────────────────────────────────────────────────────────────
 
-def render_related_section(dev_fixtures: bool, site_config: dict, related_temp: dict) -> str:
+def make_snippet(text: str, max_chars: int = 160) -> str:
     """
-    Related content is system-generated behavior (real scoring against
-    real published Nodes), not yet built. Until it exists:
-      - dev_fixtures=True  -> render the labeled DEVELOPMENT fixture cards,
-                               for visual testing only.
-      - dev_fixtures=False -> omit the section entirely (production).
-    Cards are text-only (title + description snippet) — no thumbnail/icon.
+    Shared helper for producing a short preview snippet from a longer
+    description, so this truncation logic exists in exactly one place.
+    Used by both the homepage's Node cards (render_node_card_html) and
+    the Related Knowledge cards (render_related_section).
+    """
+    text = (text or "").strip()
+    if len(text) <= max_chars:
+        return text
+    return text[:max_chars].rstrip() + "…"
 
-    IMPORTANT for whenever real related-content data exists: this function
-    must NEVER pad the list to force exactly 3 cards, and must omit the
-    ENTIRE section (heading included) when there are zero real items.
+
+def render_related_section(related_nodes: list[dict], site_config: dict) -> str:
+    """
+    Pure rendering: takes an already-selected list of real Node records
+    (see select_related_nodes) and produces the Related Knowledge
+    section HTML. Contains no selection logic at all — it only knows
+    how to turn Nodes into cards. Cards are text-only (title +
+    description snippet) — no thumbnail/icon.
+
     - 0 items -> return "" (no heading, no empty grid box)
     - 1-3 items -> render exactly that many (grid naturally fills from the
       right in RTL, leaving empty space on the left — no extra CSS needed)
-    - 4+ items -> cap at the first 3 (the layout is designed for 3 max)
+    - callers are expected to already have capped the list at 3; this
+      function caps again defensively so it can never over-render.
     """
-    if not dev_fixtures:
-        return ""
-
-    items = related_temp["placeholderCards"][:3]  # never show more than 3
+    items = related_nodes[:MAX_RELATED_CARDS]
     if not items:
         return ""  # zero real items -> omit the whole section, no empty box
 
     cards_html = []
-    for card in items:
+    for related_node in items:
+        title = html.escape(related_node["youtube"]["title"], quote=True)
+        description = html.escape(make_snippet(related_node["youtube"]["description"]), quote=True)
+        href = f'/nodes/{html.escape(related_node["slug"], quote=True)}/'
         cards_html.append(
-            '      <a class="related-card" href="#" onclick="return false;">\n'
-            f'        <div class="related-title">{card["title"]}</div>\n'
-            f'        <div class="related-desc">{card["description"]}</div>\n'
+            f'      <a class="related-card" href="{href}">\n'
+            f'        <div class="related-title">{title}</div>\n'
+            f'        <div class="related-desc">{description}</div>\n'
             '      </a>'
         )
     cards_joined = "\n".join(cards_html)
-    label = site_config["uiLabels"]["relatedSectionLabel"]
+    label = html.escape(site_config["uiLabels"]["relatedSectionLabel"], quote=True)
 
     return (
-        '  <!-- DEVELOPMENT FIXTURE — placeholder related content, not real Nodes. -->\n'
         '  <section class="related-section">\n'
         f'    <p class="section-label">{label}</p>\n'
         '    <div class="related-grid">\n'
@@ -221,7 +382,7 @@ def render_related_section(dev_fixtures: bool, site_config: dict, related_temp: 
 
 
 def render_node_html(node: dict, template: str, site_config: dict,
-                      related_temp: dict, dev_fixtures: bool) -> str:
+                      nodes_by_id: dict[str, dict], published_only: bool) -> str:
     social = {s["platform"]: s["url"] for s in site_config["socialLinks"]}
     video_id = node["youtube"]["videoId"]
 
@@ -232,6 +393,8 @@ def render_node_html(node: dict, template: str, site_config: dict,
 
     page_title = f'{node["youtube"]["title"]} | {site_config["header"]["name"]}'
     logo_base64 = (BASE_DIR / site_config["header"]["logoImagePath"]).read_text(encoding="utf-8").strip()
+
+    related_nodes = select_related_nodes(node, nodes_by_id, published_only=published_only)
 
     tokens = {
         "{{PAGE_TITLE}}": page_title,
@@ -263,7 +426,7 @@ def render_node_html(node: dict, template: str, site_config: dict,
         "{{DISCLAIMER_LINK_URL}}": site_config["disclaimer"]["linkUrl"],
         "{{END_REPLAY_LABEL}}": site_config["endOfVideoButtons"]["replay"],
         "{{END_CLOSE_LABEL}}": site_config["endOfVideoButtons"]["close"],
-        "{{RELATED_SECTION_HTML}}": render_related_section(dev_fixtures, site_config, related_temp),
+        "{{RELATED_SECTION_HTML}}": render_related_section(related_nodes, site_config),
     }
 
     output = template
@@ -281,25 +444,23 @@ def render_node_html(node: dict, template: str, site_config: dict,
 # Build orchestration
 # ──────────────────────────────────────────────────────────────────
 
-def build_node(node: dict, dev_fixtures: bool = False) -> Path:
+def build_node(node: dict, nodes_by_id: dict[str, dict], published_only: bool = True) -> Path:
     """Build a single Node to dist/nodes/{slug}/index.html. Returns the output path."""
     template = (BASE_DIR / "template.html").read_text(encoding="utf-8")
     site_config = json.loads((BASE_DIR / "site-config.json").read_text(encoding="utf-8"))
-    related_temp = json.loads((BASE_DIR / "related-temp.json").read_text(encoding="utf-8"))
 
-    html = render_node_html(node, template, site_config, related_temp, dev_fixtures)
+    html_out = render_node_html(node, template, site_config, nodes_by_id, published_only=published_only)
 
     out_dir = DIST_DIR / "nodes" / node["slug"]
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / "index.html"
-    out_path.write_text(html, encoding="utf-8")
+    out_path.write_text(html_out, encoding="utf-8")
     return out_path
 
 
 def render_node_card_html(node: dict) -> str:
     title = node["youtube"]["title"]
-    description = node["youtube"]["description"]
-    snippet = description if len(description) <= 160 else description[:160].rstrip() + "…"
+    snippet = make_snippet(node["youtube"]["description"])
     return (
         f'    <a class="node-card" href="/nodes/{node["slug"]}/">\n'
         f'      <p class="node-card-title">{title}</p>\n'
@@ -414,10 +575,12 @@ def build_disclaimer_page() -> Path:
     return out_path
 
 
-def build_all_published(dev_fixtures: bool = False):
+def build_all_published():
     """Build every Node whose publishing.status == 'published'. Excludes draft/archived."""
     all_nodes = load_all_nodes()
     check_for_duplicate_slugs(all_nodes)
+    check_for_duplicate_ids(all_nodes)
+    nodes_by_id = {n["id"]: n for n in all_nodes if n.get("id")}
 
     published = [n for n in all_nodes if n["publishing"]["status"] == "published"]
     excluded = [n for n in all_nodes if n["publishing"]["status"] != "published"]
@@ -427,13 +590,15 @@ def build_all_published(dev_fixtures: bool = False):
     all_errors = []
     for node in published:
         all_errors.extend(validate_for_publication(node))
+    for node in published:
+        all_errors.extend(validate_related_node_ids(node, nodes_by_id, enforce_published_targets=True))
     if all_errors:
         raise SystemExit(
             "BUILD FAILED — the following Node(s) are marked 'published' but are "
-            "missing required fields:\n" + "\n".join(f"  - {e}" for e in all_errors)
+            "invalid:\n" + "\n".join(f"  - {e}" for e in all_errors)
         )
 
-    built_paths = [build_node(n, dev_fixtures=dev_fixtures) for n in published]
+    built_paths = [build_node(n, nodes_by_id, published_only=True) for n in published]
     build_homepage(published)
     build_disclaimer_page()
 
@@ -444,20 +609,26 @@ def build_all_published(dev_fixtures: bool = False):
             print(f"  - {n['slug']} (status: {n['publishing']['status']})")
     print("Built homepage: dist/index.html")
     print("Built Medical Disclaimer page: dist/medical-disclaimer/index.html")
-    if dev_fixtures:
-        print("NOTE: built WITH development related-content fixtures visible. Do not deploy this output.")
 
     return built_paths
 
 
-def build_single_for_dev(slug: str, dev_fixtures: bool = True):
-    """Build one Node by slug regardless of publishing status, for dev/testing/preview."""
+def build_single_for_dev(slug: str):
+    """
+    Build one Node by slug regardless of publishing status, for
+    dev/testing/preview. Related cards in the preview only ever show
+    targets that are themselves published, so the preview reflects
+    what production would actually render.
+    """
     all_nodes = load_all_nodes()
     check_for_duplicate_slugs(all_nodes)
+    check_for_duplicate_ids(all_nodes)
+    nodes_by_id = {n["id"]: n for n in all_nodes if n.get("id")}
+
     matches = [n for n in all_nodes if n["slug"] == slug]
     if not matches:
         raise SystemExit(f"No node found with slug '{slug}'")
-    out_path = build_node(matches[0], dev_fixtures=dev_fixtures)
+    out_path = build_node(matches[0], nodes_by_id, published_only=True)
 
     # Also refresh homepage + disclaimer page so their links work while
     # previewing locally. Homepage only ever lists real 'published' Nodes,
@@ -474,14 +645,13 @@ def build_single_for_dev(slug: str, dev_fixtures: bool = True):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Knowledge Node build system")
     parser.add_argument("--all", action="store_true", help="Build all published Nodes (production)")
-    parser.add_argument("--node", metavar="SLUG", help="Build a single Node by slug, for dev/testing")
-    parser.add_argument("--dev", action="store_true", help="Include development related-content fixtures")
+    parser.add_argument("--node", metavar="SLUG", help="Build a single Node by slug, for dev/testing/preview (ignores publishing status)")
     args = parser.parse_args()
 
     if args.all:
-        build_all_published(dev_fixtures=args.dev)
+        build_all_published()
     elif args.node:
-        build_single_for_dev(args.node, dev_fixtures=args.dev)
+        build_single_for_dev(args.node)
     else:
         print(__doc__)
         sys.exit(1)

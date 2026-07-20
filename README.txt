@@ -33,6 +33,12 @@ HOW TO ADD A NEW KNOWLEDGE NODE
          - publishing.status                 "draft" while working on it,
                                               "published" when it's ready to go live
          - publishing.publishedAt            the date it should go live
+         - relatedNodeIds (optional)         a list of up to 3 other Nodes'
+                                              "id" values, to show as
+                                              "Related Knowledge" cards on
+                                              this Node's page — see
+                                              section 1 ("RELATED
+                                              KNOWLEDGE") below
     4. Save the file. That's the only file you ever need to touch to
        add a new Node — no HTML editing, ever.
 
@@ -47,7 +53,7 @@ WHICH FILE IS EDITED FOR CONTENT CHANGES
       manual edit there will be silently thrown away.
 
 HOW TO RUN A PREVIEW (before a Node is finished/published)
-    python3 build.py --node YOUR-SLUG-HERE --dev
+    python3 build.py --node YOUR-SLUG-HERE
     Then open dist/nodes/YOUR-SLUG-HERE/index.html in a browser. This
     works even while the Node is still marked "draft", and it also
     refreshes the homepage and disclaimer page so the links between
@@ -112,16 +118,36 @@ site-config.json
     disclaimer strip text + link, the homepage's intro text, and the
     full Medical Disclaimer page content.
 
-related-temp.json
-    TEMPORARY / DEVELOPMENT-ONLY placeholder data for the "related
-    content" cards. Only used with --dev; never included in a
-    production build.
+RELATED KNOWLEDGE
+    Each Node's JSON file may include an optional top-level
+    "relatedNodeIds" array of up to 3 other Nodes' "id" values, e.g.:
+
+        "relatedNodeIds": ["node-0003", "node-0004"]
+
+    - Selection is currently manual: a person lists the ids by hand,
+      in the order they should appear. There is no automatic
+      selection yet — matching by category, tag, or a combination of
+      both is a planned future step, but is NOT implemented now.
+    - Only the id is stored. Title, description, and link are always
+      read at build time from the real target Node's own JSON file.
+    - A Node's page can show zero, one, two, or three Related cards,
+      depending on how many valid ids are listed — the section (and
+      its heading) is omitted entirely when there are zero.
+    - The build validates this field for every published Node: it
+      must be an array of existing, distinct, non-self ids, max 3
+      entries, and every referenced Node must itself be published.
+      Invalid data fails the build with a clear error naming the
+      Node's slug, its source file, and the offending id.
+    - See select_related_nodes() and render_related_section() in
+      build.py — selection and rendering are separate functions, so
+      the manual selection can later be replaced by automatic
+      selection without touching the rendering code, the Node page
+      template, or the approved card design.
 
 nodes/  (folder)
     One JSON file per Knowledge Node, following Node Schema v1.0. Each
-    file holds everything specific to that one Node. Currently
-    contains one Node: does-a-gynecological-exam-hurt.json
-    (status: draft — see section 7).
+    file holds everything specific to that one Node, including its
+    optional "relatedNodeIds" (see "RELATED KNOWLEDGE" above).
 
 assets/  (folder)
     Shared binary/text assets referenced by the templates — currently
@@ -130,8 +156,8 @@ assets/  (folder)
 
 build.py
     The build script. Reads the templates + site-config.json +
-    related-temp.json + everything in nodes/, validates it, and writes
-    final static HTML files into dist/. See section 4 for commands.
+    everything in nodes/, validates it, and writes final static HTML
+    files into dist/. See section 4 for commands.
 
 dist/  (folder, generated — not part of this ZIP/repo's source content)
     The actual deployable website. Fully regenerated from the source
@@ -144,8 +170,7 @@ dist/  (folder, generated — not part of this ZIP/repo's source content)
 Everything except dist/ is a source file:
     template.html, homepage-template.html, disclaimer-template.html,
     approved-node-reference.html (reference only, unused by the build),
-    site-config.json, related-temp.json, build.py, nodes/*.json,
-    assets/*
+    site-config.json, build.py, nodes/*.json, assets/*
 
 None of these are the live website by themselves — they exist so the
 build script can generate the real deployable output.
@@ -170,13 +195,10 @@ Production build (every published Node + homepage + disclaimer page):
 
 Development preview of one Node by slug, regardless of its publishing
 status (drafts can be previewed this way); also refreshes the homepage
-and disclaimer page so links work locally:
-    python3 build.py --node does-a-gynecological-exam-hurt --dev
-
-Production build, but WITH the development related-content fixture
-cards visible on Node pages, for visual testing only — never deploy
-this output:
-    python3 build.py --all --dev
+and disclaimer page so links work locally. Related cards in the
+preview only ever show targets that are themselves published, so the
+preview reflects what production would actually show:
+    python3 build.py --node does-a-gynecological-exam-hurt
 
 Output always goes to dist/:
     dist/index.html                           (homepage)
@@ -280,10 +302,11 @@ STILL OPEN / needs a decision before real production publishing:
       The homepage currently lists Nodes directly instead. This is a
       deliberate scope decision, not an oversight (see build.py,
       build_homepage()).
-    - No real related-content generation exists yet (only the DEV
-      FIXTURE cards in related-temp.json, --dev only) — the render
-      logic is ready for real data, but the scoring/selection system
-      itself hasn't been built.
+    - Related Knowledge now uses real Node data via the manual
+      "relatedNodeIds" field (see section 1, "RELATED KNOWLEDGE").
+      Automatic selection by category/tag matching is planned but has
+      NOT been built yet — only the manual-selection version exists
+      so far.
     - No Node-creation interface yet — adding a Node still means
       creating a nodes/{slug}.json file by hand (see section 0).
     - No automatic YouTube import yet — Node data (title, description,

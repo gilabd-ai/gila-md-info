@@ -4,6 +4,8 @@
   "id": "node-0002",
   "slug": "gynecological-exam-tip-move-forward",
 
+  "relatedNodeIds": ["node-0003", "node-0004"],
+
   "youtube": {
     "videoId": "fCOXHdMhQ6c",
     "url": "https://youtube.com/shorts/fCOXHdMhQ6c",
