@@ -28,7 +28,7 @@
     color:var(--ink);
     font-family:'Inter', sans-serif;
     -webkit-font-smoothing:antialiased;
-    padding-top: 92px; /* space for sticky header + home-nav bar */
+    padding-top: 112px; /* space for sticky header + home-nav bar */
   }
   h1,h2,h3, .display{
     font-family:'Fraunces', serif;
@@ -41,20 +41,20 @@
   /* ---------- Home nav bar (attached under header) ---------- */
   .home-nav-bar{
     position:fixed;
-    top:56px; left:0; right:0;
+    top:70px; left:0; right:0;
     display:flex;
     align-items:center;
     gap:6px;
     padding:9px 16px;
     background: rgba(242,90,166,0.10);
     border-bottom: 1px solid rgba(242,90,166,0.25);
-    font-size:13.5px;
+    font-size:14.5px;
     font-weight:600;
     color: rgba(216,64,142,0.95);
     text-decoration:none;
     z-index:199;
   }
-  .home-nav-bar svg{ width:16px; height:16px; flex:none; }
+  .home-nav-bar svg{ width:20px; height:20px; flex:none; }
 
   /* ---------- Sticky Header ---------- */
   header.node-header{
@@ -66,7 +66,7 @@
     display:flex;
     align-items:center;
     gap:8px;
-    padding:2px 16px;
+    padding:8px 16px;
     z-index:200;
     box-shadow: 0 4px 14px rgba(0,0,0,0.2);
   }
@@ -99,7 +99,7 @@
   .header-name-block{ line-height:1.15; min-width:0; }
   .header-name{
     font-family:'Fraunces', serif;
-    font-size:15px;
+    font-size:16px;
     font-weight:600;
     line-height:1;
     white-space:nowrap;
@@ -107,7 +107,7 @@
     text-overflow:ellipsis;
   }
   .header-role{
-    font-size:10.5px;
+    font-size:11.5px;
     color:rgba(255,255,255,0.85);
     letter-spacing:0.02em;
   }
@@ -190,7 +190,7 @@
   /* ---------- Video Section ---------- */
   .video-section{ margin-bottom:16px; }
   .section-label{
-    font-size:12px;
+    font-size:13px;
     text-transform:uppercase;
     letter-spacing:0.1em;
     color:rgba(242,90,166,0.90);
@@ -247,8 +247,8 @@
     background:var(--paper-raised);
     border:1px solid var(--line);
     border-radius:12px;
-    padding:18px 10px;
-    height:234px;
+    padding:14px 10px;
+    height:180px;
     min-width:0;
     overflow:hidden;
     display:flex;
