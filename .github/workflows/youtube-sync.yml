@@ -4,9 +4,13 @@ name: YouTube Sync
 # schedule` here. Combined with using the default GITHUB_TOKEN for the
 # commit below (GitHub Actions never re-triggers workflows from commits
 # made with the default token), this makes an infinite loop structurally
-# impossible — no extra "skip ci" logic is required for that reason alone,
-# though we still tag the commit message with [skip ci] as a harmless,
-# zero-cost extra safeguard in case a push trigger is ever added later.
+# impossible on its own — no "skip ci" tag or other extra logic is needed
+# for that. (An earlier version of this workflow added a "[skip ci]" tag
+# to the commit message anyway "just in case" — that was removed, because
+# Cloudflare Pages separately treats that exact phrase as a signal to skip
+# deploying the site, which would have silently prevented the live site
+# from updating after every sync. Since GitHub's own protection already
+# fully covers the loop concern, no such tag is needed at all.)
 on:
   workflow_dispatch:
     inputs:
@@ -100,7 +104,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "No Node data changed — nothing to commit."
           else
-            git commit -m "Sync YouTube metadata for Node(s) [skip ci]"
+            git commit -m "Sync YouTube metadata for Node(s)"
             git push
           fi
 
