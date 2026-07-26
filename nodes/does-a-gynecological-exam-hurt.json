@@ -1,43 +1,35 @@
 {
   "schemaVersion": "1.0",
-
   "id": "node-0001",
   "slug": "does-a-gynecological-exam-hurt",
-
   "relatedNodeIds": [],
-
   "youtube": {
     "videoId": "yIUWx-mtsbM",
     "url": "https://youtube.com/shorts/yIUWx-mtsbM",
-    "title": "האם בדיקה גינקולוגית כואבת?",
-    "description": "מטופלות רבות מגיעות לבדיקה הגינקולוגית הראשונה שלהן חרדות מכאב, והחרדה עצמה עלולה להפוך את הביקור למאתגר יותר משהוא צריך להיות. בבדיקה שגרתית, מידה מסוימת של לחץ ואי־נוחות קלה היא תופעה נורמלית, בפרט בשלב הכנסת הספקולום, אך כאב חד אינו צפוי וכדאי לדווח עליו לרופא/ה מיד. נשימות עמוקות, הרפיית שרירי הבטן והאגן, ותקשורת פתוחה עם הרופא/ה לאורך כל הבדיקה — כל אלו יכולים לעשות הבדל אמיתי. אם יש לך היסטוריה של טראומה, וגיניזמוס, או חרדה משמעותית, כדאי לספר על כך לרופא/ה מראש כדי שהבדיקה תותאם אישית עבורך. כל גוף מגיב אחרת, ואין דבר כזה שאלה רגישה מדי כשמדובר בנוחות שלך.",
-    "publishedAt": null,
-    "thumbnailUrl": "https://img.youtube.com/vi/yIUWx-mtsbM/hqdefault.jpg",
+    "title": "הפחד מהבדיקה לפעמים מפחיד יותר מהבדיקה עצמה. בואי נדבר על זה...",
+    "description": "האם בדיקה גינקולוגית כואבת?\nזה משתנה מאישה לאישה. יש נשים שלא חוות כאב כלל, ואצל אחרות הבדיקה עלולה להיות לא נעימה. וגם אם את חוששת מהבדיקה – זה לגמרי לגיטימי. 💜\n#בדיקהגינקולוגית #גינקולוגיה #רפואתנשים #בריאותהאישה #נשים #בריאותנשים #רופאתנשים #קצרים#רופאהמסבירה",
+    "publishedAt": "2026-06-03T18:26:46Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/yIUWx-mtsbM/maxresdefault.jpg",
     "availability": "available",
-    "lastSyncedAt": null
+    "lastSyncedAt": "2026-07-26T22:39:14Z"
   },
-
   "classification": {
     "primaryCategoryId": "unassigned",
     "additionalCategoryIds": [],
     "tagIds": [],
     "priority": null
   },
-
   "clinical": {
     "lastReviewedAt": null,
     "status": null
   },
-
   "publishing": {
     "status": "draft",
     "publishedAt": null
   },
-
   "timestamps": {
     "createdAt": null,
     "updatedAt": null
   },
-
   "_notes": "publishedAt, lastSyncedAt, lastReviewedAt, createdAt, and updatedAt are left null because no real values exist yet - these are meant to be filled by the system (YouTube sync / editorial workflow) once that exists, not hand-authored. thumbnailUrl IS a real stored YouTube snapshot value (not invented) and must stay populated; the build only derives a thumbnail URL from videoId as a fallback if this field is ever missing."
 }

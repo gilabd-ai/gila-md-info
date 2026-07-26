@@ -1,43 +1,38 @@
 {
   "schemaVersion": "1.0",
-
   "id": "node-0003",
   "slug": "knees-to-chest-gynecological-exam",
-
-  "relatedNodeIds": ["node-0002", "node-0004"],
-
+  "relatedNodeIds": [
+    "node-0002",
+    "node-0004"
+  ],
   "youtube": {
     "videoId": "x7PXWlZIKH0",
     "url": "https://youtube.com/shorts/x7PXWlZIKH0",
-    "title": "הרמת הברכיים בבדיקה הגניקולוגית",
-    "description": "אם במהלך הבדיקה קשה לראות את צוואר הרחם, הרמת הברכיים לכיוון החזה עשויה לעזור לחשוף אותו טוב יותר ולהקל על הבדיקה. השינוי הקטן הזה בתנוחה יכול לעשות הבדל גדול.\n#בדיקהגינקולוגית\n#בריאותהאישה\n#רפואתנשים\n# כאב בבדיקה",
-    "publishedAt": null,
-    "thumbnailUrl": "https://img.youtube.com/vi/x7PXWlZIKH0/hqdefault.jpg",
+    "title": "טיפים לבדיקה גינקולוגית קלה יותר חלק2- הרמת הברכיים לחזה",
+    "description": "לפעמים, במהלך הבדיקה, קשה להגיע לצוואר הרחם בזווית נוחה. במצב כזה, הרמת הברכיים לכיוון החזה יכולה לשנות מעט את מנח האגן ולאפשר חשיפה טובה יותר של צוואר הרחם.\nאפשר להחזיק את הברכיים בידיים ולקרב אותן בעדינות אל הגוף. התנוחה הזאת יכולה גם להפחית את ההתכווצות וההתנגדות הטבעית של שרירי האגן, שמופיעות לעיתים מתוך מתח או חשש.\nכאשר צוואר הרחם נגיש יותר והשרירים רפויים יותר, הבדיקה יכולה להיות קצרה, פשוטה ונוחה יותר – גם למטופלת וגם לרופאה הבודקת.\nואם קשה להרים את שתי הרגליים יחד, אפשר להרים רק ברך אחת לכיוון החזה. לפעמים גם השינוי הקטן הזה מספיק כדי לשפר את זווית הבדיקה ולהקל משמעותית.\nכמובן, אין צורך לבצע את התנוחה לבד או בכוח. הרופא ינחה אותך אם היא יכולה לעזור במקרה שלך.",
+    "publishedAt": "2026-06-09T16:38:29Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/x7PXWlZIKH0/maxresdefault.jpg",
     "availability": "available",
-    "lastSyncedAt": null
+    "lastSyncedAt": "2026-07-26T22:39:14Z"
   },
-
   "classification": {
     "primaryCategoryId": "gynecological-exams",
     "additionalCategoryIds": [],
     "tagIds": [],
     "priority": "normal"
   },
-
   "clinical": {
     "lastReviewedAt": "2026-07-19",
     "status": "current"
   },
-
   "publishing": {
     "status": "published",
     "publishedAt": "2026-07-19"
   },
-
   "timestamps": {
     "createdAt": null,
     "updatedAt": null
   },
-
   "__notes": "YouTube metadata copied manually; YouTube publication date and sync fields remain null."
 }
