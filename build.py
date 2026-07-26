@@ -14,6 +14,23 @@ CLI script), so a future Node-creation interface can call build_node()
 or build_all_published() directly instead of shelling out to Python.
 
 ──────────────────────────────────────────────────────────────────────
+THREE-MODULE ARCHITECTURE
+──────────────────────────────────────────────────────────────────────
+- node_store.py   — shared foundation: reading/writing Node files.
+                     Imports nothing from either file below.
+- build.py        — THIS FILE. Rendering only (HTML generation).
+                     Imports node_store. Never imports youtube_sync,
+                     never imports `requests` — Build cannot reach the
+                     network, which you can verify just by reading the
+                     imports at the top of this file.
+- youtube_sync.py — talks to the YouTube Data API and updates Node
+                     files. Imports node_store. Never imports build.
+
+Sync and Build are fully independent commands, each with its own CLI
+entry point, so they can later be wired to two separate UI buttons
+without any code reorganization.
+
+──────────────────────────────────────────────────────────────────────
 CLI USAGE
 ──────────────────────────────────────────────────────────────────────
 
@@ -44,6 +61,10 @@ ADDING A FUTURE NODE (until a real creation interface exists)
     4. Upload the contents of dist/ to GitHub as usual.
     No HTML editing required, ever.
 
+Separately, run `python3 youtube_sync.py --node {slug}` (see that file's
+own docstring) to pull real title/description/thumbnail data from
+YouTube into a Node before publishing it — Build itself never does this.
+
 ──────────────────────────────────────────────────────────────────────
 URL CONVENTION
 ──────────────────────────────────────────────────────────────────────
@@ -63,89 +84,20 @@ import re
 import sys
 from pathlib import Path
 
+import node_store
+
 BASE_DIR = Path(__file__).parent
-NODES_DIR = BASE_DIR / "nodes"
 DIST_DIR = BASE_DIR / "dist"
 
 MAX_RELATED_CARDS = 3
 
 
 # ──────────────────────────────────────────────────────────────────
-# Node discovery
+# Publication & Related-data validation
 # ──────────────────────────────────────────────────────────────────
-
-# Minimal structural shape every Node file must have, regardless of its
-# publishing status. This catches malformed/incomplete Node data (e.g. a
-# hand-edited JSON file missing a top-level section entirely) with a clear
-# error, instead of an obscure KeyError deep inside rendering.
-_REQUIRED_NODE_SECTIONS = ["id", "slug", "youtube", "classification", "clinical", "publishing"]
-
-
-def load_all_nodes() -> list[dict]:
-    """Load every node data record from nodes/*.json. Fails clearly on bad JSON."""
-    nodes = []
-    for path in sorted(NODES_DIR.glob("*.json")):
-        try:
-            node = json.loads(path.read_text(encoding="utf-8"))
-        except json.JSONDecodeError as e:
-            raise SystemExit(f"BUILD FAILED — invalid JSON in {path}: {e}")
-
-        if not isinstance(node, dict):
-            raise SystemExit(f"BUILD FAILED — {path} must contain a JSON object, not {type(node).__name__}")
-
-        missing = [section for section in _REQUIRED_NODE_SECTIONS if section not in node]
-        if missing:
-            raise SystemExit(
-                f"BUILD FAILED — invalid Node data in {path}: "
-                f"missing required section(s): {', '.join(missing)}"
-            )
-        if node.get("publishing", {}).get("status") not in ("published", "draft", "unpublished", "archived"):
-            raise SystemExit(
-                f"BUILD FAILED — invalid publication data in {path}: "
-                f"publishing.status must be one of published/draft/unpublished/archived "
-                f"(got {node.get('publishing', {}).get('status')!r})"
-            )
-
-        node["_sourceFile"] = str(path)
-        nodes.append(node)
-    return nodes
-
-
-def check_for_duplicate_slugs(nodes: list[dict]) -> None:
-    """Fail clearly and immediately if two node files share a slug."""
-    seen: dict[str, str] = {}
-    conflicts = []
-    for node in nodes:
-        slug = node["slug"]
-        if slug in seen:
-            conflicts.append((slug, seen[slug], node["_sourceFile"]))
-        else:
-            seen[slug] = node["_sourceFile"]
-    if conflicts:
-        lines = [f"  '{slug}' used in both {a} AND {b}" for slug, a, b in conflicts]
-        raise SystemExit(
-            "BUILD FAILED — duplicate Node slug(s) detected:\n" + "\n".join(lines)
-        )
-
-
-def check_for_duplicate_ids(nodes: list[dict]) -> None:
-    """Fail clearly and immediately if two node files share an id."""
-    seen: dict[str, str] = {}
-    conflicts = []
-    for node in nodes:
-        node_id = node.get("id")
-        if not node_id:
-            continue
-        if node_id in seen:
-            conflicts.append((node_id, seen[node_id], node["_sourceFile"]))
-        else:
-            seen[node_id] = node["_sourceFile"]
-    if conflicts:
-        lines = [f"  '{node_id}' used in both {a} AND {b}" for node_id, a, b in conflicts]
-        raise SystemExit(
-            "BUILD FAILED — duplicate Node id(s) detected:\n" + "\n".join(lines)
-        )
-
+# Node loading, duplicate-slug/id checks, and the id lookup all now
+# live in node_store.py (shared with youtube_sync.py). This file only
+# contains rendering-specific validation from here on.
 
 def validate_for_publication(node: dict) -> list[str]:
     """
@@ -292,6 +244,9 @@ def select_related_nodes(node: dict, nodes_by_id: dict[str, dict],
       - never include the Node itself
       - only Nodes that actually exist
       - only published Nodes, when published_only=True
+      - never a Node whose video is confirmed unavailable (it isn't
+        being built as a page at all — see build_all_published() — so
+        linking to it would be a dead link)
       - never the same Node twice
       - capped at MAX_RELATED_CARDS, in declaration order
     """
@@ -313,6 +268,8 @@ def select_related_nodes(node: dict, nodes_by_id: dict[str, dict],
         if target is None:
             continue
         if published_only and target.get("publishing", {}).get("status") != "published":
+            continue
+        if target.get("youtube", {}).get("availability") == "unavailable":
             continue
         seen_ids.add(related_id)
         selected.append(target)
@@ -575,22 +532,56 @@ def build_disclaimer_page() -> Path:
     return out_path
 
 
+def _find_related_omissions(node: dict, nodes_by_id: dict[str, dict]) -> list[dict]:
+    """
+    For a Node that IS being built, figure out which of its declared
+    relatedNodeIds got silently dropped specifically because the target
+    is unavailable (as opposed to not existing / not published, which
+    would already have failed validate_related_node_ids() before this
+    is ever called). Used only to build the warning report — never
+    affects what actually gets rendered.
+    """
+    related_ids = node.get("relatedNodeIds") or []
+    if not isinstance(related_ids, list):
+        return []
+    selected_ids = {n["id"] for n in select_related_nodes(node, nodes_by_id, published_only=True)}
+    omissions = []
+    for related_id in related_ids:
+        if not isinstance(related_id, str) or related_id == node.get("id") or related_id in selected_ids:
+            continue
+        target = nodes_by_id.get(related_id)
+        if target is not None and target.get("youtube", {}).get("availability") == "unavailable":
+            omissions.append(target)
+    return omissions
+
+
 def build_all_published():
-    """Build every Node whose publishing.status == 'published'. Excludes draft/archived."""
-    all_nodes = load_all_nodes()
-    check_for_duplicate_slugs(all_nodes)
-    check_for_duplicate_ids(all_nodes)
-    nodes_by_id = {n["id"]: n for n in all_nodes if n.get("id")}
+    """
+    Build every Node whose publishing.status == 'published' AND whose
+    video is not confirmed unavailable. Excludes draft/archived Nodes
+    entirely (as before), and additionally SKIPS (with a warning, not a
+    failure) any published Node whose youtube.availability == 
+    "unavailable" — a missing YouTube video must never take down the
+    rest of the site. Build only ever reads the locally stored
+    "availability" value; it never contacts YouTube itself.
+    """
+    all_nodes, nodes_by_id = node_store.load_all_nodes_checked()
 
-    published = [n for n in all_nodes if n["publishing"]["status"] == "published"]
-    excluded = [n for n in all_nodes if n["publishing"]["status"] != "published"]
+    published_all = [n for n in all_nodes if n["publishing"]["status"] == "published"]
+    not_published = [n for n in all_nodes if n["publishing"]["status"] != "published"]
 
-    # Every Node claiming "published" status must pass full validation.
+    unavailable_skipped = [n for n in published_all if n["youtube"].get("availability") == "unavailable"]
+    buildable = [n for n in published_all if n["youtube"].get("availability") != "unavailable"]
+
+    # Every Node that will actually be built must pass full validation.
     # This is checked at build time, not stored as data on the Node.
+    # (Skipped/unavailable Nodes are NOT validated for publication —
+    # they're not being published right now, so incomplete data on a
+    # Node nobody is building yet must not fail the whole build.)
     all_errors = []
-    for node in published:
+    for node in buildable:
         all_errors.extend(validate_for_publication(node))
-    for node in published:
+    for node in buildable:
         all_errors.extend(validate_related_node_ids(node, nodes_by_id, enforce_published_targets=True))
     if all_errors:
         raise SystemExit(
@@ -598,17 +589,41 @@ def build_all_published():
             "invalid:\n" + "\n".join(f"  - {e}" for e in all_errors)
         )
 
-    built_paths = [build_node(n, nodes_by_id, published_only=True) for n in published]
-    build_homepage(published)
+    built_paths = [build_node(n, nodes_by_id, published_only=True) for n in buildable]
+    build_homepage(buildable)
     build_disclaimer_page()
 
-    print(f"Built {len(published)} published Node(s).")
-    if excluded:
-        print(f"Excluded {len(excluded)} Node(s) not in 'published' status:")
-        for n in excluded:
+    print(f"Built {len(buildable)} published Node(s).")
+    if not_published:
+        print(f"Excluded {len(not_published)} Node(s) not in 'published' status:")
+        for n in not_published:
             print(f"  - {n['slug']} (status: {n['publishing']['status']})")
     print("Built homepage: dist/index.html")
     print("Built Medical Disclaimer page: dist/medical-disclaimer/index.html")
+
+    # Warning report — never fails the build, just surfaces what to fix.
+    related_omissions = {n["id"]: _find_related_omissions(n, nodes_by_id) for n in buildable}
+    related_omissions = {k: v for k, v in related_omissions.items() if v}
+
+    if unavailable_skipped or related_omissions:
+        print("\nWARNINGS:")
+    if unavailable_skipped:
+        print(f"  {len(unavailable_skipped)} published Node(s) SKIPPED — video unavailable:")
+        for n in unavailable_skipped:
+            print(
+                f"    - nodeId={n['id']} slug={n['slug']} videoId={n['youtube']['videoId']} "
+                f"title=\"{n['youtube']['title']}\" reason=\"YouTube video unavailable\""
+            )
+    if related_omissions:
+        print("  Related cards omitted because the target Node's video is unavailable:")
+        for node_id, omitted_targets in related_omissions.items():
+            source_node = nodes_by_id[node_id]
+            for target in omitted_targets:
+                print(
+                    f"    - on '{source_node['slug']}': omitted related card for "
+                    f"nodeId={target['id']} slug={target['slug']} videoId={target['youtube']['videoId']} "
+                    f"title=\"{target['youtube']['title']}\""
+                )
 
     return built_paths
 
@@ -617,13 +632,10 @@ def build_single_for_dev(slug: str):
     """
     Build one Node by slug regardless of publishing status, for
     dev/testing/preview. Related cards in the preview only ever show
-    targets that are themselves published, so the preview reflects
-    what production would actually render.
+    targets that are themselves published and available, so the
+    preview reflects what production would actually render.
     """
-    all_nodes = load_all_nodes()
-    check_for_duplicate_slugs(all_nodes)
-    check_for_duplicate_ids(all_nodes)
-    nodes_by_id = {n["id"]: n for n in all_nodes if n.get("id")}
+    all_nodes, nodes_by_id = node_store.load_all_nodes_checked()
 
     matches = [n for n in all_nodes if n["slug"] == slug]
     if not matches:
@@ -631,9 +643,12 @@ def build_single_for_dev(slug: str):
     out_path = build_node(matches[0], nodes_by_id, published_only=True)
 
     # Also refresh homepage + disclaimer page so their links work while
-    # previewing locally. Homepage only ever lists real 'published' Nodes,
-    # even in dev preview of a draft.
-    published = [n for n in all_nodes if n["publishing"]["status"] == "published"]
+    # previewing locally. Homepage only ever lists real 'published',
+    # available Nodes, even when previewing an unrelated draft.
+    published = [
+        n for n in all_nodes
+        if n["publishing"]["status"] == "published" and n["youtube"].get("availability") != "unavailable"
+    ]
     build_homepage(published)
     build_disclaimer_page()
 
