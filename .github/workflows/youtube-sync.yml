@@ -1,0 +1,115 @@
+name: YouTube Sync
+
+# Manual trigger only — there is deliberately no `on: push` or `on:
+# schedule` here. Combined with using the default GITHUB_TOKEN for the
+# commit below (GitHub Actions never re-triggers workflows from commits
+# made with the default token), this makes an infinite loop structurally
+# impossible — no extra "skip ci" logic is required for that reason alone,
+# though we still tag the commit message with [skip ci] as a harmless,
+# zero-cost extra safeguard in case a push trigger is ever added later.
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Sync one Node by slug, or every Node"
+        required: true
+        type: choice
+        options:
+          - single
+          - all
+      node_slug:
+        description: "Node slug to sync (only used when mode = single)"
+        required: false
+        type: string
+
+# Required so this workflow is allowed to commit and push back to the
+# repo — many repos default the Actions token to read-only.
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python (matches the repo's .python-version)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Validate node_slug is provided when mode is "single"
+        if: ${{ inputs.mode == 'single' }}
+        run: |
+          if [ -z "${{ inputs.node_slug }}" ]; then
+            echo "::error::mode is 'single' but node_slug was not provided."
+            exit 1
+          fi
+
+      # continue-on-error is deliberate here: a technical sync failure for
+      # one Node must not prevent OTHER, already-successfully-synced Nodes
+      # from being built and committed. We check the real outcome of this
+      # step later, after build/commit, and fail the whole run then — so
+      # nothing is silently swallowed, but nothing real gets lost either.
+      - name: Sync one Node
+        if: ${{ inputs.mode == 'single' }}
+        id: sync_single
+        continue-on-error: true
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        run: python youtube_sync.py --node "${{ inputs.node_slug }}"
+
+      - name: Sync all Nodes
+        if: ${{ inputs.mode == 'all' }}
+        id: sync_all
+        continue-on-error: true
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        run: python youtube_sync.py --all
+
+      # No continue-on-error here, unlike the sync steps above: a build
+      # failure means a genuine system error (invalid JSON, a missing
+      # required field, etc.) — see build.py's own validation — and the
+      # run should stop here rather than commit anything in that case.
+      # build.py never contacts YouTube; it only reads local Node data.
+      - name: Build the site from local Node data
+        run: python build.py --all
+
+      - name: Configure git identity for the commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # Scoped deliberately to nodes/*.json only — never a broad `git add -A`
+      # — so nothing else (e.g. the __pycache__ folder Python creates while
+      # running, or anything under dist/, which is already in .gitignore)
+      # can ever accidentally get committed. The *.json pattern (rather than
+      # the whole nodes/ folder) also excludes the extremely unlikely case
+      # of a stray nodes/*.json.tmp file left behind by an interrupted
+      # write — write_node() writes safely via a temp-file-then-rename, so
+      # this is a defensive extra, not something expected to ever trigger.
+      - name: Stage only changed Node files
+        run: git add 'nodes/*.json'
+
+      - name: Commit and push, only if something actually changed
+        run: |
+          if git diff --cached --quiet; then
+            echo "No Node data changed — nothing to commit."
+          else
+            git commit -m "Sync YouTube metadata for Node(s) [skip ci]"
+            git push
+          fi
+
+      # Runs last, on purpose: any real, valid updates from a partially
+      # successful sync are already safely committed above by this point.
+      # This step's only job is to make sure the overall run still shows
+      # as failed so a technical sync problem never goes unnoticed.
+      - name: Fail the run if sync reported any failures
+        if: steps.sync_single.outcome == 'failure' || steps.sync_all.outcome == 'failure'
+        run: |
+          echo "::error::YouTube sync reported one or more failures — see the sync step's log above for details. Any Node(s) that DID sync successfully were still committed."
+          exit 1
