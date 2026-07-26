@@ -1,43 +1,38 @@
 {
   "schemaVersion": "1.0",
-
   "id": "node-0004",
   "slug": "period-on-appointment-day-cancel-or-come",
-
-  "relatedNodeIds": ["node-0002", "node-0003"],
-
+  "relatedNodeIds": [
+    "node-0002",
+    "node-0003"
+  ],
   "youtube": {
     "videoId": "p_SGlX8aue4",
     "url": "https://youtube.com/shorts/p_SGlX8aue4",
     "title": "מחזור ביום התור - לבטל או להגיע?",
-    "description": "מחזור ביום התור? לפני שאת מבטלת – כדאי לראות את הסרטון הזה.\n#מחזור\n#רפואתנשים\n#בדיקהגינקולוגית",
-    "publishedAt": null,
-    "thumbnailUrl": "https://img.youtube.com/vi/p_SGlX8aue4/hqdefault.jpg",
+    "description": "ברוב המקרים, אין צורך לבטל את התור רק בגלל שהתחיל המחזור.\nרוב הבדיקות הגינקולוגיות עדיין ניתנות לביצוע גם בזמן הווסת, כל עוד הדימום אינו כבד במיוחד. לעיתים הדימום יכול מעט להקשות על חלק מהבדיקות, אבל בדרך כלל הוא לא מונע אותן.\nכמובן שגם הנוחות שלך חשובה. אם את מרגישה שלא בנוח להיבדק בזמן הווסת, אפשר לשקול לדחות את התור. אבל אם מדובר בתור שקשה להשיג, או שיש סיבה רפואית שבגללה חשוב להיבדק, ברוב המקרים אין צורך לוותר עליו רק בגלל המחזור.\nאם מדובר בבדיקה חריגה או אם הדימום כבד מאוד, כדאי להתייעץ עם המרפאה מראש ולוודא מה מומלץ במקרה שלך.\nאבל בדרך כלל מחזור הוא לא סיבה לבטל תור.",
+    "publishedAt": "2026-06-02T19:10:05Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/p_SGlX8aue4/maxresdefault.jpg",
     "availability": "available",
-    "lastSyncedAt": null
+    "lastSyncedAt": "2026-07-26T21:59:44Z"
   },
-
   "classification": {
     "primaryCategoryId": "gynecological-exams",
     "additionalCategoryIds": [],
     "tagIds": [],
     "priority": "normal"
   },
-
   "clinical": {
     "lastReviewedAt": "2026-07-19",
     "status": "current"
   },
-
   "publishing": {
     "status": "published",
     "publishedAt": "2026-07-19"
   },
-
   "timestamps": {
     "createdAt": null,
     "updatedAt": null
   },
-
   "__notes": "YouTube metadata copied manually; YouTube publication date and sync fields remain null."
 }
