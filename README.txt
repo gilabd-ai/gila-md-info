@@ -22,7 +22,6 @@ HOW TO ADD A NEW KNOWLEDGE NODE
          - id                                a new unique id, e.g. "node-0002"
          - slug                              must exactly match the file name (no ".json")
          - youtube.videoId                   the YouTube video's ID
-         - youtube.url                       the full YouTube link
          - youtube.title                     becomes the page's title
          - youtube.description                becomes the page's body text
          - youtube.thumbnailUrl              the video's thumbnail image URL
