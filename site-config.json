@@ -2,24 +2,34 @@
   "siteName": "Gila MD",
   "language": "he",
   "direction": "rtl",
-
+  "baseUrl": "https://drgilamd.com",
+  "aboutUrl": "",
   "header": {
     "name": "ד\"ר גילה בן-דוד",
     "role": "מומחית ברפואת נשים",
     "logoImagePath": "assets/logo-base64.txt"
   },
-
   "socialLinks": [
-    { "platform": "YouTube",   "url": "https://youtube.com/@gila_md" },
-    { "platform": "Instagram", "url": "https://www.instagram.com/gila_md/" },
-    { "platform": "Facebook",  "url": "https://www.facebook.com/gila.david.7" },
-    { "platform": "TikTok",    "url": "https://www.tiktok.com/@gilabendavid" }
+    {
+      "platform": "YouTube",
+      "url": "https://youtube.com/@gila_md"
+    },
+    {
+      "platform": "Instagram",
+      "url": "https://www.instagram.com/gila_md/"
+    },
+    {
+      "platform": "Facebook",
+      "url": "https://www.facebook.com/gila.david.7"
+    },
+    {
+      "platform": "TikTok",
+      "url": "https://www.tiktok.com/@gilabendavid"
+    }
   ],
-
   "footer": {
     "note": "No footer exists in the current design yet. Reserved here so one can be added later without touching node data or the template's node-specific logic."
   },
-
   "disclaimer": {
     "icon": "⚠️",
     "shortText": "המידע באתר נועד למטרות מידע והעשרה בלבד, ואינו מהווה תחליף לייעוץ רפואי.",
@@ -27,17 +37,14 @@
     "linkText": "יש ללחוץ כאן",
     "linkUrl": "/medical-disclaimer/"
   },
-
   "moreLinkButton": {
     "text": "לעוד תוכן בנושא",
     "url": "#"
   },
-
   "homeNavBar": {
     "text": "לדף הבית",
     "url": "/"
   },
-
   "homepage": {
     "pageTitle": "ד\"ר גילה בן-דוד | ספריית ידע",
     "eyebrow": "ספריית הידע של ד\"ר גילה בן-דוד",
@@ -46,7 +53,6 @@
     "listLabel": "נושאים בספרייה",
     "emptyStateText": "בקרוב יתווספו כאן נושאים חדשים."
   },
-
   "medicalDisclaimerPage": {
     "pageTitle": "הבהרה רפואית | ד\"ר גילה בן-דוד",
     "title": "הבהרה רפואית",
@@ -63,12 +69,10 @@
       "הבהרה זו עשויה להתעדכן מעת לעת."
     ]
   },
-
   "endOfVideoButtons": {
     "replay": "▶ Replay",
     "close": "✕ Close"
   },
-
   "uiLabels": {
     "readMore": "קראו עוד",
     "showLess": "הצגת פחות",

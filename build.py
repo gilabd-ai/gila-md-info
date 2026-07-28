@@ -83,6 +83,7 @@ import json
 import re
 import sys
 from pathlib import Path
+from typing import Optional
 
 import node_store
 
@@ -296,6 +297,318 @@ def make_snippet(text: str, max_chars: int = 160) -> str:
     return text[:max_chars].rstrip() + "…"
 
 
+# ──────────────────────────────────────────────────────────────────
+# Search Foundations — SEO metadata & structured data
+# ──────────────────────────────────────────────────────────────────
+# Generates all SEO / AI-discoverability output (meta tags, Open Graph,
+# Twitter Card, JSON-LD, robots.txt, sitemap.xml) entirely from data
+# that already exists on Nodes and in site-config.json. No new per-Node
+# manual field is ever required for any of this.
+#
+# site-config.json gains two OPTIONAL, site-wide values:
+#   "baseUrl"  — the absolute production domain, e.g. "https://drgilamd.com"
+#   "aboutUrl" — the absolute URL of a future About/physician-profile page
+# Every function below treats a missing/empty value as "not configured
+# yet" and OMITS only the specific output that depends on it — never a
+# blank, relative, or placeholder URL. The moment a real value is added
+# to site-config.json, every affected page picks it up automatically on
+# the next build, with no other code or Node file change needed.
+
+META_DESCRIPTION_MAX_CHARS = 155  # standard, widely-used meta description display length
+OG_LOCALE_MAP = {"he": "he_IL"}   # extend here if additional site languages are ever added
+
+
+def _has_value(value) -> bool:
+    """True for a real, non-empty configured string. False for None / "" / whitespace-only."""
+    return bool(value and str(value).strip())
+
+
+def generate_meta_description(full_description: str, max_chars: int = META_DESCRIPTION_MAX_CHARS) -> str:
+    """
+    Deterministic, offline (no AI, no network) helper that turns a
+    Node's full, human-written youtube.description into a short,
+    single-line string reused identically for <meta name="description">,
+    og:description, and twitter:description. The full original
+    description is never modified anywhere on the page itself — this
+    only ever produces a short COPY for metadata tags.
+
+    Documented truncation rule, applied in this exact order:
+      1. Split the text into lines.
+      2. Drop trailing lines that are ENTIRELY hashtag content (one or
+         more "#word" tokens and nothing else), working backward from
+         the end, until a line with real sentence content is reached.
+         Hashtags inline within a real sentence are left untouched —
+         only a trailing hashtag block is removed.
+      3. Join the remaining lines with a single space (metadata tags are
+         flat single-line text; this doesn't affect the real, multi-line
+         description shown in the page body, which stays untouched).
+      4. Collapse all whitespace runs to single spaces; trim the ends.
+      5. If the result already fits within max_chars, return it as-is —
+         no truncation, no ellipsis added.
+      6. Otherwise, look for the last sentence-ending punctuation
+         (. ! or ?) at or before max_chars. If that cut point keeps at
+         least 60% of max_chars, cut there (a clean, complete sentence).
+      7. Otherwise, cut at the last whitespace at or before max_chars
+         (never mid-word), and append a single "…" character.
+    """
+    if not full_description:
+        return ""
+
+    lines = full_description.split("\n")
+    hashtag_line_re = re.compile(r"^(\s*#\S+\s*)+$")
+    while lines and hashtag_line_re.match(lines[-1]):
+        lines.pop()
+
+    flat = re.sub(r"\s+", " ", " ".join(lines)).strip()
+
+    if len(flat) <= max_chars:
+        return flat
+
+    window = flat[:max_chars]
+
+    last_sentence_end = max(window.rfind("."), window.rfind("!"), window.rfind("?"))
+    if last_sentence_end >= max_chars * 0.6:
+        return window[:last_sentence_end + 1].strip()
+
+    last_space = window.rfind(" ")
+    if last_space == -1:
+        return window.rstrip() + "…"
+    return window[:last_space].rstrip() + "…"
+
+
+def _canonical_url(site_config: dict, path: str) -> str:
+    """
+    Absolute canonical URL for `path` (e.g. "/nodes/some-slug/") built
+    from site_config["baseUrl"]. Callers must check _has_value(baseUrl)
+    first — this assumes it's already known to be present.
+    """
+    return site_config["baseUrl"].rstrip("/") + path
+
+
+def render_seo_meta_tags(*, page_title: str, description: str, path: str,
+                          image_url: str, site_config: dict,
+                          og_type: str = "website") -> str:
+    """
+    The combined block of <meta name="description">, the canonical
+    <link>, the robots <meta>, Open Graph tags, and Twitter Card tags
+    for ONE page — used identically for Node pages, the homepage, and
+    the disclaimer page (each just supplies different title/description/
+    path/image). No meta keywords tag is ever generated.
+
+    Canonical and og:url are OMITTED (not emitted blank/relative) when
+    site_config["baseUrl"] isn't configured yet. Every other tag here
+    needs no site-wide URL and is always emitted.
+    """
+    base_url = site_config.get("baseUrl", "")
+    site_name = site_config.get("siteName", "")
+    language = site_config.get("language", "he")
+    og_locale = OG_LOCALE_MAP.get(language, language)
+
+    lines = [
+        f'<meta name="description" content="{html.escape(description, quote=True)}">',
+        '<meta name="robots" content="index, follow">',
+    ]
+
+    og_url = None
+    if _has_value(base_url):
+        canonical = _canonical_url(site_config, path)
+        lines.append(f'<link rel="canonical" href="{html.escape(canonical, quote=True)}">')
+        og_url = canonical
+
+    lines.append(f'<meta property="og:title" content="{html.escape(page_title, quote=True)}">')
+    lines.append(f'<meta property="og:description" content="{html.escape(description, quote=True)}">')
+    if _has_value(image_url):
+        lines.append(f'<meta property="og:image" content="{html.escape(image_url, quote=True)}">')
+    if og_url:
+        lines.append(f'<meta property="og:url" content="{html.escape(og_url, quote=True)}">')
+    lines.append(f'<meta property="og:type" content="{og_type}">')
+    lines.append(f'<meta property="og:locale" content="{og_locale}">')
+    if _has_value(site_name):
+        lines.append(f'<meta property="og:site_name" content="{html.escape(site_name, quote=True)}">')
+
+    twitter_card = "summary_large_image" if _has_value(image_url) else "summary"
+    lines.append(f'<meta name="twitter:card" content="{twitter_card}">')
+    lines.append(f'<meta name="twitter:title" content="{html.escape(page_title, quote=True)}">')
+    lines.append(f'<meta name="twitter:description" content="{html.escape(description, quote=True)}">')
+    if _has_value(image_url):
+        lines.append(f'<meta name="twitter:image" content="{html.escape(image_url, quote=True)}">')
+
+    return "\n".join(lines)
+
+
+def build_physician_identity(site_config: dict) -> dict:
+    """
+    The one, shared, site-wide identity for the site's physician, built
+    entirely from site-config.json. Used as author/reviewer on every
+    Node's JSON-LD. Never duplicated into any Node file.
+
+    Uses ["Physician", "Person"] (multi-typed): schema.org's "Physician"
+    type is technically defined as a kind of MedicalOrganization (it can
+    represent "a doctor's office"), not a Person — using it alone would
+    make person-specific properties like jobTitle technically invalid
+    for it. Adding "Person" as a second type is the standard, documented
+    way to correctly represent one individual doctor while still
+    satisfying the "Physician" typing.
+
+    Only ever includes real, already-public data — name/role from
+    site-config, the real social links already listed site-wide, and a
+    url/@id ONLY when aboutUrl is configured. Never includes
+    medicalSpecialty, hasCredential, hospitalAffiliation, or any claim
+    that isn't genuinely stored data.
+    """
+    header = site_config["header"]
+    identity: dict = {
+        "@type": ["Physician", "Person"],
+        "name": header["name"],
+    }
+    if _has_value(header.get("role")):
+        identity["jobTitle"] = header["role"]
+
+    social_links = [s["url"] for s in site_config.get("socialLinks", []) if _has_value(s.get("url"))]
+    if social_links:
+        identity["sameAs"] = social_links
+
+    about_url = site_config.get("aboutUrl", "")
+    if _has_value(about_url):
+        identity["@id"] = about_url
+        identity["url"] = about_url
+
+    return identity
+
+
+def build_website_identity(site_config: dict) -> dict:
+    """
+    Site-wide WebSite JSON-LD entity for the homepage. Deliberately
+    WebSite, not Organization — this is a personal professional
+    website, not a registered organization. url is included only when
+    baseUrl is configured.
+    """
+    identity: dict = {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": site_config.get("siteName", ""),
+        "publisher": build_physician_identity(site_config),
+    }
+    base_url = site_config.get("baseUrl", "")
+    if _has_value(base_url):
+        identity["url"] = base_url
+    return identity
+
+
+def build_video_object_jsonld(node: dict, site_config: dict, thumbnail_url: str = "") -> dict:
+    """
+    VideoObject JSON-LD for one Node, generated entirely from its
+    youtube.* fields. `thumbnail_url` should be the SAME already-
+    resolved thumbnail (real stored value, or the videoId-derived
+    fallback used elsewhere on the page) the caller is using for the
+    visible page and for og:image/twitter:image — kept consistent
+    rather than independently re-deriving it here.
+    """
+    yt = node["youtube"]
+    video_id = yt["videoId"]
+    obj: dict = {
+        "@type": "VideoObject",
+        "name": yt["title"],
+        "description": yt["description"],
+        "embedUrl": f"https://www.youtube.com/embed/{video_id}",
+        "contentUrl": f"https://www.youtube.com/watch?v={video_id}",
+    }
+    if _has_value(thumbnail_url):
+        obj["thumbnailUrl"] = thumbnail_url
+    if _has_value(yt.get("publishedAt")):
+        obj["uploadDate"] = yt["publishedAt"]
+    return obj
+
+
+def build_node_jsonld(node: dict, site_config: dict, thumbnail_url: str = "") -> dict:
+    """
+    MedicalWebPage JSON-LD for one Node page, containing its
+    VideoObject. Uses only real, stored data — never invents dates,
+    credentials, specialties, affiliations, or medical claims.
+    """
+    page: dict = {
+        "@context": "https://schema.org",
+        "@type": "MedicalWebPage",
+        "name": node["youtube"]["title"],
+        "inLanguage": site_config.get("language", "he"),
+        "mainEntity": build_video_object_jsonld(node, site_config, thumbnail_url),
+        "author": build_physician_identity(site_config),
+        "reviewedBy": build_physician_identity(site_config),
+    }
+
+    base_url = site_config.get("baseUrl", "")
+    if _has_value(base_url):
+        page["url"] = _canonical_url(site_config, f'/nodes/{node["slug"]}/')
+
+    published_at = node.get("publishing", {}).get("publishedAt")
+    if _has_value(published_at):
+        page["datePublished"] = published_at
+
+    last_reviewed = node.get("clinical", {}).get("lastReviewedAt")
+    if _has_value(last_reviewed):
+        page["lastReviewed"] = last_reviewed
+
+    return page
+
+
+def render_jsonld_script(data: dict) -> str:
+    """Serialize a JSON-LD dict into a <script> tag — Hebrew text intact, deterministic key order."""
+    body = json.dumps(data, ensure_ascii=False, indent=2)
+    return f'<script type="application/ld+json">\n{body}\n</script>'
+
+
+def render_robots_txt(site_config: dict) -> str:
+    """
+    Standard robots.txt: allow normal crawling of the public site for
+    all crawlers (no speculative per-crawler rules). References
+    sitemap.xml only when baseUrl is configured — a relative sitemap
+    reference would be invalid. Unpublished/unavailable Node pages need
+    no explicit disallow rule here: they are simply never built at all
+    (see build_all_published), so there is no URL to ever accidentally
+    expose in the first place.
+    """
+    lines = ["User-agent: *", "Allow: /"]
+    base_url = site_config.get("baseUrl", "")
+    if _has_value(base_url):
+        lines.append("")
+        lines.append(f"Sitemap: {base_url.rstrip('/')}/sitemap.xml")
+    return "\n".join(lines) + "\n"
+
+
+def render_sitemap_xml(paths: list[str], site_config: dict) -> Optional[str]:
+    """
+    Standard sitemap.xml built from the exact list of page paths
+    actually built this run (see build_all_published — this is always
+    called with the real, final set: homepage, disclaimer page, and
+    every published+available Node actually built, nothing more).
+
+    No <lastmod> is emitted for any entry: there is currently no field
+    that reliably represents "this page's content last meaningfully
+    changed" — youtube.lastSyncedAt only means "we checked", and
+    publishing.publishedAt only means "first went live", not "last
+    updated". <lastmod> is optional in the sitemap protocol; omitting
+    it is more accurate than publishing a misleading date.
+
+    Returns None (generate nothing) if baseUrl isn't configured yet — a
+    sitemap of relative or blank URLs would be invalid.
+    """
+    base_url = site_config.get("baseUrl", "")
+    if not _has_value(base_url):
+        return None
+
+    base = base_url.rstrip("/")
+    entries = "\n".join(
+        f"  <url>\n    <loc>{html.escape(base + path, quote=True)}</loc>\n  </url>"
+        for path in paths
+    )
+    return (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        f"{entries}\n"
+        "</urlset>\n"
+    )
+
+
 def render_related_section(related_nodes: list[dict], site_config: dict) -> str:
     """
     Pure rendering: takes an already-selected list of real Node records
@@ -353,8 +666,20 @@ def render_node_html(node: dict, template: str, site_config: dict,
 
     related_nodes = select_related_nodes(node, nodes_by_id, published_only=published_only)
 
+    seo_description = generate_meta_description(node["youtube"]["description"])
+    seo_meta_tags = render_seo_meta_tags(
+        page_title=node["youtube"]["title"],
+        description=seo_description,
+        path=f'/nodes/{node["slug"]}/',
+        image_url=thumbnail_url,
+        site_config=site_config,
+    )
+    jsonld_script = render_jsonld_script(build_node_jsonld(node, site_config, thumbnail_url))
+
     tokens = {
         "{{PAGE_TITLE}}": page_title,
+        "{{SEO_META_TAGS}}": seo_meta_tags,
+        "{{JSONLD_SCRIPT}}": jsonld_script,
         "{{SITE_LOGO_BASE64}}": logo_base64,
         "{{SITE_HEADER_NAME}}": site_config["header"]["name"],
         "{{SITE_HEADER_ROLE}}": site_config["header"]["role"],
@@ -451,8 +776,20 @@ def build_homepage(published_nodes: list[dict]) -> Path:
     else:
         list_html = f'  <div class="empty-state">{homepage_cfg["emptyStateText"]}</div>'
 
+    seo_description = generate_meta_description(homepage_cfg["intro"])
+    seo_meta_tags = render_seo_meta_tags(
+        page_title=homepage_cfg["title"],
+        description=seo_description,
+        path="/",
+        image_url="",
+        site_config=site_config,
+    )
+    jsonld_script = render_jsonld_script(build_website_identity(site_config))
+
     tokens = {
         "{{PAGE_TITLE}}": homepage_cfg["pageTitle"],
+        "{{SEO_META_TAGS}}": seo_meta_tags,
+        "{{JSONLD_SCRIPT}}": jsonld_script,
         "{{SITE_LOGO_BASE64}}": logo_base64,
         "{{SITE_HEADER_NAME}}": site_config["header"]["name"],
         "{{SITE_HEADER_ROLE}}": site_config["header"]["role"],
@@ -501,8 +838,24 @@ def build_disclaimer_page() -> Path:
 
     paragraphs_html = "\n".join(f"    <p>{p}</p>" for p in disclaimer_cfg["paragraphs"])
 
+    # Use the disclaimer's own first paragraph as the source text for the
+    # short meta description -- it's real, on-page content, same principle
+    # as using youtube.description for Node pages. No JSON-LD here: this
+    # page isn't a MedicalWebPage or VideoObject, and inventing a page
+    # type for it just to have some structured data would be inaccurate.
+    seo_description = generate_meta_description(disclaimer_cfg["paragraphs"][0])
+    seo_meta_tags = render_seo_meta_tags(
+        page_title=disclaimer_cfg["title"],
+        description=seo_description,
+        path="/medical-disclaimer/",
+        image_url="",
+        site_config=site_config,
+    )
+
     tokens = {
         "{{PAGE_TITLE}}": disclaimer_cfg["pageTitle"],
+        "{{SEO_META_TAGS}}": seo_meta_tags,
+        "{{JSONLD_SCRIPT}}": "",
         "{{SITE_LOGO_BASE64}}": logo_base64,
         "{{SITE_HEADER_NAME}}": site_config["header"]["name"],
         "{{SITE_HEADER_ROLE}}": site_config["header"]["role"],
@@ -592,6 +945,18 @@ def build_all_published():
     built_paths = [build_node(n, nodes_by_id, published_only=True) for n in buildable]
     build_homepage(buildable)
     build_disclaimer_page()
+
+    site_config = json.loads((BASE_DIR / "site-config.json").read_text(encoding="utf-8"))
+    (DIST_DIR / "robots.txt").write_text(render_robots_txt(site_config), encoding="utf-8")
+    print("Built robots.txt")
+
+    built_page_paths = ["/", "/medical-disclaimer/"] + [f"/nodes/{n['slug']}/" for n in buildable]
+    sitemap_xml = render_sitemap_xml(built_page_paths, site_config)
+    if sitemap_xml is not None:
+        (DIST_DIR / "sitemap.xml").write_text(sitemap_xml, encoding="utf-8")
+        print(f"Built sitemap.xml ({len(built_page_paths)} URLs)")
+    else:
+        print("Skipped sitemap.xml — site-config.json 'baseUrl' is not configured yet.")
 
     print(f"Built {len(buildable)} published Node(s).")
     if not_published:
