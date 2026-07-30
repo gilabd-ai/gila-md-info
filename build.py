@@ -5,9 +5,12 @@ Knowledge Node build system.
 Reads the shared template.html + site-config.json (global site data) +
 Node data records (nodes/*.json, one file per node, Node Schema v1.0),
 and produces static HTML files — no server, no database, no framework.
-Each Node's optional "relatedNodeIds" field (up to 3 other Node ids)
-drives its "Related Knowledge" section — see select_related_nodes()
-and render_related_section() below.
+Each Node's "Related Knowledge" section is computed automatically at
+build time from its classification (shared categories/tags) and
+priority — see select_related_nodes() and render_related_section()
+below. A small browser-side script in template.html then reorders/
+subsets that same ranked list per-visitor using localStorage, without
+ever re-ranking it — see template.html's inline <script> block.
 
 This module is deliberately written as importable functions (not just a
 CLI script), so a future Node-creation interface can call build_node()
@@ -56,7 +59,11 @@ ADDING A FUTURE NODE (until a real creation interface exists)
 ──────────────────────────────────────────────────────────────────────
     1. Create nodes/{new-slug}.json following Node Schema v1.0
        (copy an existing node file as a starting point).
-    2. Optionally set "relatedNodeIds" to up to 3 existing Node ids.
+    2. Set classification.primaryCategoryIds / primaryTagIds /
+       secondaryTagIds using only IDs already present in
+       data/categories-and-tags.json, and set a top-level priority
+       (0-3). Related Knowledge is then computed automatically — there
+       is no manual related-Node field to fill in.
     3. Run: python3 build.py --all
     4. Upload the contents of dist/ to GitHub as usual.
     No HTML editing required, ever.
@@ -90,11 +97,16 @@ import node_store
 BASE_DIR = Path(__file__).parent
 DIST_DIR = BASE_DIR / "dist"
 
-MAX_RELATED_CARDS = 3
+MAX_RELATED_CARDS = 3          # how many cards are ever displayed on a page
+MAX_RELATED_CANDIDATES = 10    # how many ranked candidates are computed/exposed to the browser
+
+# Recommendation-priority bonus added to a candidate's relatedness score.
+# Priority 0 ("never recommend") is excluded before scoring — never looked up here.
+PRIORITY_BONUS = {1: 100, 2: 50, 3: 0}
 
 
 # ──────────────────────────────────────────────────────────────────
-# Publication & Related-data validation
+# Publication & Classification validation
 # ──────────────────────────────────────────────────────────────────
 # Node loading, duplicate-slug/id checks, and the id lookup all now
 # live in node_store.py (shared with youtube_sync.py). This file only
@@ -124,13 +136,6 @@ def validate_for_publication(node: dict) -> list[str]:
     if not yt.get("description"):
         errors.append("youtube.description is missing or empty")
 
-    classification = node.get("classification", {})
-    primary_category = classification.get("primaryCategoryId")
-    if primary_category is None or primary_category == "unassigned":
-        errors.append("classification.primaryCategoryId must be set to a real category (currently null/'unassigned')")
-    if classification.get("priority") not in ("high", "normal", "low"):
-        errors.append("classification.priority must be 'high', 'normal', or 'low' (currently missing/invalid)")
-
     clinical = node.get("clinical", {})
     if not clinical.get("lastReviewedAt"):
         errors.append("clinical.lastReviewedAt is missing")
@@ -147,79 +152,95 @@ def validate_for_publication(node: dict) -> list[str]:
     return errors
 
 
-def validate_related_node_ids(node: dict, nodes_by_id: dict[str, dict],
-                               enforce_published_targets: bool) -> list[str]:
+def load_categories_and_tags() -> dict:
     """
-    Validates the optional "relatedNodeIds" field on a single Node.
-    Returns a list of human-readable problems; empty list means valid.
-    Kept as its own function (mirrors validate_for_publication) so it can
-    be called independently and doesn't entangle Related-specific rules
-    with the unrelated publication-readiness checks above.
+    Loads data/categories-and-tags.json — the single canonical registry of
+    approved category/tag IDs. Returns just the two id sets, which is all
+    validation and scoring ever need; no code anywhere else is allowed to
+    invent or guess an id that isn't present here.
+    """
+    path = BASE_DIR / "data" / "categories-and-tags.json"
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return {
+        "categoryIds": set(data["categories"]),
+        "tagIds": set(data["tags"]),
+    }
 
-    enforce_published_targets=True is used for the production build: a
-    published Node that points at a Node which is not itself published
-    is treated as a build error (manual Related data is meant to be
-    exact, not silently drop a card with no explanation).
+
+# classification/priority fields that no longer exist as of the automatic
+# Related Knowledge upgrade — kept as their own list so a Node file that
+# still has old data fails with a clear, specific message instead of
+# being silently ignored.
+_DEPRECATED_TOP_LEVEL_FIELDS = ["relatedNodeIds"]
+_DEPRECATED_CLASSIFICATION_FIELDS = ["primaryCategoryId", "additionalCategoryIds", "tagIds", "priority"]
+
+
+def validate_classification_and_priority(node: dict, registry: dict) -> list[str]:
+    """
+    Validates a single Node's "classification" object and top-level
+    "priority" field. Returns a list of human-readable problems; empty
+    list means valid. Kept as its own function (mirrors
+    validate_for_publication) so it can be called independently and is
+    the one source of truth for this data's validity — mirrors the role
+    validate_related_node_ids() used to play for the now-removed manual
+    Related Knowledge field.
     """
     errors = []
     slug = node.get("slug", "?")
     source = node.get("_sourceFile", "?")
-    own_id = node.get("id")
+    classification = node.get("classification", {})
 
-    related_ids = node.get("relatedNodeIds", [])
-    if related_ids is None:
-        related_ids = []
+    for field in _DEPRECATED_TOP_LEVEL_FIELDS:
+        if field in node:
+            errors.append(f"[{slug} — {source}] deprecated field '{field}' must be removed")
+    for field in _DEPRECATED_CLASSIFICATION_FIELDS:
+        if field in classification:
+            errors.append(f"[{slug} — {source}] deprecated field 'classification.{field}' must be removed")
 
-    if not isinstance(related_ids, list):
-        return [
-            f"[{slug} — {source}] relatedNodeIds must be an array "
-            f"(got {type(related_ids).__name__})"
-        ]
+    def _check_id_array(field_name: str, allowed_ids: set) -> set:
+        value = classification.get(field_name, [])
+        if not isinstance(value, list):
+            errors.append(
+                f"[{slug} — {source}] classification.{field_name} must be an array "
+                f"(got {type(value).__name__})"
+            )
+            return set()
+        seen: set[str] = set()
+        for v in value:
+            if not isinstance(v, str):
+                errors.append(
+                    f"[{slug} — {source}] classification.{field_name} contains a non-string value: {v!r}"
+                )
+                continue
+            if v in seen:
+                errors.append(
+                    f"[{slug} — {source}] classification.{field_name} contains duplicate id '{v}'"
+                )
+                continue
+            seen.add(v)
+            if v not in allowed_ids:
+                errors.append(
+                    f"[{slug} — {source}] classification.{field_name} references unknown id '{v}' "
+                    "(not present in data/categories-and-tags.json)"
+                )
+        return seen
 
-    if len(related_ids) > MAX_RELATED_CARDS:
+    category_ids = _check_id_array("primaryCategoryIds", registry["categoryIds"])
+    primary_tag_ids = _check_id_array("primaryTagIds", registry["tagIds"])
+    secondary_tag_ids = _check_id_array("secondaryTagIds", registry["tagIds"])
+
+    for tag in primary_tag_ids & secondary_tag_ids:
         errors.append(
-            f"[{slug} — {source}] relatedNodeIds has {len(related_ids)} entries, "
-            f"maximum allowed is {MAX_RELATED_CARDS}"
+            f"[{slug} — {source}] tag '{tag}' cannot be listed in both "
+            "primaryTagIds and secondaryTagIds on the same Node"
         )
 
-    seen_ids: set[str] = set()
-    for related_id in related_ids:
-        if not isinstance(related_id, str):
-            errors.append(
-                f"[{slug} — {source}] relatedNodeIds contains a non-string value: {related_id!r}"
-            )
-            continue
+    if node.get("publishing", {}).get("status") == "published" and not category_ids:
+        errors.append(f"[{slug} — {source}] classification.primaryCategoryIds must contain at least one category")
 
-        if related_id == own_id:
-            errors.append(
-                f"[{slug} — {source}] relatedNodeIds contains id '{related_id}', "
-                "which is the Node's own id (a Node cannot be related to itself)"
-            )
-            continue
-
-        if related_id in seen_ids:
-            errors.append(
-                f"[{slug} — {source}] relatedNodeIds contains duplicate id '{related_id}'"
-            )
-            continue
-        seen_ids.add(related_id)
-
-        target = nodes_by_id.get(related_id)
-        if target is None:
-            errors.append(
-                f"[{slug} — {source}] relatedNodeIds contains id '{related_id}', "
-                "which does not match any existing Node"
-            )
-            continue
-
-        if enforce_published_targets and target.get("publishing", {}).get("status") != "published":
-            target_status = target.get("publishing", {}).get("status", "?")
-            errors.append(
-                f"[{slug} — {source}] relatedNodeIds contains id '{related_id}' "
-                f"(Node '{target.get('slug', '?')}'), which is not published "
-                f"(status: {target_status}) — a published Node cannot list an "
-                "unpublished Node as Related"
-            )
+    priority = node.get("priority")
+    if priority not in (0, 1, 2, 3):
+        errors.append(f"[{slug} — {source}] priority must be 0, 1, 2, or 3 (currently missing/invalid: {priority!r})")
 
     return errors
 
@@ -227,57 +248,78 @@ def validate_related_node_ids(node: dict, nodes_by_id: dict[str, dict],
 def select_related_nodes(node: dict, nodes_by_id: dict[str, dict],
                           published_only: bool) -> list[dict]:
     """
-    Returns an ordered list of the actual related Node records for
-    `node`, ready to be rendered.
+    Returns up to MAX_RELATED_CANDIDATES real Node records related to
+    `node`, ranked best-first. This is the ONLY place that decides WHICH
+    Nodes are related and in what order — render_related_section() only
+    ever renders an already-decided list, and the browser-side variety
+    script in template.html only ever reorders/subsets this exact ranked
+    list, never re-ranks it.
 
-    This is the ONLY place that decides *which* Nodes are related.
-    It currently just reads the manual "relatedNodeIds" field, in the
-    order the ids appear. This function is the intended seam for
-    swapping in automatic category/tag-based selection later — its
-    signature and return type (a list of real Node dicts) would not
-    need to change, so render_related_section() would not need to
-    change either.
+    A candidate is eligible only if ALL of:
+      - it is not `node` itself
+      - it is published, when published_only=True (and never a draft,
+        checked unconditionally regardless of published_only)
+      - its video is not confirmed unavailable (no dead links — it
+        isn't being built as a page at all, see build_all_published())
+      - its own priority is not 0 ("never recommend")
+      - it shares at least one primaryCategoryId, primaryTagId, or
+        secondaryTagId with `node` — priority alone never qualifies it
 
-    Rules enforced here (defensively — real invalid data should already
-    have failed validate_related_node_ids() at production build time,
-    but this function must never crash or misrender for a preview of a
-    draft Node with imperfect/absent data):
-      - never include the Node itself
-      - only Nodes that actually exist
-      - only published Nodes, when published_only=True
-      - never a Node whose video is confirmed unavailable (it isn't
-        being built as a page at all — see build_all_published() — so
-        linking to it would be a dead link)
-      - never the same Node twice
-      - capped at MAX_RELATED_CARDS, in declaration order
+    Score = tag_score + 50 * |shared primaryCategoryIds| + priority
+    bonus. tag_score: for every tag id shared between `node` and the
+    candidate (present in either's primary or secondary set), +100 if
+    it's primary on both sides, otherwise +50 (covers primary<->secondary
+    and secondary<->secondary matches — the topic is still genuinely
+    shared, just not a primary topic for both Nodes).
+
+    Ties preserve nodes_by_id's iteration order (the order
+    node_store.load_all_nodes() loaded files in — alphabetical by slug):
+    Python's sort is documented-stable even with reverse=True, so this
+    is a deterministic, well-defined "existing order", not an arbitrary
+    tie-break.
     """
     own_id = node.get("id")
-    related_ids = node.get("relatedNodeIds") or []
-    if not isinstance(related_ids, list):
-        return []
+    classification = node.get("classification", {})
+    own_categories = set(classification.get("primaryCategoryIds") or [])
+    own_primary_tags = set(classification.get("primaryTagIds") or [])
+    own_secondary_tags = set(classification.get("secondaryTagIds") or [])
+    own_all_tags = own_primary_tags | own_secondary_tags
 
-    selected: list[dict] = []
-    seen_ids: set[str] = set()
-    for related_id in related_ids:
-        if not isinstance(related_id, str):
+    scored: list[tuple[int, dict]] = []
+    for candidate in nodes_by_id.values():
+        if candidate.get("id") == own_id:
             continue
-        if related_id == own_id:
+        if candidate.get("publishing", {}).get("status") == "draft":
             continue
-        if related_id in seen_ids:
+        if published_only and candidate.get("publishing", {}).get("status") != "published":
             continue
-        target = nodes_by_id.get(related_id)
-        if target is None:
+        if candidate.get("youtube", {}).get("availability") == "unavailable":
             continue
-        if published_only and target.get("publishing", {}).get("status") != "published":
+        priority = candidate.get("priority")
+        if priority == 0:
             continue
-        if target.get("youtube", {}).get("availability") == "unavailable":
-            continue
-        seen_ids.add(related_id)
-        selected.append(target)
-        if len(selected) == MAX_RELATED_CARDS:
-            break
 
-    return selected
+        cand_classification = candidate.get("classification", {})
+        cand_categories = set(cand_classification.get("primaryCategoryIds") or [])
+        cand_primary_tags = set(cand_classification.get("primaryTagIds") or [])
+        cand_secondary_tags = set(cand_classification.get("secondaryTagIds") or [])
+        cand_all_tags = cand_primary_tags | cand_secondary_tags
+
+        shared_categories = own_categories & cand_categories
+        shared_tags = own_all_tags & cand_all_tags
+
+        if not (shared_categories or shared_tags):
+            continue
+
+        tag_score = sum(
+            100 if (tag in own_primary_tags and tag in cand_primary_tags) else 50
+            for tag in shared_tags
+        )
+        score = tag_score + 50 * len(shared_categories) + PRIORITY_BONUS.get(priority, 0)
+        scored.append((score, candidate))
+
+    scored.sort(key=lambda pair: pair[0], reverse=True)
+    return [c for _, c in scored[:MAX_RELATED_CANDIDATES]]
 
 
 # ──────────────────────────────────────────────────────────────────
@@ -632,8 +674,9 @@ def render_related_section(related_nodes: list[dict], site_config: dict) -> str:
         title = html.escape(related_node["youtube"]["title"], quote=True)
         description = html.escape(make_snippet(related_node["youtube"]["description"]), quote=True)
         href = f'/nodes/{html.escape(related_node["slug"], quote=True)}/'
+        node_id = html.escape(related_node["id"], quote=True)
         cards_html.append(
-            f'      <a class="related-card" href="{href}">\n'
+            f'      <a class="related-card" href="{href}" data-node-id="{node_id}">\n'
             f'        <div class="related-title">{title}</div>\n'
             f'        <div class="related-desc">{description}</div>\n'
             '      </a>'
@@ -651,6 +694,21 @@ def render_related_section(related_nodes: list[dict], site_config: dict) -> str:
     )
 
 
+def _json_for_inline_script(data) -> str:
+    """
+    Serialize `data` as JSON safe to embed inside a literal <script>...
+    </script> block as a JS array/object literal (not a text/json
+    island like the JSON-LD script, which never needs this). Escapes any
+    "</" sequence so a value containing e.g. "</script>" can never
+    prematurely close the tag, and escapes U+2028/U+2029 (valid in JSON
+    strings, invalid unescaped inside a JS string literal).
+    """
+    raw = json.dumps(data, ensure_ascii=False)
+    raw = raw.replace("</", "<\\/")
+    raw = raw.replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")
+    return raw
+
+
 def render_node_html(node: dict, template: str, site_config: dict,
                       nodes_by_id: dict[str, dict], published_only: bool) -> str:
     social = {s["platform"]: s["url"] for s in site_config["socialLinks"]}
@@ -664,7 +722,17 @@ def render_node_html(node: dict, template: str, site_config: dict,
     page_title = f'{node["youtube"]["title"]} | {site_config["header"]["name"]}'
     logo_base64 = (BASE_DIR / site_config["header"]["logoImagePath"]).read_text(encoding="utf-8").strip()
 
-    related_nodes = select_related_nodes(node, nodes_by_id, published_only=published_only)
+    related_candidates = select_related_nodes(node, nodes_by_id, published_only=published_only)
+    default_related_cards = related_candidates[:MAX_RELATED_CARDS]
+    related_candidates_payload = [
+        {
+            "id": c["id"],
+            "slug": c["slug"],
+            "title": c["youtube"]["title"],
+            "desc": make_snippet(c["youtube"]["description"]),
+        }
+        for c in related_candidates
+    ]
 
     seo_description = generate_meta_description(node["youtube"]["description"])
     seo_meta_tags = render_seo_meta_tags(
@@ -687,6 +755,7 @@ def render_node_html(node: dict, template: str, site_config: dict,
         "{{SOCIAL_INSTAGRAM_URL}}": social["Instagram"],
         "{{SOCIAL_FACEBOOK_URL}}": social["Facebook"],
         "{{SOCIAL_TIKTOK_URL}}": social["TikTok"],
+        "{{NODE_ID}}": node["id"],
         "{{NODE_TITLE}}": node["youtube"]["title"],
         "{{NODE_DESCRIPTION}}": node["youtube"]["description"],
         "{{VIDEO_ID}}": video_id,
@@ -708,7 +777,8 @@ def render_node_html(node: dict, template: str, site_config: dict,
         "{{DISCLAIMER_LINK_URL}}": site_config["disclaimer"]["linkUrl"],
         "{{END_REPLAY_LABEL}}": site_config["endOfVideoButtons"]["replay"],
         "{{END_CLOSE_LABEL}}": site_config["endOfVideoButtons"]["close"],
-        "{{RELATED_SECTION_HTML}}": render_related_section(related_nodes, site_config),
+        "{{RELATED_SECTION_HTML}}": render_related_section(default_related_cards, site_config),
+        "{{RELATED_CANDIDATES_JSON}}": _json_for_inline_script(related_candidates_payload),
     }
 
     output = template
@@ -885,29 +955,6 @@ def build_disclaimer_page() -> Path:
     return out_path
 
 
-def _find_related_omissions(node: dict, nodes_by_id: dict[str, dict]) -> list[dict]:
-    """
-    For a Node that IS being built, figure out which of its declared
-    relatedNodeIds got silently dropped specifically because the target
-    is unavailable (as opposed to not existing / not published, which
-    would already have failed validate_related_node_ids() before this
-    is ever called). Used only to build the warning report — never
-    affects what actually gets rendered.
-    """
-    related_ids = node.get("relatedNodeIds") or []
-    if not isinstance(related_ids, list):
-        return []
-    selected_ids = {n["id"] for n in select_related_nodes(node, nodes_by_id, published_only=True)}
-    omissions = []
-    for related_id in related_ids:
-        if not isinstance(related_id, str) or related_id == node.get("id") or related_id in selected_ids:
-            continue
-        target = nodes_by_id.get(related_id)
-        if target is not None and target.get("youtube", {}).get("availability") == "unavailable":
-            omissions.append(target)
-    return omissions
-
-
 def build_all_published():
     """
     Build every Node whose publishing.status == 'published' AND whose
@@ -931,11 +978,13 @@ def build_all_published():
     # (Skipped/unavailable Nodes are NOT validated for publication —
     # they're not being published right now, so incomplete data on a
     # Node nobody is building yet must not fail the whole build.)
+    registry = load_categories_and_tags()
+
     all_errors = []
     for node in buildable:
         all_errors.extend(validate_for_publication(node))
     for node in buildable:
-        all_errors.extend(validate_related_node_ids(node, nodes_by_id, enforce_published_targets=True))
+        all_errors.extend(validate_classification_and_priority(node, registry))
     if all_errors:
         raise SystemExit(
             "BUILD FAILED — the following Node(s) are marked 'published' but are "
@@ -967,28 +1016,14 @@ def build_all_published():
     print("Built Medical Disclaimer page: dist/medical-disclaimer/index.html")
 
     # Warning report — never fails the build, just surfaces what to fix.
-    related_omissions = {n["id"]: _find_related_omissions(n, nodes_by_id) for n in buildable}
-    related_omissions = {k: v for k, v in related_omissions.items() if v}
-
-    if unavailable_skipped or related_omissions:
-        print("\nWARNINGS:")
     if unavailable_skipped:
+        print("\nWARNINGS:")
         print(f"  {len(unavailable_skipped)} published Node(s) SKIPPED — video unavailable:")
         for n in unavailable_skipped:
             print(
                 f"    - nodeId={n['id']} slug={n['slug']} videoId={n['youtube']['videoId']} "
                 f"title=\"{n['youtube']['title']}\" reason=\"YouTube video unavailable\""
             )
-    if related_omissions:
-        print("  Related cards omitted because the target Node's video is unavailable:")
-        for node_id, omitted_targets in related_omissions.items():
-            source_node = nodes_by_id[node_id]
-            for target in omitted_targets:
-                print(
-                    f"    - on '{source_node['slug']}': omitted related card for "
-                    f"nodeId={target['id']} slug={target['slug']} videoId={target['youtube']['videoId']} "
-                    f"title=\"{target['youtube']['title']}\""
-                )
 
     return built_paths
 

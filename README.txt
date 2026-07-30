@@ -25,21 +25,39 @@ HOW TO ADD A NEW KNOWLEDGE NODE
          - youtube.title                     becomes the page's title
          - youtube.description                becomes the page's body text
          - youtube.thumbnailUrl              the video's thumbnail image URL
-         - classification.primaryCategoryId  a real topic, not "unassigned"
-         - classification.priority           "high", "normal", or "low"
+         - classification.primaryCategoryIds  1+ category ids, copied
+                                              exactly from
+                                              data/categories-and-tags.json
+                                              — never invent a new one
+         - classification.primaryTagIds      0+ tag ids (the Node's main
+                                              topics), same registry file
+         - classification.secondaryTagIds    0+ tag ids (related but not
+                                              central topics), same file —
+                                              a tag can't be in both
+                                              primaryTagIds and
+                                              secondaryTagIds
+         - priority                          0 (never recommend this Node
+                                              elsewhere), 1 (highest), 2
+                                              (normal), or 3 (lowest) — a
+                                              top-level field, a sibling of
+                                              "classification", not inside
+                                              it. No default: the build
+                                              fails if it's missing.
          - clinical.lastReviewedAt           the date it was medically reviewed
          - clinical.status                   "current", "needs-review", or "outdated"
          - publishing.status                 "draft" while working on it,
                                               "published" when it's ready to go live
          - publishing.publishedAt            the date it should go live
-         - relatedNodeIds (optional)         a list of up to 3 other Nodes'
-                                              "id" values, to show as
-                                              "Related Knowledge" cards on
-                                              this Node's page — see
-                                              section 1 ("RELATED
-                                              KNOWLEDGE") below
     4. Save the file. That's the only file you ever need to touch to
-       add a new Node — no HTML editing, ever.
+       add a new Node — no HTML editing, ever. "Related Knowledge" cards
+       are computed automatically at build time from classification and
+       priority — see section 1 ("RELATED KNOWLEDGE") below. There is no
+       manual related-Node field to fill in.
+
+    If you need a category or tag that doesn't exist yet in
+    data/categories-and-tags.json, add it there first (it's a simple,
+    flat list of English ids) — never write an id into a Node file that
+    isn't already present in that registry.
 
 WHICH FILE IS EDITED FOR CONTENT CHANGES
     - To change what's ON a Node's page (title, text, video): edit that
@@ -118,35 +136,62 @@ site-config.json
     full Medical Disclaimer page content.
 
 RELATED KNOWLEDGE
-    Each Node's JSON file may include an optional top-level
-    "relatedNodeIds" array of up to 3 other Nodes' "id" values, e.g.:
+    Fully automatic, computed at build time from each Node's
+    classification and priority — there is no manual field to fill in.
+    Two stages:
 
-        "relatedNodeIds": ["node-0003", "node-0004"]
-
-    - Selection is currently manual: a person lists the ids by hand,
-      in the order they should appear. There is no automatic
-      selection yet — matching by category, tag, or a combination of
-      both is a planned future step, but is NOT implemented now.
-    - Only the id is stored. Title, description, and link are always
-      read at build time from the real target Node's own JSON file.
+    1. BUILD-TIME RANKING (same for every visitor, deterministic):
+       select_related_nodes() in build.py scores every other eligible
+       Node against the current one and returns up to 10 candidates,
+       best first. A candidate must share at least one category, primary
+       tag, or secondary tag with the current Node (a Node's own
+       priority never makes it eligible on its own) and must not be a
+       draft, priority 0 ("never recommend"), or have an unavailable
+       video. Scoring: a shared tag scores +100 if it's a primary topic
+       on both Nodes, or +50 if it's primary on only one side or
+       secondary on both (the topic is still genuinely shared, just not
+       central to both); a shared category scores +50; the candidate's
+       own priority adds +100 (priority 1), +50 (priority 2), or +0
+       (priority 3). Ties keep the Nodes' existing load order. The
+       page's default 3 cards (and its full ranked-candidate list, for
+       the browser script below) come directly from this ranking — see
+       render_related_section() for the pure-rendering half, which
+       never changes for this reason.
+    2. BROWSER-SIDE VARIETY (per-visitor, client-only): a small inline
+       script in template.html remembers the last 5 Node ids a visitor
+       looked at, in the browser's own localStorage (never sent to any
+       server, never anything but ids). It then prefers unvisited
+       candidates from the SAME ranked list above, falling back to
+       already-visited ones only if fewer than 3 unvisited candidates
+       exist. It only ever reorders/subsets the build-time ranking — it
+       never re-ranks anything, and relevance always wins over variety.
+       If JavaScript is off, or localStorage is unavailable/blocked/
+       throws/holds malformed data, the visitor just sees the default
+       top-3 that's already in the HTML — the section is never empty or
+       broken.
     - A Node's page can show zero, one, two, or three Related cards,
-      depending on how many valid ids are listed — the section (and
-      its heading) is omitted entirely when there are zero.
-    - The build validates this field for every published Node: it
-      must be an array of existing, distinct, non-self ids, max 3
-      entries, and every referenced Node must itself be published.
-      Invalid data fails the build with a clear error naming the
-      Node's slug, its source file, and the offending id.
-    - See select_related_nodes() and render_related_section() in
-      build.py — selection and rendering are separate functions, so
-      the manual selection can later be replaced by automatic
-      selection without touching the rendering code, the Node page
-      template, or the approved card design.
+      depending on how many eligible candidates exist — the section
+      (and its heading) is omitted entirely when there are zero.
+    - The build validates every published Node's classification via
+      validate_classification_and_priority() in build.py: every
+      category/tag id must exist in data/categories-and-tags.json, no
+      duplicates, no tag in both primaryTagIds and secondaryTagIds, a
+      published Node must have at least one category, and priority must
+      be exactly 0/1/2/3. Invalid data fails the build with a clear
+      error naming the Node's slug, its source file, and the problem.
 
 nodes/  (folder)
     One JSON file per Knowledge Node, following Node Schema v1.0. Each
     file holds everything specific to that one Node, including its
-    optional "relatedNodeIds" (see "RELATED KNOWLEDGE" above).
+    classification (see "RELATED KNOWLEDGE" above for how that drives
+    the Related Knowledge cards automatically).
+
+data/categories-and-tags.json
+    The single canonical registry of every approved category and tag id
+    — a flat list of plain English ids, e.g. "gynecological-exams",
+    "pelvic-exam". This is a controlled pool: a Node's classification
+    may only use ids that are already in this file. New categories/tags
+    are added here first, by a person, before any Node can use them.
 
 assets/  (folder)
     Shared binary/text assets referenced by the templates — currently
@@ -296,11 +341,10 @@ STILL OPEN / needs a decision before real production publishing:
       The homepage currently lists Nodes directly instead. This is a
       deliberate scope decision, not an oversight (see build.py,
       build_homepage()).
-    - Related Knowledge now uses real Node data via the manual
-      "relatedNodeIds" field (see section 1, "RELATED KNOWLEDGE").
-      Automatic selection by category/tag matching is planned but has
-      NOT been built yet — only the manual-selection version exists
-      so far.
+    - Related Knowledge is now fully automatic — build-time ranking by
+      shared category/tag/priority, plus a browser-side variety layer
+      (see section 1, "RELATED KNOWLEDGE"). There is no manual
+      relatedNodeIds field anymore.
     - No Node-creation interface yet — adding a Node still means
       creating a nodes/{slug}.json file by hand (see section 0).
     - No automatic YouTube import yet — Node data (title, description,

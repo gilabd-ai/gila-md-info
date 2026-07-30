@@ -2,10 +2,6 @@
   "schemaVersion": "1.0",
   "id": "node-0003",
   "slug": "knees-to-chest-gynecological-exam",
-  "relatedNodeIds": [
-    "node-0002",
-    "node-0004"
-  ],
   "youtube": {
     "videoId": "x7PXWlZIKH0",
     "title": "טיפים לבדיקה גינקולוגית קלה יותר חלק2- הרמת הברכיים לחזה",
@@ -16,11 +12,11 @@
     "lastSyncedAt": "2026-07-26T22:39:14Z"
   },
   "classification": {
-    "primaryCategoryId": "gynecological-exams",
-    "additionalCategoryIds": [],
-    "tagIds": [],
-    "priority": "normal"
+    "primaryCategoryIds": ["gynecological-exams"],
+    "primaryTagIds": ["pelvic-exam", "cervix-visualization"],
+    "secondaryTagIds": ["patient-comfort"]
   },
+  "priority": 1,
   "clinical": {
     "lastReviewedAt": "2026-07-19",
     "status": "current"

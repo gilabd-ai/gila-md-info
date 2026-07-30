@@ -32,7 +32,6 @@ Fields on every Node (`nodes/{slug}.json`):
 schemaVersion
 id                          "node-000N"
 slug                        must exactly match the filename (no ".json")
-relatedNodeIds              optional array, max 3 ids, MANUAL selection today
 youtube:
   videoId                   the single source of truth for the video —
                              there is intentionally NO "url" field; a watch
@@ -46,10 +45,18 @@ youtube:
   availability               "available" | "unavailable" — see Sync section
   lastSyncedAt                ISO-8601 UTC, set by Sync
 classification:
-  primaryCategoryId          a real category, or "unassigned" — never invent one
-  additionalCategoryIds
-  tagIds
-  priority                   "high" | "normal" | "low"
+  primaryCategoryIds         array of category ids — every id must exist in
+                             data/categories-and-tags.json; never invent one
+  primaryTagIds               array of tag ids — the Node's main topics,
+                             same registry, same never-invent rule
+  secondaryTagIds             array of tag ids — related but not central
+                             topics; a tag can't be in both primaryTagIds
+                             and secondaryTagIds on the same Node
+priority                     0 | 1 | 2 | 3 — a TOP-LEVEL field, a sibling
+                             of "classification", not nested inside it.
+                             0 = never recommend this Node elsewhere,
+                             1 = highest, 2 = normal, 3 = lowest. No
+                             default: the build fails if it's missing.
 clinical:
   lastReviewedAt              real date only — never invent
   status                      "current" | "needs-review" | "outdated"
@@ -63,22 +70,27 @@ timestamps:
 
 ```
 
+## `data/categories-and-tags.json` — the classification registry
+
+The single canonical, controlled pool of approved category/tag ids — a flat JSON object with `categories` and `tags` arrays of plain English ids (no display labels; those don't exist yet, see "Known, deliberate gaps" below). A Node's `classification.primaryCategoryIds` / `primaryTagIds` / `secondaryTagIds` may only use ids already present here. Claude must never add an id to a Node's classification, or to this registry itself, that wasn't explicitly given by the user — this is exactly the kind of editorial/classification data the hard rule at the top of this file covers.
+
 ## `template.html` and the `{{TOKEN}}` system
 
-`build.py` does plain string-replacement of `{{TOKEN}}` placeholders in `template.html` (and `homepage-template.html`, `disclaimer-template.html`). These tokens never move and are always safe to rely on: `{{PAGE_TITLE}}`, `{{SEO_META_TAGS}}`, `{{JSONLD_SCRIPT}}`, `{{SITE_LOGO_BASE64}}`, `{{NODE_TITLE}}`, `{{NODE_DESCRIPTION}}`, `{{VIDEO_ID}}`, `{{RELATED_SECTION_HTML}}`, and others for header/nav/disclaimer text pulled from `site-config.json`.
+`build.py` does plain string-replacement of `{{TOKEN}}` placeholders in `template.html` (and `homepage-template.html`, `disclaimer-template.html`). These tokens never move and are always safe to rely on: `{{PAGE_TITLE}}`, `{{SEO_META_TAGS}}`, `{{JSONLD_SCRIPT}}`, `{{SITE_LOGO_BASE64}}`, `{{NODE_TITLE}}`, `{{NODE_DESCRIPTION}}`, `{{VIDEO_ID}}`, `{{NODE_ID}}`, `{{RELATED_SECTION_HTML}}`, `{{RELATED_CANDIDATES_JSON}}`, and others for header/nav/disclaimer text pulled from `site-config.json`.
 
 ## `site-config.json` — global, site-wide data
 
 `siteName`, `language`, `direction`, `baseUrl` (`"https://drgilamd.com"`), `aboutUrl` (currently `""` — the About page doesn't exist yet), `header` (doctor's name/role), `socialLinks`, `uiLabels`, homepage/disclaimer content blocks, `moreLinkButton`, `homeNavBar`.
 
-## Related Knowledge
+## Related Knowledge — automatic, two-stage
 
-Manual today, via each Node's `relatedNodeIds`. Deliberately split into two functions so automatic (category/tag-based) selection can replace only one of them later without touching rendering or the approved card design:
+Fully automatic since the classification-registry upgrade — there is no manual `relatedNodeIds` field anymore. Deliberately split into two independent stages so each can change without touching the other:
 
-* `select_related_nodes()` — decides WHICH Nodes are related. This is the only seam that should ever change for automatic selection.
-* `render_related_section()` — pure rendering of an already-selected list. Contains no selection logic and should never need to change for this reason.
+**Stage 1 — build-time ranking (deterministic, same for every visitor).** `select_related_nodes()` in `build.py` scores every other eligible Node and returns up to 10 candidates, best first — this is the only seam that decides WHICH Nodes are related. A candidate must be published (in production), not a draft, not `priority == 0`, not `youtube.availability == "unavailable"` (its page isn't built at all, so linking to it would be a dead link), never self, and must share at least one `primaryCategoryId`, `primaryTagId`, or `secondaryTagId` with the source Node — priority alone never qualifies a candidate. Scoring: a shared tag scores **+100** if it's primary on both Nodes, else **+50** (covers primary↔secondary and secondary↔secondary — the topic is still genuinely shared, just not central to both); a shared category scores **+50**; the candidate's own priority adds a bonus (**+100** for priority 1, **+50** for priority 2, **+0** for priority 3). Ties preserve the Nodes' existing load order (alphabetical by slug). The page's default 3 rendered cards, and the full ranked list exposed to the browser via `{{RELATED_CANDIDATES_JSON}}`, both come directly from this one ranking.
 
-Rules enforced: never self, only Nodes that exist, only published Nodes in production, never a Node whose `youtube.availability == "unavailable"` (its page isn't built at all, so linking to it would be a dead link), no duplicates, capped at 3. `validate_related_node_ids()` fails the whole build loudly if a published Node's `relatedNodeIds` is malformed, self-referential, duplicated, over 3 entries, or points at a non-existent or non-published Node — manual Related data is meant to be exact, not silently wrong.
+**Stage 2 — browser-side variety (per-visitor, client-only).** A small inline script in `template.html` keeps the last 5 visited Node ids in `localStorage` (ids only — never sent to a server, never used for anything else) and prefers unvisited candidates from the exact same Stage-1 ranked list, falling back to already-visited ones only when fewer than 3 unvisited candidates exist. It only ever reorders/subsets Stage 1's output — it never re-ranks anything, so relevance always wins over variety. Any failure here (JS disabled, `localStorage` unavailable/blocked/throwing, malformed stored data) silently falls back to the default top-3 already rendered in the HTML — the section can never end up empty or broken because of this layer.
+
+`render_related_section()` remains pure rendering of an already-selected list — it contains no selection logic and doesn't need to change for either stage. `validate_classification_and_priority()` fails the whole build loudly if a published Node's classification references an unknown category/tag id, has a duplicate, has a tag in both `primaryTagIds` and `secondaryTagIds`, is missing a category, has a deprecated field (`relatedNodeIds`, old-shape `classification.primaryCategoryId`/`additionalCategoryIds`/`tagIds`/`priority`), or has an invalid/missing top-level `priority`.
 
 ## Build behavior
 
@@ -90,7 +102,7 @@ Rules enforced: never self, only Nodes that exist, only published Nodes in produ
 2. YouTube responds, video NOT in the results (confirmed missing) → `availability = "unavailable"`. Previously stored title/description/ publishedAt/thumbnailUrl are preserved, not erased. `lastSyncedAt` still updates (a real check happened).
 3. The request itself fails technically (network, timeout, bad/quota'd API key, malformed response) → nothing is touched at all, not even `availability`. Reported as a sync failure, never confused with "video is actually gone."
 
-Sync only ever touches those 6 `youtube.*` fields — never `videoId`, `classification`, `tags`, `priority`, `relatedNodeIds`, `publishing`, `clinical`, or anything else. `sync_one_node()` is the primary, canonical engine; `sync_all_nodes()` batches up to 50 video IDs per YouTube API request but funnels every single Node through that exact same underlying logic — the two are guaranteed to produce identical results for the same Node, verified by direct testing, not just by design intent. If an entire batch request fails technically, every Node in that batch is left completely untouched.
+Sync only ever touches those 6 `youtube.*` fields — never `videoId`, `classification`, top-level `priority`, `publishing`, `clinical`, or anything else. `sync_one_node()` is the primary, canonical engine; `sync_all_nodes()` batches up to 50 video IDs per YouTube API request but funnels every single Node through that exact same underlying logic — the two are guaranteed to produce identical results for the same Node, verified by direct testing, not just by design intent. If an entire batch request fails technically, every Node in that batch is left completely untouched.
 
 ## Search Foundations (SEO / AI discoverability)
 
@@ -109,7 +121,7 @@ Never add a `[skip ci]` (or similarly worded) tag to any commit message in this 
 
 ## Known, deliberate gaps — do not "fix" without asking first
 
-* No category/tag display-name lookup exists yet (`classification.primaryCategoryId` is just a slug, e.g. `"gynecological-exams"`) — this blocks things like `BreadcrumbList` until a real "Knowledge Centers" data model is designed.
+* No category/tag display-name lookup exists yet (`data/categories-and-tags.json` is just plain ids, e.g. `"gynecological-exams"`, no Hebrew labels) — this blocks things like `BreadcrumbList` until a real "Knowledge Centers" data model is designed.
 * No About page exists yet — `aboutUrl` is intentionally empty in `site-config.json` until it's built.
 * `homepage-template.html` is scheduled for a full future rebuild from scratch — avoid investing further design polish into its current version.
 

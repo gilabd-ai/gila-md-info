@@ -28,7 +28,7 @@ NODES_DIR = BASE_DIR / "nodes"
 # publishing status. This catches malformed/incomplete Node data (e.g. a
 # hand-edited JSON file missing a top-level section entirely) with a clear
 # error, instead of an obscure KeyError deep inside rendering or syncing.
-_REQUIRED_NODE_SECTIONS = ["id", "slug", "youtube", "classification", "clinical", "publishing"]
+_REQUIRED_NODE_SECTIONS = ["id", "slug", "youtube", "classification", "priority", "clinical", "publishing"]
 
 # The internal bookkeeping key load_all_nodes() adds to every Node dict
 # (its own source file path, for clear error messages). It must never be
