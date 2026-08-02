@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0005",
+  "slug": "does-a-gynecological-exam-hurt",
+  "youtube": {
+    "videoId": "C1b1UhE2Jlw",
+    "title": "האם בדיקה גינקולוגית כואבת?",
+    "description": "הרבה נשים דוחות בדיקה גינקולוגית רק בגלל החשש שהיא תכאב.\nאך האם הבדיקה באמת כואבת?\nהאמת היא שאין תשובה אחת שמתאימה לכולן. יש נשים שכמעט לא מרגישות אי־נוחות, יש שמרגישות לחץ קל, ויש נשים שבאמת חוות כאב. אבל ברוב המקרים הבדיקה קצרה מאוד ונמשכת דקות בודדות.\nאחד הדברים שהכי עוזרים הוא לדעת למה לצפות. כשמבינים מה הולך לקרות, הגוף נוטה להיות רגוע יותר ופחות מכווץ, וגם הבדיקה עצמה בדרך כלל נעשית קלה יותר.\nאם את חוששת, חשוב להגיד את זה לרופאה או לרופא לפני שמתחילים. אפשר להסביר כל שלב, להתקדם בקצב שלך, ואם צריך – גם לעצור.\nאם הייתה לך בעבר בדיקה לא נעימה, זה לא אומר שכל בדיקה תהיה כזאת. לפעמים שינוי קטן בגישה, בתקשורת או בטכניקה יכול לעשות הבדל גדול.\nוהכי חשוב – אל תתני לפחד למנוע ממך להגיע לבדיקה שיכולה לשמור על הבריאות שלך. פעמים רבות, החשש שלפני הבדיקה גדול יותר מהבדיקה עצמה.",
+    "publishedAt": "2026-07-29T09:48:04Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/C1b1UhE2Jlw/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-08-02T13:55:09Z"
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "gynecological-exams"
+    ],
+    "primaryTagIds": [
+      "pelvic-exam",
+      "patient-comfort",
+      "exam-preparation"
+    ],
+    "secondaryTagIds": [
+      "speculum-exam",
+      "appointment-planning"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-08-02",
+    "status": "current"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-02"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
