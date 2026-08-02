@@ -46,7 +46,7 @@ youtube:
   lastSyncedAt                ISO-8601 UTC, set by Sync
 classification:
   primaryCategoryIds         array of category ids — every id must exist in
-                             data/categories-and-tags.json; never invent one
+                             data/code-categories-and-tags.json; never invent one
   primaryTagIds               array of tag ids — the Node's main topics,
                              same registry, same never-invent rule
   secondaryTagIds             array of tag ids — related but not central
@@ -70,9 +70,13 @@ timestamps:
 
 ```
 
-## `data/categories-and-tags.json` — the classification registry
+## `data/code-categories-and-tags.json` — the classification registry
 
 The single canonical, controlled pool of approved category/tag ids — a flat JSON object with `categories` and `tags` arrays of plain English ids (no display labels; those don't exist yet, see "Known, deliberate gaps" below). A Node's `classification.primaryCategoryIds` / `primaryTagIds` / `secondaryTagIds` may only use ids already present here. Claude must never add an id to a Node's classification, or to this registry itself, that wasn't explicitly given by the user — this is exactly the kind of editorial/classification data the hard rule at the top of this file covers.
+
+The registry is expected to grow over time, but only with the user's explicit approval each time — new categories/tags go into this file first, then Nodes may select those exact ids. Existing ids must never be silently renamed or removed, since that would break classification consistency and Related Knowledge matching for every Node already using that id.
+
+`docs/gila-categories-and-tags.html` is a generated, English-only, human-readable reference page (via `generate_categories_doc.py`) for the site owner to browse and copy exact ids from — it cross-validates against this registry at generation time so it can never disagree with it, and it is NOT a second source of truth, NOT part of the public site, and never copied into `dist/`.
 
 ## `template.html` and the `{{TOKEN}}` system
 
@@ -121,7 +125,7 @@ Never add a `[skip ci]` (or similarly worded) tag to any commit message in this 
 
 ## Known, deliberate gaps — do not "fix" without asking first
 
-* No category/tag display-name lookup exists yet (`data/categories-and-tags.json` is just plain ids, e.g. `"gynecological-exams"`, no Hebrew labels) — this blocks things like `BreadcrumbList` until a real "Knowledge Centers" data model is designed.
+* No category/tag display-name lookup exists yet for the *public site* (`data/code-categories-and-tags.json` is just plain ids, e.g. `"gynecological-exams"`, no Hebrew labels — the English-only `docs/gila-categories-and-tags.html` reference page is for the site owner only, not a public display-name system) — this blocks things like `BreadcrumbList` until a real "Knowledge Centers" data model is designed.
 * No About page exists yet — `aboutUrl` is intentionally empty in `site-config.json` until it's built.
 * `homepage-template.html` is scheduled for a full future rebuild from scratch — avoid investing further design polish into its current version.
 
