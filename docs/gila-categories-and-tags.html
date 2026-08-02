@@ -54,6 +54,8 @@
   }
   .category-block h2 { font-size: 15px; margin: 0 0 10px; }
   .category-block h2 code { font-size: 15px; }
+  .category-block.reserved { border-color: #c65f48; background: rgba(198,95,72,0.06); }
+  .reserved-warning { color: #c65f48; font-size: 12.5px; font-weight: 600; margin: -6px 0 10px; }
   .tag-list {
     list-style: none;
     margin: 0; padding: 0;
@@ -424,6 +426,14 @@
         <li class="tag-chip"><code>nutrition</code></li>
         <li class="tag-chip"><code>exercise</code></li>
         <li class="tag-chip"><code>mental-health</code></li>
+    </ul>
+  </section>
+
+  <section class="category-block reserved" data-search="template-node template-node">
+    <h2><code>template-node</code></h2>
+    <p class="reserved-warning">Reserved for the internal template Node only — never use on a real content Node.</p>
+    <ul class="tag-list">
+        <li class="tag-chip"><code>template-node</code></li>
     </ul>
   </section>
 

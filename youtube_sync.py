@@ -68,7 +68,7 @@ which matters once the Node library grows well beyond a handful.
 CLI USAGE
 ──────────────────────────────────────────────────────────────────────
 Sync one Node by slug (the everyday workflow):
-    python3 youtube_sync.py --node gynecological-exam-tip-move-forward
+    python3 youtube_sync.py --node template-node
 
 Sync every Node in the library:
     python3 youtube_sync.py --all

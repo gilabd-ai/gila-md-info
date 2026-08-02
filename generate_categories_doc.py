@@ -80,6 +80,12 @@ CATEGORY_TAG_GROUPS = [
     ("general-womens-health", ["healthy-lifestyle", "nutrition", "exercise", "mental-health"]),
 ]
 
+# Reserved for the internal template Node (nodes/template-node.json) only.
+# Never use this category/tag on a real content Node.
+RESERVED_CATEGORY_GROUPS = [
+    ("template-node", ["template-node"]),
+]
+
 
 def load_registry() -> dict:
     data = json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
@@ -97,40 +103,49 @@ def validate_groups(registry: dict) -> None:
     tag_ids = set(registry["tags"])
     errors = []
 
-    grouped_categories = [c for c, _ in CATEGORY_TAG_GROUPS]
+    all_groups = CATEGORY_TAG_GROUPS + RESERVED_CATEGORY_GROUPS
+    grouped_categories = [c for c, _ in all_groups]
     if len(grouped_categories) != len(set(grouped_categories)):
-        errors.append("CATEGORY_TAG_GROUPS lists the same category more than once")
+        errors.append("CATEGORY_TAG_GROUPS/RESERVED_CATEGORY_GROUPS lists the same category more than once")
     missing = category_ids - set(grouped_categories)
     extra = set(grouped_categories) - category_ids
     if missing:
-        errors.append(f"CATEGORY_TAG_GROUPS is missing registry categories: {sorted(missing)}")
+        errors.append(f"Registry categories missing from the grouping: {sorted(missing)}")
     if extra:
-        errors.append(f"CATEGORY_TAG_GROUPS references unknown category ids: {sorted(extra)}")
+        errors.append(f"Grouping references unknown category ids: {sorted(extra)}")
 
-    for category_id, group_tags in CATEGORY_TAG_GROUPS:
+    for category_id, group_tags in all_groups:
         for tag_id in group_tags:
             if tag_id not in tag_ids:
                 errors.append(f"Category '{category_id}' references unknown tag id '{tag_id}'")
 
     if errors:
-        raise SystemExit("FAILED — CATEGORY_TAG_GROUPS disagrees with the registry:\n" +
+        raise SystemExit("FAILED — category/tag grouping disagrees with the registry:\n" +
                           "\n".join(f"  - {e}" for e in errors))
 
 
+def render_category_section(category_id: str, group_tags: list, reserved: bool = False) -> str:
+    cat_esc = html.escape(category_id, quote=True)
+    tag_chips = "\n".join(
+        f'        <li class="tag-chip"><code>{html.escape(t, quote=True)}</code></li>'
+        for t in group_tags
+    )
+    extra_class = " reserved" if reserved else ""
+    warning = (
+        '\n    <p class="reserved-warning">Reserved for the internal template Node only — never use on a real content Node.</p>'
+        if reserved else ""
+    )
+    return (
+        f'  <section class="category-block{extra_class}" data-search="{cat_esc} {" ".join(html.escape(t) for t in group_tags)}">\n'
+        f'    <h2><code>{cat_esc}</code></h2>{warning}\n'
+        f'    <ul class="tag-list">\n{tag_chips}\n    </ul>\n'
+        '  </section>'
+    )
+
+
 def render_html(registry: dict) -> str:
-    sections = []
-    for category_id, group_tags in CATEGORY_TAG_GROUPS:
-        cat_esc = html.escape(category_id, quote=True)
-        tag_chips = "\n".join(
-            f'        <li class="tag-chip"><code>{html.escape(t, quote=True)}</code></li>'
-            for t in group_tags
-        )
-        sections.append(
-            f'  <section class="category-block" data-search="{cat_esc} {" ".join(html.escape(t) for t in group_tags)}">\n'
-            f'    <h2><code>{cat_esc}</code></h2>\n'
-            f'    <ul class="tag-list">\n{tag_chips}\n    </ul>\n'
-            '  </section>'
-        )
+    sections = [render_category_section(c, t) for c, t in CATEGORY_TAG_GROUPS]
+    sections += [render_category_section(c, t, reserved=True) for c, t in RESERVED_CATEGORY_GROUPS]
     sections_html = "\n\n".join(sections)
 
     return f"""<!DOCTYPE html>
@@ -189,6 +204,8 @@ def render_html(registry: dict) -> str:
   }}
   .category-block h2 {{ font-size: 15px; margin: 0 0 10px; }}
   .category-block h2 code {{ font-size: 15px; }}
+  .category-block.reserved {{ border-color: #c65f48; background: rgba(198,95,72,0.06); }}
+  .reserved-warning {{ color: #c65f48; font-size: 12.5px; font-weight: 600; margin: -6px 0 10px; }}
   .tag-list {{
     list-style: none;
     margin: 0; padding: 0;

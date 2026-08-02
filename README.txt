@@ -14,10 +14,14 @@ GitHub and hosted on Cloudflare Pages.
 
 HOW TO ADD A NEW KNOWLEDGE NODE
     1. Go into the nodes/ folder.
-    2. Copy the file nodes/gynecological-exam-tip-move-forward.json and
-       rename the copy — the new file name becomes the Node's slug/URL,
-       so use only English letters, numbers, and hyphens, e.g.
+    2. Copy the file nodes/template-node.json and rename the copy — the
+       new file name becomes the Node's slug/URL, so use only English
+       letters, numbers, and hyphens, e.g.
        nodes/how-to-prepare-for-an-ultrasound.json
+       (nodes/template-node.json itself is a permanently reserved,
+       unpublished Node that exists only to be copied — it uses the
+       reserved "template-node" category/tag and priority 0, and must
+       never be set to publishing.status "published".)
     3. Open the new file in a plain text editor and fill in:
          - id                                a new unique id, e.g. "node-0002"
          - slug                              must exactly match the file name (no ".json")
@@ -258,7 +262,7 @@ status (drafts can be previewed this way); also refreshes the homepage
 and disclaimer page so links work locally. Related cards in the
 preview only ever show targets that are themselves published, so the
 preview reflects what production would actually show:
-    python3 build.py --node gynecological-exam-tip-move-forward
+    python3 build.py --node template-node
 
 Output always goes to dist/:
     dist/index.html                           (homepage)

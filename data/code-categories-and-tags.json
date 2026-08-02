@@ -30,7 +30,8 @@
     "preventive-medicine",
     "common-myths",
     "medical-procedures",
-    "general-womens-health"
+    "general-womens-health",
+    "template-node"
   ],
   "tags": [
     "pelvic-exam",
@@ -178,6 +179,7 @@
     "exercise",
     "mental-health",
     "appointment-planning",
-    "menstruation"
+    "menstruation",
+    "template-node"
   ]
 }

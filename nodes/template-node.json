@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0001",
+  "slug": "template-node",
+  "youtube": {
+    "videoId": "ixOtOOGkcYY",
+    "title": "template node",
+    "description": "template node",
+    "publishedAt": "2026-08-02T12:47:52Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/ixOtOOGkcYY/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-08-02T13:18:58Z"
+  },
+  "classification": {
+    "primaryCategoryIds": ["template-node"],
+    "primaryTagIds": ["template-node"],
+    "secondaryTagIds": []
+  },
+  "priority": 0,
+  "clinical": {
+    "lastReviewedAt": "2026-08-02",
+    "status": "current"
+  },
+  "publishing": {
+    "status": "unpublished",
+    "publishedAt": null
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  },
+  "__notes": "This Node exists ONLY to serve as the copy-from-this template for creating new Nodes (see CLAUDE.md / README.txt). It must never be set to publishing.status = \"published\" — its classification/priority (template-node / template-node / 0) deliberately mark it as reserved and never-recommend, and its unpublished status means no page is ever built for it, so it can never be found on the live site."
+}

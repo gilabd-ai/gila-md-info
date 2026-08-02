@@ -22,7 +22,7 @@ Both `build.py` and `youtube_sync.py` have their own CLI entry points and are me
 
 ## Node Schema v1.0
 
-There is no separate schema/template file. The de facto template for creating a new Node is the real file `nodes/gynecological-exam-tip-move-forward.json` — copy it as the starting point for any new Node.
+There is no separate schema/template file. The de facto template for creating a new Node is the real file `nodes/template-node.json` — copy it as the starting point for any new Node. This file exists only to be copied: it uses a reserved category/tag (`template-node`), `priority: 0`, and `publishing.status: "unpublished"`, so it is never recommended, never built into a live page, and never found on the site — but it is otherwise a fully complete, schema-valid example (it passes every real production validation check). Never change its `publishing.status` to `"published"`.
 
 ⚠️ Whenever the Node schema changes (fields added, removed, or renamed), update that template Node AND `README.txt`'s manual Node-creation instructions in the same change. This has been forgotten before and caused real drift — treat it as a checklist item, not optional.
 
