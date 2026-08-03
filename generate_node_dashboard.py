@@ -44,12 +44,17 @@ MAIN_TABLE_COLUMNS = [
 ]
 
 
-def _is_template(node: dict) -> bool:
-    classification = node.get("classification", {})
-    return (
-        "template-node" in (classification.get("primaryCategoryIds") or [])
-        or "template-node" in (classification.get("primaryTagIds") or [])
-    )
+def _is_internal(node: dict, registry: dict) -> bool:
+    """
+    True iff every one of the Node's primaryCategoryIds is an internal
+    category (registry["internalCategoryIds"]) — registry-driven, not a
+    hardcoded "template-node" string check, so this correctly covers any
+    future internal category too, not just the one template Node.
+    """
+    category_ids = node.get("classification", {}).get("primaryCategoryIds") or []
+    if not category_ids:
+        return False
+    return set(category_ids) <= registry.get("internalCategoryIds", set())
 
 
 def _validation_status(node: dict, registry: dict) -> tuple[str, list[str]]:
@@ -116,7 +121,7 @@ def build_dashboard_rows(all_nodes: list[dict], nodes_by_id: dict[str, dict], re
             "last_synced": yt.get("lastSyncedAt") or "",
             "validation_status": status,
             "validation_issues": issues,
-            "is_template": _is_template(node),
+            "is_internal": _is_internal(node, registry),
             "own_exclusion_reason": own_exclusion_reason,
             "candidates": candidates,
         })
@@ -144,6 +149,12 @@ def render_candidates_section(row: dict) -> str:
         parts.append(
             '<p class="exclusion-note">This Node is never recommended elsewhere: '
             f'<strong>{html.escape(row["own_exclusion_reason"], quote=True)}</strong></p>'
+        )
+    if row["is_internal"]:
+        parts.append(
+            '<p class="exclusion-note">Internal category — excluded from sitemap.xml, marked '
+            '<strong>noindex</strong>, and excluded from public Topic navigation. Still built as a '
+            'normal, directly-accessible page.</p>'
         )
 
     candidates = row["candidates"]
@@ -185,12 +196,12 @@ def render_row(row: dict) -> str:
     ]).lower()
 
     status_badge = f'<span class="badge badge-{row["validation_status"].lower()}">{row["validation_status"]}</span>'
-    template_badge = ' <span class="badge badge-template">Template</span>' if row["is_template"] else ""
+    internal_badge = ' <span class="badge badge-internal">Internal Category</span>' if row["is_internal"] else ""
 
     cells = [
         _copy_code(row["id"]),
         _copy_code(row["slug"]),
-        html.escape(row["title"], quote=True) + template_badge,
+        html.escape(row["title"], quote=True) + internal_badge,
         html.escape(row["status"], quote=True),
         html.escape(row["availability"], quote=True) if row["availability"] else '<span class="muted">—</span>',
         str(row["priority"]) if row["priority"] is not None else '<span class="muted">—</span>',
@@ -210,7 +221,7 @@ def render_row(row: dict) -> str:
         f'data-status="{html.escape(row["status"], quote=True)}" '
         f'data-priority="{row["priority"]}" '
         f'data-availability="{html.escape(row["availability"] or "", quote=True)}" '
-        f'data-template="{"yes" if row["is_template"] else "no"}">'
+        f'data-internal="{"yes" if row["is_internal"] else "no"}">'
         f'{cells_html}</tr>'
     )
     details_row = (
@@ -320,7 +331,7 @@ def render_html(rows: list[dict]) -> str:
   .badge-ok {{ background: var(--ok); }}
   .badge-warning {{ background: var(--warning); }}
   .badge-error {{ background: var(--error); }}
-  .badge-template {{ background: #5c6b64; }}
+  .badge-internal {{ background: #5c6b64; }}
   details summary {{ cursor: pointer; font-weight: 600; color: var(--teal); }}
   .exclusion-note {{ font-size: 13px; color: var(--warning); }}
   .no-candidates {{ font-size: 13px; color: #8b968f; font-style: italic; }}
@@ -354,10 +365,10 @@ def render_html(rows: list[dict]) -> str:
     <option value="available">Available</option>
     <option value="unavailable">Unavailable</option>
   </select>
-  <select id="templateFilter">
-    <option value="">Template / Non-template</option>
-    <option value="yes">Template only</option>
-    <option value="no">Non-template only</option>
+  <select id="internalFilter">
+    <option value="">Internal / Public category</option>
+    <option value="yes">Internal only</option>
+    <option value="no">Public only</option>
   </select>
 </div>
 
@@ -376,7 +387,7 @@ def render_html(rows: list[dict]) -> str:
     const status = document.getElementById('statusFilter').value;
     const priority = document.getElementById('priorityFilter').value;
     const availability = document.getElementById('availabilityFilter').value;
-    const template = document.getElementById('templateFilter').value;
+    const internal = document.getElementById('internalFilter').value;
 
     document.querySelectorAll('tr.node-row').forEach(function(row){{
       const haystack = row.dataset.search || '';
@@ -385,7 +396,7 @@ def render_html(rows: list[dict]) -> str:
       if (status && row.dataset.status !== status) visible = false;
       if (priority && row.dataset.priority !== priority) visible = false;
       if (availability && row.dataset.availability !== availability) visible = false;
-      if (template && row.dataset.template !== template) visible = false;
+      if (internal && row.dataset.internal !== internal) visible = false;
 
       row.classList.toggle('hidden', !visible);
       const details = row.nextElementSibling;
@@ -399,7 +410,7 @@ def render_html(rows: list[dict]) -> str:
   document.getElementById('statusFilter').addEventListener('change', applyFilters);
   document.getElementById('priorityFilter').addEventListener('change', applyFilters);
   document.getElementById('availabilityFilter').addEventListener('change', applyFilters);
-  document.getElementById('templateFilter').addEventListener('change', applyFilters);
+  document.getElementById('internalFilter').addEventListener('change', applyFilters);
 
   document.querySelectorAll('code.copyable').forEach(function(el){{
     el.addEventListener('click', function(){{

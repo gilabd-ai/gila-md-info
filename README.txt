@@ -18,10 +18,14 @@ HOW TO ADD A NEW KNOWLEDGE NODE
        new file name becomes the Node's slug/URL, so use only English
        letters, numbers, and hyphens, e.g.
        nodes/how-to-prepare-for-an-ultrasound.json
-       (nodes/template-node.json itself is a permanently reserved,
-       unpublished Node that exists only to be copied — it uses the
-       reserved "template-node" category/tag and priority 0, and must
-       never be set to publishing.status "published".)
+       (nodes/template-node.json itself is a permanently reserved Node
+       that exists only to be copied. It IS published — it has a real,
+       directly-accessible page at /nodes/template-node/ — but its
+       classification uses the reserved "template-node" internal
+       category, which keeps it out of every public discovery path
+       (sitemap.xml, marked "noindex", excluded from Topic navigation).
+       Its priority 0 keeps it out of Related Knowledge too. Never
+       assign the "template-node" category/tag to a real content Node.)
     3. Open the new file in a plain text editor and fill in:
          - id                                a new unique id, e.g. "node-0002"
          - slug                              must exactly match the file name (no ".json")
@@ -200,6 +204,16 @@ data/code-categories-and-tags.json
     person, before any Node can use them. Existing ids must never be
     silently renamed; that would break classification consistency and
     Related Knowledge matching for every Node already using that id.
+
+    "internalCategoryIds" is a separate array within this same file
+    marking categories reserved for technical/editorial Nodes only —
+    currently just "template-node". A Node may use an internal
+    category, and it still gets a real, directly-accessible built page,
+    but it is automatically excluded from sitemap.xml, marked
+    "noindex", and excluded from public Topic navigation (see
+    _is_internal_only() in build.py). Internal categories are reserved
+    for technical or editorial Nodes only. They must never be used for
+    normal public medical content.
 
 docs/gila-categories-and-tags.html
     An internal, English-only, human-readable reference page listing

@@ -132,7 +132,7 @@ def render_category_section(category_id: str, group_tags: list, reserved: bool =
     )
     extra_class = " reserved" if reserved else ""
     warning = (
-        '\n    <p class="reserved-warning">Reserved for the internal template Node only — never use on a real content Node.</p>'
+        '\n    <p class="reserved-warning">Internal category (see "internalCategoryIds" in the registry) — reserved for technical/editorial Nodes only. Never use on a real public medical content Node. No Hebrew Topic label is required or shown for internal categories.</p>'
         if reserved else ""
     )
     return (

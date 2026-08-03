@@ -22,7 +22,7 @@ Both `build.py` and `youtube_sync.py` have their own CLI entry points and are me
 
 ## Node Schema v1.0
 
-There is no separate schema/template file. The de facto template for creating a new Node is the real file `nodes/template-node.json` — copy it as the starting point for any new Node. This file exists only to be copied: it uses a reserved category/tag (`template-node`), `priority: 0`, and `publishing.status: "unpublished"`, so it is never recommended, never built into a live page, and never found on the site — but it is otherwise a fully complete, schema-valid example (it passes every real production validation check). Never change its `publishing.status` to `"published"`.
+There is no separate schema/template file. The de facto template for creating a new Node is the real file `nodes/template-node.json` — copy it as the starting point for any new Node. This file exists only to be copied: it uses the reserved `template-node` internal category/tag and `priority: 0`. It IS published (`publishing.status: "published"`) — it has a real, directly-accessible page at `/nodes/template-node/`, since the site owner wants to be able to view it directly — but the internal category keeps it out of `sitemap.xml`, marks its page `noindex`, and excludes it from Topic navigation; priority 0 excludes it from Related Knowledge. See "Internal categories" below. Never assign the `template-node` category/tag to a real content Node.
 
 ⚠️ Whenever the Node schema changes (fields added, removed, or renamed), update that template Node AND `README.txt`'s manual Node-creation instructions in the same change. This has been forgotten before and caused real drift — treat it as a checklist item, not optional.
 
@@ -77,6 +77,10 @@ The single canonical, controlled pool of approved category/tag ids — a flat JS
 The registry is expected to grow over time, but only with the user's explicit approval each time — new categories/tags go into this file first, then Nodes may select those exact ids. Existing ids must never be silently renamed or removed, since that would break classification consistency and Related Knowledge matching for every Node already using that id.
 
 `docs/gila-categories-and-tags.html` is a generated, English-only, human-readable reference page (via `generate_categories_doc.py`) for the site owner to browse and copy exact ids from — it cross-validates against this registry at generation time so it can never disagree with it, and it is NOT a second source of truth, NOT part of the public site, and never copied into `dist/`.
+
+### Internal categories
+
+`internalCategoryIds` (a separate array in the same registry file, currently just `["template-node"]`) marks categories reserved for technical or editorial Nodes only — they must never be used for normal public medical content. A Node may use an internal category and still gets a real, directly-accessible built page (`publishing.status: "published"` works normally), but `_is_internal_only()` in `build.py` automatically excludes it from `sitemap.xml`, marks its page `<meta name="robots" content="noindex, follow">`, and (once the Topic system exists) excludes it from every Topic-navigation surface — this is one general mechanism, not template-Node-specific code. Internal categories are exempt from needing a Hebrew `categoryLabelsHe` entry, since they're never shown publicly.
 
 ## `docs/gila-node-dashboard.html` — internal editorial dashboard
 

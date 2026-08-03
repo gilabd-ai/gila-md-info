@@ -33,6 +33,9 @@
     "general-womens-health",
     "template-node"
   ],
+  "internalCategoryIds": [
+    "template-node"
+  ],
   "tags": [
     "pelvic-exam",
     "patient-comfort",

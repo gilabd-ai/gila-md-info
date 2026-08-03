@@ -22,12 +22,12 @@
     "status": "current"
   },
   "publishing": {
-    "status": "unpublished",
-    "publishedAt": null
+    "status": "published",
+    "publishedAt": "2026-08-03"
   },
   "timestamps": {
     "createdAt": null,
     "updatedAt": null
   },
-  "__notes": "This Node exists ONLY to serve as the copy-from-this template for creating new Nodes (see CLAUDE.md / README.txt). It must never be set to publishing.status = \"published\" — its classification/priority (template-node / template-node / 0) deliberately mark it as reserved and never-recommend, and its unpublished status means no page is ever built for it, so it can never be found on the live site."
+  "__notes": "This Node exists ONLY to serve as the copy-from-this template for creating new Nodes (see CLAUDE.md / README.txt). It is published (a real, directly-accessible page is built at /nodes/template-node/), but its classification uses the reserved 'template-node' internal category — see data/code-categories-and-tags.json 'internalCategoryIds' — which excludes it from sitemap.xml, marks its page 'noindex', and keeps it out of every public discovery path (homepage, Topic navigation). Its priority 0 additionally excludes it from Related Knowledge. Never assign the 'template-node' category/tag to a real content Node."
 }
