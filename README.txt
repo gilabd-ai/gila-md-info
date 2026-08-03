@@ -120,15 +120,31 @@ template.html
 
 homepage-template.html
     The shared template for the site's real homepage: same header and
-    branding as a Node page, a short intro, and a list of every
-    published Knowledge Node. (Knowledge Centers and a search bar are
-    NOT built yet — see section 7, "Known gaps".)
+    branding as a Node page, a professional photo, a short welcome
+    section, the Homepage Topic Selector, the "לכל הנושאים" ("All
+    Topics") button, social links, and the disclaimer strip. Does NOT
+    list Nodes directly — visitors reach individual Nodes via the Topic
+    Selector, the All-Topics page, or Related Knowledge.
 
 disclaimer-template.html
     The shared template for the permanent Medical Disclaimer page.
     Same header/branding as a Node page, the full approved Hebrew
     disclaimer text, and a link back to the homepage. Deliberately has
     no video, no related-content cards, and no "more content" button.
+
+topic-template.html
+    The shared template for one individual Topic page
+    (/topics/{category-id}/) — same header/branding, the Topic's
+    approved Hebrew name as the heading, a card for every published+
+    available Node assigned that category (reuses render_node_card_html()
+    from build.py — no separate card-rendering logic), social links,
+    and the disclaimer strip. See "TOPIC NAVIGATION" below.
+
+topics-index-template.html
+    The shared template for the "All Topics" page (/topics/) — same
+    header/branding, "כל הנושאים" heading, one tile per active Topic
+    (Hebrew name + Node count) linking to its Topic page, social links,
+    and the disclaimer strip.
 
 approved-node-reference.html
     The original, hand-built, fully working "does a gynecological exam
@@ -140,8 +156,9 @@ approved-node-reference.html
 site-config.json
     Global site-wide data that is the same on every page: the doctor's
     name/title, the logo, the four social-media links, the short
-    disclaimer strip text + link, the homepage's intro text, and the
-    full Medical Disclaimer page content.
+    disclaimer strip text + link, the homepage's photo/welcome text/
+    Topic Selector labels/"All Topics" button, the All-Topics page
+    heading, and the full Medical Disclaimer page content.
 
 RELATED KNOWLEDGE
     Fully automatic, computed at build time from each Node's
@@ -188,6 +205,43 @@ RELATED KNOWLEDGE
       be exactly 0/1/2/3. Invalid data fails the build with a clear
       error naming the Node's slug, its source file, and the problem.
 
+TOPIC NAVIGATION
+    Fully automatic, computed at build time, and completely independent
+    of Related Knowledge — Topic membership never consults priority or
+    tags, only classification.primaryCategoryIds.
+
+    - An "active Topic" is a category from
+      data/code-categories-and-tags.json that is assigned to at least
+      one published, available Node — derive_active_topics() in
+      build.py is the single source of truth for this, reused to build
+      the Homepage Topic Selector, the All-Topics page, and every
+      individual Topic page, so the three can never disagree. A
+      category with zero matching Nodes never appears anywhere and
+      never gets a page — no manual "is this Topic active" list exists.
+      A category listed in "internalCategoryIds" (see below) can never
+      become an active Topic, no matter how many Nodes use it.
+    - Topic order follows the registry's own "categories" array order
+      (never alphabetical) — this is what lets the site owner control
+      Topic display order by editing one file, no code change needed.
+    - A Node with multiple primaryCategoryIds appears on every one of
+      its Topics' pages.
+    - Homepage Topic Selector: a native <select> (never free text, never
+      a "#" link) showing only active Topics' approved Hebrew names —
+      English category ids never reach the visible page. Selecting one
+      navigates straight to /topics/{category-id}/.
+    - Individual Topic pages (/topics/{category-id}/) list every
+      matching published+available Node as a card (reusing
+      render_node_card_html() — no separate card-rendering logic).
+    - The All-Topics page (/topics/) lists every active Topic with its
+      Hebrew name and Node count, linking to its Topic page.
+    - The homepage's "לכל הנושאים" button has its own dedicated
+      site-config value (homepage.allTopicsButton) — it deliberately
+      does NOT reuse moreLinkButton (the config already shared by every
+      Node page's own button), so changing one can never accidentally
+      change the other.
+    - Topic pages and /topics/ are included in sitemap.xml automatically
+      — only ever the real, active set; nothing inactive is ever listed.
+
 nodes/  (folder)
     One JSON file per Knowledge Node, following Node Schema v1.0. Each
     file holds everything specific to that one Node, including its
@@ -215,14 +269,26 @@ data/code-categories-and-tags.json
     for technical or editorial Nodes only. They must never be used for
     normal public medical content.
 
+    "categoryLabelsHe" is a third field: the approved Hebrew display
+    name for every PUBLIC (non-internal) category — the only names
+    visitors ever see anywhere on the site; English category ids never
+    reach public HTML. Every public category must have exactly one
+    label; internal categories must not have one. Claude must never
+    invent, translate, or guess a Hebrew label — only the site owner
+    decides these, same as category/tag ids themselves.
+
 docs/gila-categories-and-tags.html
-    An internal, English-only, human-readable reference page listing
-    every approved category and its tags — for the site owner to browse
-    and copy exact ids from. Generated by generate_categories_doc.py
-    directly from data/code-categories-and-tags.json (plus a small
-    editorial grouping of which tags to display under which category),
-    and cross-validated against it at generation time, so this page can
-    never disagree with the canonical registry. It is NOT part of the
+    An internal, human-readable reference page listing every approved
+    category (with its approved Hebrew label, since that's now real
+    data visitors actually see) and its tags — for the site owner to
+    browse and copy exact ids from. The page's own structure/explanations
+    stay English-only; only the Hebrew labels themselves are Hebrew.
+    Generated by generate_categories_doc.py directly from
+    data/code-categories-and-tags.json (plus a small editorial grouping
+    of which tags to display under which category — a display-only
+    concern, never a second source of truth for the ids or labels
+    themselves), and cross-validated against the registry at generation
+    time, so this page can never disagree with it. It is NOT part of the
     public website and is never copied into dist/. Re-run
     `python3 generate_categories_doc.py` after the registry changes to
     regenerate it.
@@ -263,8 +329,10 @@ dist/  (folder, generated — not part of this ZIP/repo's source content)
 
 Everything except dist/ is a source file:
     template.html, homepage-template.html, disclaimer-template.html,
+    topic-template.html, topics-index-template.html,
     approved-node-reference.html (reference only, unused by the build),
-    site-config.json, build.py, nodes/*.json, assets/*
+    site-config.json, build.py, nodes/*.json, assets/*,
+    data/code-categories-and-tags.json
 
 None of these are the live website by themselves — they exist so the
 build script can generate the real deployable output.
@@ -279,6 +347,10 @@ implied by the original project and is unchanged here):
     /                              -> homepage
     /nodes/{slug}/                 -> one specific Knowledge Node
     /medical-disclaimer/           -> the permanent Medical Disclaimer page
+    /topics/                       -> the All-Topics page
+    /topics/{category-id}/         -> one active Topic page (only for
+                                      categories with at least one
+                                      matching published+available Node)
 
 
 4. BUILD COMMANDS
@@ -386,11 +458,12 @@ NEWLY BUILT in this pass:
       message, instead of crashing unpredictably partway through.
 
 STILL OPEN / needs a decision before real production publishing:
-    - No Knowledge Centers (topic pages) or search bar exist yet —
-      both need a topic/category data model that hasn't been designed.
-      The homepage currently lists Nodes directly instead. This is a
-      deliberate scope decision, not an oversight (see build.py,
-      build_homepage()).
+    - Topic navigation (Homepage Topic Selector, individual Topic
+      pages, the All-Topics page) is now built and automatic — see
+      section 1, "TOPIC NAVIGATION". There is no free-text search bar
+      (the Topic Selector is a closed list, not search), and Node
+      pages' own "לעוד תוכן בנושא" button is intentionally unchanged for
+      now — that's a separate, not-yet-made product decision.
     - Related Knowledge is now fully automatic — build-time ranking by
       shared category/tag/priority, plus a browser-side variety layer
       (see section 1, "RELATED KNOWLEDGE"). There is no manual

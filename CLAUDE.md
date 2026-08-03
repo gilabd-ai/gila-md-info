@@ -72,15 +72,15 @@ timestamps:
 
 ## `data/code-categories-and-tags.json` — the classification registry
 
-The single canonical, controlled pool of approved category/tag ids — a flat JSON object with `categories` and `tags` arrays of plain English ids (no display labels; those don't exist yet, see "Known, deliberate gaps" below). A Node's `classification.primaryCategoryIds` / `primaryTagIds` / `secondaryTagIds` may only use ids already present here. Claude must never add an id to a Node's classification, or to this registry itself, that wasn't explicitly given by the user — this is exactly the kind of editorial/classification data the hard rule at the top of this file covers.
+The single canonical, controlled pool of approved category/tag ids — a JSON object with `categories`/`tags` arrays of plain English ids, an `internalCategoryIds` array, and a `categoryLabelsHe` mapping (see below). A Node's `classification.primaryCategoryIds` / `primaryTagIds` / `secondaryTagIds` may only use ids already present here. Claude must never add an id to a Node's classification, or to this registry itself, that wasn't explicitly given by the user — this is exactly the kind of editorial/classification data the hard rule at the top of this file covers. The same rule applies to Hebrew labels: Claude must never invent, translate, or guess a `categoryLabelsHe` value — only the site owner decides these.
 
 The registry is expected to grow over time, but only with the user's explicit approval each time — new categories/tags go into this file first, then Nodes may select those exact ids. Existing ids must never be silently renamed or removed, since that would break classification consistency and Related Knowledge matching for every Node already using that id.
 
-`docs/gila-categories-and-tags.html` is a generated, English-only, human-readable reference page (via `generate_categories_doc.py`) for the site owner to browse and copy exact ids from — it cross-validates against this registry at generation time so it can never disagree with it, and it is NOT a second source of truth, NOT part of the public site, and never copied into `dist/`.
+`docs/gila-categories-and-tags.html` is a generated, human-readable reference page (via `generate_categories_doc.py`) for the site owner to browse and copy exact ids from, now showing each public category's approved Hebrew label beside its id (the page's own structure/explanations stay English-only) — it cross-validates against this registry at generation time so it can never disagree with it, and it is NOT a second source of truth, NOT part of the public site, and never copied into `dist/`.
 
 ### Internal categories
 
-`internalCategoryIds` (a separate array in the same registry file, currently just `["template-node"]`) marks categories reserved for technical or editorial Nodes only — they must never be used for normal public medical content. A Node may use an internal category and still gets a real, directly-accessible built page (`publishing.status: "published"` works normally), but `_is_internal_only()` in `build.py` automatically excludes it from `sitemap.xml`, marks its page `<meta name="robots" content="noindex, follow">`, and (once the Topic system exists) excludes it from every Topic-navigation surface — this is one general mechanism, not template-Node-specific code. Internal categories are exempt from needing a Hebrew `categoryLabelsHe` entry, since they're never shown publicly.
+`internalCategoryIds` (a separate array in the same registry file, currently just `["template-node"]`) marks categories reserved for technical or editorial Nodes only. They must never be used for normal public medical content. A Node may use an internal category and still gets a real, directly-accessible built page (`publishing.status: "published"` works normally), but `_is_internal_only()` in `build.py` automatically excludes it from `sitemap.xml`, marks its page `<meta name="robots" content="noindex, follow">`, and excludes it from every Topic-navigation surface (`derive_active_topics()` skips internal categories entirely, regardless of how many Nodes use them) — this is one general mechanism, not template-Node-specific code. Internal categories are exempt from needing a `categoryLabelsHe` entry, since they're never shown publicly — and must NOT have one.
 
 ## `docs/gila-node-dashboard.html` — internal editorial dashboard
 
@@ -88,11 +88,11 @@ Generated (via `generate_node_dashboard.py`) English-only view of every Node —
 
 ## `template.html` and the `{{TOKEN}}` system
 
-`build.py` does plain string-replacement of `{{TOKEN}}` placeholders in `template.html` (and `homepage-template.html`, `disclaimer-template.html`). These tokens never move and are always safe to rely on: `{{PAGE_TITLE}}`, `{{SEO_META_TAGS}}`, `{{JSONLD_SCRIPT}}`, `{{SITE_LOGO_BASE64}}`, `{{NODE_TITLE}}`, `{{NODE_DESCRIPTION}}`, `{{VIDEO_ID}}`, `{{NODE_ID}}`, `{{RELATED_SECTION_HTML}}`, `{{RELATED_CANDIDATES_JSON}}`, and others for header/nav/disclaimer text pulled from `site-config.json`.
+`build.py` does plain string-replacement of `{{TOKEN}}` placeholders in `template.html` (and `homepage-template.html`, `disclaimer-template.html`, `topic-template.html`, `topics-index-template.html`). These tokens never move and are always safe to rely on: `{{PAGE_TITLE}}`, `{{SEO_META_TAGS}}`, `{{JSONLD_SCRIPT}}`, `{{SITE_LOGO_BASE64}}`, `{{NODE_TITLE}}`, `{{NODE_DESCRIPTION}}`, `{{VIDEO_ID}}`, `{{NODE_ID}}`, `{{RELATED_SECTION_HTML}}`, `{{RELATED_CANDIDATES_JSON}}`, `{{TOPIC_SELECTOR_OPTIONS_HTML}}`, `{{ALL_TOPICS_BUTTON_URL}}`, `{{TOPIC_NAME_HE}}`, `{{TOPIC_NODES_HTML}}`, `{{TOPICS_LIST_HTML}}`, and others for header/nav/disclaimer text pulled from `site-config.json`.
 
 ## `site-config.json` — global, site-wide data
 
-`siteName`, `language`, `direction`, `baseUrl` (`"https://drgilamd.com"`), `aboutUrl` (currently `""` — the About page doesn't exist yet), `header` (doctor's name/role), `socialLinks`, `uiLabels`, homepage/disclaimer content blocks, `moreLinkButton`, `homeNavBar`.
+`siteName`, `language`, `direction`, `baseUrl` (`"https://drgilamd.com"`), `aboutUrl` (currently `""` — the About page doesn't exist yet), `header` (doctor's name/role), `socialLinks`, `uiLabels`, `homepage` (photo, welcome paragraphs, `topicSelectorLabel`/`topicSelectorPlaceholder`, `allTopicsButton` — its own dedicated `{text, url}`, deliberately NOT shared with `moreLinkButton`), `topicsIndexPage`, `medicalDisclaimerPage`, `moreLinkButton` (Node pages' own button — separate config on purpose), `homeNavBar`.
 
 ## Related Knowledge — automatic, two-stage
 
@@ -103,6 +103,15 @@ Fully automatic since the classification-registry upgrade — there is no manual
 **Stage 2 — browser-side variety (per-visitor, client-only).** A small inline script in `template.html` keeps the last 5 visited Node ids in `localStorage` (ids only — never sent to a server, never used for anything else) and prefers unvisited candidates from the exact same Stage-1 ranked list, falling back to already-visited ones only when fewer than 3 unvisited candidates exist. It only ever reorders/subsets Stage 1's output — it never re-ranks anything, so relevance always wins over variety. Any failure here (JS disabled, `localStorage` unavailable/blocked/throwing, malformed stored data) silently falls back to the default top-3 already rendered in the HTML — the section can never end up empty or broken because of this layer.
 
 `render_related_section()` remains pure rendering of an already-selected list — it contains no selection logic and doesn't need to change for either stage. `validate_classification_and_priority()` fails the whole build loudly if a published Node's classification references an unknown category/tag id, has a duplicate, has a tag in both `primaryTagIds` and `secondaryTagIds`, is missing a category, has a deprecated field (`relatedNodeIds`, old-shape `classification.primaryCategoryId`/`additionalCategoryIds`/`tagIds`/`priority`), or has an invalid/missing top-level `priority`.
+
+## Topic Navigation — automatic, independent of Related Knowledge
+
+`derive_active_topics()` in `build.py` is the ONE place that decides which Topics are active and what's on each — reused, unchanged, by the Homepage Topic Selector, the All-Topics page, and every individual Topic page, so the three can never disagree. Topic membership is decided by `classification.primaryCategoryIds` ONLY — priority and tags are never consulted here, a deliberate, complete separation from Related Knowledge. An "active Topic" is any registry category (in registry `categories` array order — never alphabetical, so the site owner controls display order by editing one file) that is NOT in `internalCategoryIds` and is assigned to at least one published, available Node; a category with zero matching Nodes never appears anywhere and never gets a page.
+
+* Homepage Topic Selector — a native `<select>` (never free text, never a `#` link) in `homepage-template.html`, showing only active Topics' approved Hebrew names; English category ids never reach the visible page. Navigates to `/topics/{category-id}/` on change.
+* Individual Topic pages (`topic-template.html` → `dist/topics/{category-id}/index.html`) — every matching published+available Node as a card, reusing `render_node_card_html()` (no duplicated card logic).
+* All-Topics page (`topics-index-template.html` → `dist/topics/index.html`) — one tile per active Topic (Hebrew name + Node count).
+* A Node with multiple `primaryCategoryIds` appears on every one of its Topics' pages. `/topics/` and every active Topic page are added to `sitemap.xml` automatically — only ever the real active set.
 
 ## Build behavior
 
@@ -133,9 +142,9 @@ Never add a `[skip ci]` (or similarly worded) tag to any commit message in this 
 
 ## Known, deliberate gaps — do not "fix" without asking first
 
-* No category/tag display-name lookup exists yet for the *public site* (`data/code-categories-and-tags.json` is just plain ids, e.g. `"gynecological-exams"`, no Hebrew labels — the English-only `docs/gila-categories-and-tags.html` reference page is for the site owner only, not a public display-name system) — this blocks things like `BreadcrumbList` until a real "Knowledge Centers" data model is designed.
+* Public category display names now exist (`categoryLabelsHe` in the registry, used by the Homepage Topic Selector and Topic pages) — but `BreadcrumbList` / other Knowledge-Center-style JSON-LD is still explicitly out of scope (see Search Foundations below); adding it needs a fresh decision, not just because the labels now exist.
 * No About page exists yet — `aboutUrl` is intentionally empty in `site-config.json` until it's built.
-* `homepage-template.html` is scheduled for a full future rebuild from scratch — avoid investing further design polish into its current version.
+* Node pages' own "לעוד תוכן בנושא" button (`template.html`'s `.more-link`, still pointing at `moreLinkButton`'s `"#"` url) is deliberately unchanged — whether Node pages get a global "All Topics" link, a "more in this Topic" link, or both, is a still-open product decision. Do not repurpose or remove it without being asked.
 
 ## Operational lesson worth knowing
 

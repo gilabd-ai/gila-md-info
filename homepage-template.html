@@ -96,6 +96,52 @@
   }
   .welcome-section p:last-child{ margin-bottom:0; }
 
+  /* ---------- Homepage Topic Selector ---------- */
+  .topic-selector-wrap{ margin-bottom:16px; }
+  .topic-selector-wrap .section-label{
+    font-size:12px; text-transform:uppercase; letter-spacing:0.1em;
+    color:rgba(242,90,166,0.90); font-weight:600; margin:0 0 10px; text-align:center;
+  }
+  .topic-selector{
+    display:block;
+    width:100%;
+    padding:14px 16px;
+    border-radius:12px;
+    border:1px solid var(--line);
+    background:var(--paper-raised);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    font-size:15px;
+    appearance:none;
+    -webkit-appearance:none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c65f48' stroke-width='2.4'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-position: left 14px center;
+    background-size:16px;
+    cursor:pointer;
+  }
+  .topic-selector:focus-visible{
+    outline:2px solid var(--blush-deep);
+    outline-offset:2px;
+  }
+
+  .more-link{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:fit-content;
+    margin:0 auto 30px;
+    padding:14px 32px;
+    border-radius:12px;
+    background: linear-gradient(135deg, rgba(242,90,166,0.90), rgba(216,64,142,0.90));
+    color:#fff;
+    font-size:15px;
+    font-weight:600;
+    text-decoration:none;
+    transition:box-shadow 0.15s ease;
+  }
+  .more-link:hover{ box-shadow: 0 4px 14px rgba(0,0,0,0.2); }
+
   .homepage-social-links{
     display:flex;
     justify-content:center;
@@ -162,6 +208,20 @@
   <section class="welcome-section">
 {{HOMEPAGE_WELCOME_HTML}}
   </section>
+
+  <!-- Homepage Topic Selector: native <select> only — no free text input,
+       no framework. Keyboard/mobile/screen-reader support come from the
+       browser for free. Navigates on change; never a "#" link. -->
+  <div class="topic-selector-wrap">
+    <p class="section-label">{{TOPIC_SELECTOR_LABEL}}</p>
+    <select id="topicSelector" class="topic-selector" aria-label="{{TOPIC_SELECTOR_LABEL}}"
+            onchange="if(this.value){ location.href = this.value; }">
+      <option value="" disabled selected>{{TOPIC_SELECTOR_PLACEHOLDER}}</option>
+{{TOPIC_SELECTOR_OPTIONS_HTML}}
+    </select>
+  </div>
+
+  <a class="more-link" href="{{ALL_TOPICS_BUTTON_URL}}">{{ALL_TOPICS_BUTTON_TEXT}}</a>
 
   <div class="homepage-social-links">
     <a class="social-btn-lg" href="{{SOCIAL_YOUTUBE_URL}}" target="_blank" rel="noopener noreferrer" aria-label="YouTube">

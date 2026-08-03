@@ -78,6 +78,10 @@ CATEGORY_TAG_GROUPS = [
     ("common-myths", ["myths", "misconceptions", "social-media", "evidence-based-medicine"]),
     ("medical-procedures", ["hysteroscopy", "endometrial-biopsy", "ultrasound", "office-procedures"]),
     ("general-womens-health", ["healthy-lifestyle", "nutrition", "exercise", "mental-health"]),
+    # No tags approved yet for these two — see CLAUDE.md / README.txt:
+    # never add a tag here without the user's explicit approval.
+    ("body-and-mind", []),
+    ("medical-innovation", []),
 ]
 
 # Reserved for the internal template Node (nodes/template-node.json) only.
@@ -89,7 +93,12 @@ RESERVED_CATEGORY_GROUPS = [
 
 def load_registry() -> dict:
     data = json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
-    return {"categories": data["categories"], "tags": data["tags"]}
+    return {
+        "categories": data["categories"],
+        "tags": data["tags"],
+        "internalCategoryIds": set(data.get("internalCategoryIds", [])),
+        "categoryLabelsHe": data.get("categoryLabelsHe", {}),
+    }
 
 
 def validate_groups(registry: dict) -> None:
@@ -119,12 +128,24 @@ def validate_groups(registry: dict) -> None:
             if tag_id not in tag_ids:
                 errors.append(f"Category '{category_id}' references unknown tag id '{tag_id}'")
 
+    # Every PUBLIC category (in CATEGORY_TAG_GROUPS, i.e. not internal)
+    # must have exactly one Hebrew label; internal categories must not.
+    public_ids = {c for c, _ in CATEGORY_TAG_GROUPS}
+    internal_ids = {c for c, _ in RESERVED_CATEGORY_GROUPS}
+    label_keys = set(registry["categoryLabelsHe"])
+    missing_labels = public_ids - label_keys
+    if missing_labels:
+        errors.append(f"Public categories missing a Hebrew label: {sorted(missing_labels)}")
+    labeled_internal = internal_ids & label_keys
+    if labeled_internal:
+        errors.append(f"Internal categories should not have a Hebrew label: {sorted(labeled_internal)}")
+
     if errors:
         raise SystemExit("FAILED — category/tag grouping disagrees with the registry:\n" +
                           "\n".join(f"  - {e}" for e in errors))
 
 
-def render_category_section(category_id: str, group_tags: list, reserved: bool = False) -> str:
+def render_category_section(category_id: str, group_tags: list, label_he: str = "", reserved: bool = False) -> str:
     cat_esc = html.escape(category_id, quote=True)
     tag_chips = "\n".join(
         f'        <li class="tag-chip"><code>{html.escape(t, quote=True)}</code></li>'
@@ -135,16 +156,20 @@ def render_category_section(category_id: str, group_tags: list, reserved: bool =
         '\n    <p class="reserved-warning">Internal category (see "internalCategoryIds" in the registry) — reserved for technical/editorial Nodes only. Never use on a real public medical content Node. No Hebrew Topic label is required or shown for internal categories.</p>'
         if reserved else ""
     )
+    label_html = f' <span class="category-label-he">{html.escape(label_he, quote=True)}</span>' if label_he else ""
+    empty_note = '\n    <p class="no-tags-note">No tags approved yet for this category.</p>' if not group_tags else ""
+    search_terms = f"{cat_esc} {html.escape(label_he)} {' '.join(html.escape(t) for t in group_tags)}"
     return (
-        f'  <section class="category-block{extra_class}" data-search="{cat_esc} {" ".join(html.escape(t) for t in group_tags)}">\n'
-        f'    <h2><code>{cat_esc}</code></h2>{warning}\n'
+        f'  <section class="category-block{extra_class}" data-search="{search_terms}">\n'
+        f'    <h2><code>{cat_esc}</code>{label_html}</h2>{warning}{empty_note}\n'
         f'    <ul class="tag-list">\n{tag_chips}\n    </ul>\n'
         '  </section>'
     )
 
 
 def render_html(registry: dict) -> str:
-    sections = [render_category_section(c, t) for c, t in CATEGORY_TAG_GROUPS]
+    labels = registry["categoryLabelsHe"]
+    sections = [render_category_section(c, t, label_he=labels.get(c, "")) for c, t in CATEGORY_TAG_GROUPS]
     sections += [render_category_section(c, t, reserved=True) for c, t in RESERVED_CATEGORY_GROUPS]
     sections_html = "\n\n".join(sections)
 
@@ -204,8 +229,10 @@ def render_html(registry: dict) -> str:
   }}
   .category-block h2 {{ font-size: 15px; margin: 0 0 10px; }}
   .category-block h2 code {{ font-size: 15px; }}
+  .category-label-he {{ font-weight: 400; color: #5c6b64; font-size: 13.5px; direction: rtl; unicode-bidi: isolate; }}
   .category-block.reserved {{ border-color: #c65f48; background: rgba(198,95,72,0.06); }}
   .reserved-warning {{ color: #c65f48; font-size: 12.5px; font-weight: 600; margin: -6px 0 10px; }}
+  .no-tags-note {{ color: #8b968f; font-size: 12.5px; font-style: italic; margin: -6px 0 10px; }}
   .tag-list {{
     list-style: none;
     margin: 0; padding: 0;
