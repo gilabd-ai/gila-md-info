@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Node Dashboard</title>
+<style>
+  :root {
+    --ink: #20302c;
+    --paper: #f6f3ec;
+    --paper-raised: #ffffff;
+    --teal: #1f4d46;
+    --line: rgba(32,48,44,0.14);
+    --ok: #1f4d46;
+    --warning: #c99a2e;
+    --error: #c65f48;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px 16px 64px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    max-width: 1400px;
+    margin-inline: auto;
+  }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  .intro {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .intro code { background: rgba(31,77,70,0.08); padding: 1px 5px; border-radius: 4px; }
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .controls input, .controls select {
+    padding: 8px 10px;
+    font-size: 13.5px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--paper-raised);
+    color: var(--ink);
+  }
+  #searchBox { flex: 1; min-width: 220px; }
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; }
+  thead th {
+    position: sticky; top: 0;
+    background: var(--teal);
+    color: #fff;
+    text-align: left;
+    padding: 10px 10px;
+    white-space: nowrap;
+    z-index: 1;
+  }
+  tbody td { padding: 8px 10px; border-top: 1px solid var(--line); vertical-align: top; background: var(--paper-raised); }
+  tr.node-row.hidden, tr.details-row.hidden { display: none; }
+  tr.details-row td { background: #fbfaf6; }
+  .muted { color: #8b968f; }
+  code { font-family: ui-monospace, Consolas, monospace; }
+  code.copyable {
+    background: rgba(31,77,70,0.08);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 2px 6px;
+    cursor: pointer;
+  }
+  code.copyable.copied { background: var(--teal); color: #fff; }
+  .tag-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px; }
+  .tag-chip code { font-size: 12px; padding: 1px 6px; }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+  }
+  .badge-ok { background: var(--ok); }
+  .badge-warning { background: var(--warning); }
+  .badge-error { background: var(--error); }
+  .badge-template { background: #5c6b64; }
+  details summary { cursor: pointer; font-weight: 600; color: var(--teal); }
+  .exclusion-note { font-size: 13px; color: var(--warning); }
+  .no-candidates { font-size: 13px; color: #8b968f; font-style: italic; }
+  table.candidates-table { margin-top: 10px; font-size: 12.5px; }
+  table.candidates-table thead th { background: #5c6b64; position: static; }
+  .num { font-variant-numeric: tabular-nums; text-align: right; }
+  details.breakdown summary { font-size: 12px; font-weight: 500; }
+  .breakdown-list { list-style: none; margin: 4px 0; padding: 0; font-size: 12px; }
+  .breakdown-list li { padding: 2px 0; }
+  .breakdown-list .points { font-variant-numeric: tabular-nums; display: inline-block; min-width: 34px; color: var(--teal); font-weight: 600; }
+  .breakdown-total { font-size: 12px; font-weight: 700; margin: 4px 0 0; }
+</style>
+</head>
+<body>
+
+<h1>Node Dashboard</h1>
+
+<div class="intro">
+  <p>Internal editorial view of every Node — generated from the current repository data. It is NOT a source of truth (the Node JSON files and <code>data/code-categories-and-tags.json</code> are), not part of the public site, and not linked from anywhere public. Regenerate after any Node change with <code>python3 generate_node_dashboard.py</code>. Related Candidate scores come directly from the production scoring functions in <code>build.py</code> — never a separately recreated formula.</p>
+</div>
+
+<div class="controls">
+  <input id="searchBox" type="text" placeholder="Search ID, slug, title, status, priority, categories, tags…" autocomplete="off">
+  <select id="statusFilter"><option value="">All statuses</option><option value="published">published</option><option value="unpublished">unpublished</option></select>
+  <select id="priorityFilter">
+    <option value="">All priorities</option>
+    <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
+  </select>
+  <select id="availabilityFilter">
+    <option value="">Available / Unavailable</option>
+    <option value="available">Available</option>
+    <option value="unavailable">Unavailable</option>
+  </select>
+  <select id="templateFilter">
+    <option value="">Template / Non-template</option>
+    <option value="yes">Template only</option>
+    <option value="no">Non-template only</option>
+  </select>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>Node ID</th><th>Slug</th><th>YouTube Title</th><th>Publishing Status</th><th>Availability</th><th>Priority</th><th>Primary Categories</th><th>Primary Tags</th><th>Secondary Tags</th><th>YouTube Published At</th><th>Node Published At</th><th>Last YouTube Sync</th><th>Validation Status</th></tr></thead>
+    <tbody>
+<tr class="node-row" data-search="node-0005 does-a-gynecological-exam-hurt האם בדיקה גינקולוגית כואבת? published 1 gynecological-exams pelvic-exam patient-comfort exam-preparation speculum-exam appointment-planning" data-status="published" data-priority="1" data-availability="available" data-template="no"><td><code class="copyable">node-0005</code></td><td><code class="copyable">does-a-gynecological-exam-hurt</code></td><td>האם בדיקה גינקולוגית כואבת?</td><td>published</td><td>available</td><td>1</td><td><ul class="tag-list"><li class="tag-chip"><code>gynecological-exams</code></li></ul></td><td><ul class="tag-list"><li class="tag-chip"><code>pelvic-exam</code></li><li class="tag-chip"><code>patient-comfort</code></li><li class="tag-chip"><code>exam-preparation</code></li></ul></td><td><ul class="tag-list"><li class="tag-chip"><code>speculum-exam</code></li><li class="tag-chip"><code>appointment-planning</code></li></ul></td><td>2026-07-29T09:48:04Z</td><td>2026-08-02</td><td>2026-08-02T13:55:09Z</td><td><span class="badge badge-ok">OK</span></td></tr>
+<tr class="details-row"><td colspan="13"><details><summary>Related Candidates (3)</summary><table class="candidates-table"><thead><tr><th>#</th><th>Candidate ID</th><th>Candidate Title</th><th>Candidate Slug</th><th>Score</th><th>Priority</th><th>In Default Top 3</th><th>Explanation</th></tr></thead><tbody><tr><td>1</td><td><code class="copyable">node-0002</code></td><td>טיפים לבדיקה גינקולוגית קלה יותר- מיקום האגן על הכסא</td><td><code class="copyable">gynecological-exam-tip-move-forward</code></td><td class="num">300</td><td class="num">1</td><td>Yes</td><td><details class="breakdown"><summary>Score breakdown ▸</summary><ul class="breakdown-list"><li><span class="points">+50</span> Primary/Secondary Tag match: patient-comfort</li><li><span class="points">+100</span> shared Primary Tag: pelvic-exam</li><li><span class="points">+50</span> shared Category: gynecological-exams</li><li><span class="points">+100</span> candidate Priority: 1</li></ul><p class="breakdown-total">Total: 300</p></details></td></tr><tr><td>2</td><td><code class="copyable">node-0003</code></td><td>טיפים לבדיקה גינקולוגית קלה יותר חלק2- הרמת הברכיים לחזה</td><td><code class="copyable">knees-to-chest-gynecological-exam</code></td><td class="num">300</td><td class="num">1</td><td>Yes</td><td><details class="breakdown"><summary>Score breakdown ▸</summary><ul class="breakdown-list"><li><span class="points">+50</span> Primary/Secondary Tag match: patient-comfort</li><li><span class="points">+100</span> shared Primary Tag: pelvic-exam</li><li><span class="points">+50</span> shared Category: gynecological-exams</li><li><span class="points">+100</span> candidate Priority: 1</li></ul><p class="breakdown-total">Total: 300</p></details></td></tr><tr><td>3</td><td><code class="copyable">node-0004</code></td><td>מחזור ביום התור - לבטל או להגיע?</td><td><code class="copyable">period-on-appointment-day-cancel-or-come</code></td><td class="num">250</td><td class="num">1</td><td>Yes</td><td><details class="breakdown"><summary>Score breakdown ▸</summary><ul class="breakdown-list"><li><span class="points">+50</span> Primary/Secondary Tag match: appointment-planning</li><li><span class="points">+50</span> Primary/Secondary Tag match: pelvic-exam</li><li><span class="points">+50</span> shared Category: gynecological-exams</li><li><span class="points">+100</span> candidate Priority: 1</li></ul><p class="breakdown-total">Total: 250</p></details></td></tr></tbody></table></details></td></tr>
+<tr class="node-row" data-search="node-0002 gynecological-exam-tip-move-forward טיפים לבדיקה גינקולוגית קלה יותר- מיקום האגן על הכסא published 1 gynecological-exams pelvic-exam examination-position patient-comfort" data-status="published" data-priority="1" data-availability="available" data-template="no"><td><code class="copyable">node-0002</code></td><td><code class="copyable">gynecological-exam-tip-move-forward</code></td><td>טיפים לבדיקה גינקולוגית קלה יותר- מיקום האגן על הכסא</td><td>published</td><td>available</td><td>1</td><td><ul class="tag-list"><li class="tag-chip"><code>gynecological-exams</code></li></ul></td><td><ul class="tag-list"><li class="tag-chip"><code>pelvic-exam</code></li><li class="tag-chip"><code>examination-position</code></li></ul></td><td><ul class="tag-list"><li class="tag-chip"><code>patient-comfort</code></li></ul></td><td>2026-06-07T16:12:13Z</td><td>2026-07-18</td><td>2026-07-26T22:39:14Z</td><td><span class="badge badge-ok">OK</span></td></tr>
+<tr class="details-row"><td colspan="13"><details><summary>Related Candidates (3)</summary><table class="candidates-table"><thead><tr><th>#</th><th>Candidate ID</th><th>Candidate Title</th><th>Candidate Slug</th><th>Score</th><th>Priority</th><th>In Default Top 3</th><th>Explanation</th></tr></thead><tbody><tr><td>1</td><td><code class="copyable">node-0005</code></td><td>האם בדיקה גינקולוגית כואבת?</td><td><code class="copyable">does-a-gynecological-exam-hurt</code></td><td class="num">300</td><td class="num">1</td><td>Yes</td><td><details class="breakdown"><summary>Score breakdown ▸</summary><ul class="breakdown-list"><li><span class="points">+50</span> Primary/Secondary Tag match: patient-comfort</li><li><span class="points">+100</span> shared Primary Tag: pelvic-exam</li><li><span class="points">+50</span> shared Category: gynecological-exams</li><li><span class="points">+100</span> candidate Priority: 1</li></ul><p class="breakdown-total">Total: 300</p></details></td></tr><tr><td>2</td><td><code class="copyable">node-0003</code></td><td>טיפים לבדיקה גינקולוגית קלה יותר חלק2- הרמת הברכיים לחזה</td><td><code class="copyable">knees-to-chest-gynecological-exam</code></td><td class="num">300</td><td class="num">1</td><td>Yes</td><td><details class="breakdown"><summary>Score breakdown ▸</summary><ul class="breakdown-list"><li><span class="points">+50</span> Primary/Secondary Tag match: patient-comfort</li><li><span class="points">+100</span> shared Primary Tag: pelvic-exam</li><li><span class="points">+50</span> shared Category: gynecological-exams</li><li><span class="points">+100</span> candidate Priority: 1</li></ul><p class="breakdown-total">Total: 300</p></details></td></tr><tr><td>3</td><td><code class="copyable">node-0004</code></td><td>מחזור ביום התור - לבטל או להגיע?</td><td><code class="copyable">period-on-appointment-day-cancel-or-come</code></td><td class="num">200</td><td class="num">1</td><td>Yes</td><td><details class="breakdown"><summary>Score breakdown ▸</summary><ul class="breakdown-list"><li><span class="points">+50</span> Primary/Secondary Tag match: pelvic-exam</li><li><span class="points">+50</span> shared Category: gynecological-exams</li><li><span class="points">+100</span> candidate Priority: 1</li></ul><p class="breakdown-total">Total: 200</p></details></td></tr></tbody></table></details></td></tr>
+<tr class="node-row" data-search="node-0003 knees-to-chest-gynecological-exam טיפים לבדיקה גינקולוגית קלה יותר חלק2- הרמת הברכיים לחזה published 1 gynecological-exams pelvic-exam cervix-visualization patient-comfort" data-status="published" data-priority="1" data-availability="available" data-template="no"><td><code class="copyable">node-0003</code></td><td><code class="copyable">knees-to-chest-gynecological-exam</code></td><td>טיפים לבדיקה גינקולוגית קלה יותר חלק2- הרמת הברכיים לחזה</td><td>published</td><td>available</td><td>1</td><td><ul class="tag-list"><li class="tag-chip"><code>gynecological-exams</code></li></ul></td><td><ul class="tag-list"><li class="tag-chip"><code>pelvic-exam</code></li><li class="tag-chip"><code>cervix-visualization</code></li></ul></td><td><ul class="tag-list"><li class="tag-chip"><code>patient-comfort</code></li></ul></td><td>2026-06-09T16:38:29Z</td><td>2026-07-19</td><td>2026-07-26T22:39:14Z</td><td><span class="badge badge-ok">OK</span></td></tr>
+<tr class="details-row"><td colspan="13"><details><summary>Related Candidates (3)</summary><table class="candidates-table"><thead><tr><th>#</th><th>Candidate ID</th><th>Candidate Title</th><th>Candidate Slug</th><th>Score</th><th>Priority</th><th>In Default Top 3</th><th>Explanation</th></tr></thead><tbody><tr><td>1</td><td><code class="copyable">node-0005</code></td><td>האם בדיקה גינקולוגית כואבת?</td><td><code class="copyable">does-a-gynecological-exam-hurt</code></td><td class="num">300</td><td class="num">1</td><td>Yes</td><td><details class="breakdown"><summary>Score breakdown ▸</summary><ul class="breakdown-list"><li><span class="points">+50</span> Primary/Secondary Tag match: patient-comfort</li><li><span class="points">+100</span> shared Primary Tag: pelvic-exam</li><li><span class="points">+50</span> shared Category: gynecological-exams</li><li><span class="points">+100</span> candidate Priority: 1</li></ul><p class="breakdown-total">Total: 300</p></details></td></tr><tr><td>2</td><td><code class="copyable">node-0002</code></td><td>טיפים לבדיקה גינקולוגית קלה יותר- מיקום האגן על הכסא</td><td><code class="copyable">gynecological-exam-tip-move-forward</code></td><td class="num">300</td><td class="num">1</td><td>Yes</td><td><details class="breakdown"><summary>Score breakdown ▸</summary><ul class="breakdown-list"><li><span class="points">+50</span> Primary/Secondary Tag match: patient-comfort</li><li><span class="points">+100</span> shared Primary Tag: pelvic-exam</li><li><span class="points">+50</span> shared Category: gynecological-exams</li><li><span class="points">+100</span> candidate Priority: 1</li></ul><p class="breakdown-total">Total: 300</p></details></td></tr><tr><td>3</td><td><code class="copyable">node-0004</code></td><td>מחזור ביום התור - לבטל או להגיע?</td><td><code class="copyable">period-on-appointment-day-cancel-or-come</code></td><td class="num">200</td><td class="num">1</td><td>Yes</td><td><details class="breakdown"><summary>Score breakdown ▸</summary><ul class="breakdown-list"><li><span class="points">+50</span> Primary/Secondary Tag match: pelvic-exam</li><li><span class="points">+50</span> shared Category: gynecological-exams</li><li><span class="points">+100</span> candidate Priority: 1</li></ul><p class="breakdown-total">Total: 200</p></details></td></tr></tbody></table></details></td></tr>
+<tr class="node-row" data-search="node-0004 period-on-appointment-day-cancel-or-come מחזור ביום התור - לבטל או להגיע? published 1 gynecological-exams menstruation appointment-planning pelvic-exam" data-status="published" data-priority="1" data-availability="available" data-template="no"><td><code class="copyable">node-0004</code></td><td><code class="copyable">period-on-appointment-day-cancel-or-come</code></td><td>מחזור ביום התור - לבטל או להגיע?</td><td>published</td><td>available</td><td>1</td><td><ul class="tag-list"><li class="tag-chip"><code>gynecological-exams</code></li></ul></td><td><ul class="tag-list"><li class="tag-chip"><code>menstruation</code></li><li class="tag-chip"><code>appointment-planning</code></li></ul></td><td><ul class="tag-list"><li class="tag-chip"><code>pelvic-exam</code></li></ul></td><td>2026-06-02T19:10:05Z</td><td>2026-07-19</td><td>2026-07-26T22:39:14Z</td><td><span class="badge badge-ok">OK</span></td></tr>
+<tr class="details-row"><td colspan="13"><details><summary>Related Candidates (3)</summary><table class="candidates-table"><thead><tr><th>#</th><th>Candidate ID</th><th>Candidate Title</th><th>Candidate Slug</th><th>Score</th><th>Priority</th><th>In Default Top 3</th><th>Explanation</th></tr></thead><tbody><tr><td>1</td><td><code class="copyable">node-0005</code></td><td>האם בדיקה גינקולוגית כואבת?</td><td><code class="copyable">does-a-gynecological-exam-hurt</code></td><td class="num">250</td><td class="num">1</td><td>Yes</td><td><details class="breakdown"><summary>Score breakdown ▸</summary><ul class="breakdown-list"><li><span class="points">+50</span> Primary/Secondary Tag match: appointment-planning</li><li><span class="points">+50</span> Primary/Secondary Tag match: pelvic-exam</li><li><span class="points">+50</span> shared Category: gynecological-exams</li><li><span class="points">+100</span> candidate Priority: 1</li></ul><p class="breakdown-total">Total: 250</p></details></td></tr><tr><td>2</td><td><code class="copyable">node-0002</code></td><td>טיפים לבדיקה גינקולוגית קלה יותר- מיקום האגן על הכסא</td><td><code class="copyable">gynecological-exam-tip-move-forward</code></td><td class="num">200</td><td class="num">1</td><td>Yes</td><td><details class="breakdown"><summary>Score breakdown ▸</summary><ul class="breakdown-list"><li><span class="points">+50</span> Primary/Secondary Tag match: pelvic-exam</li><li><span class="points">+50</span> shared Category: gynecological-exams</li><li><span class="points">+100</span> candidate Priority: 1</li></ul><p class="breakdown-total">Total: 200</p></details></td></tr><tr><td>3</td><td><code class="copyable">node-0003</code></td><td>טיפים לבדיקה גינקולוגית קלה יותר חלק2- הרמת הברכיים לחזה</td><td><code class="copyable">knees-to-chest-gynecological-exam</code></td><td class="num">200</td><td class="num">1</td><td>Yes</td><td><details class="breakdown"><summary>Score breakdown ▸</summary><ul class="breakdown-list"><li><span class="points">+50</span> Primary/Secondary Tag match: pelvic-exam</li><li><span class="points">+50</span> shared Category: gynecological-exams</li><li><span class="points">+100</span> candidate Priority: 1</li></ul><p class="breakdown-total">Total: 200</p></details></td></tr></tbody></table></details></td></tr>
+<tr class="node-row" data-search="node-0001 template-node template node unpublished 0 template-node template-node" data-status="unpublished" data-priority="0" data-availability="available" data-template="yes"><td><code class="copyable">node-0001</code></td><td><code class="copyable">template-node</code></td><td>template node <span class="badge badge-template">Template</span></td><td>unpublished</td><td>available</td><td>0</td><td><ul class="tag-list"><li class="tag-chip"><code>template-node</code></li></ul></td><td><ul class="tag-list"><li class="tag-chip"><code>template-node</code></li></ul></td><td><span class="muted">—</span></td><td>2026-08-02T12:47:52Z</td><td><span class="muted">—</span></td><td>2026-08-02T13:18:58Z</td><td><span class="badge badge-warning">Warning</span></td></tr>
+<tr class="details-row"><td colspan="13"><details><summary>Related Candidates (0)</summary><p class="exclusion-note">This Node is never recommended elsewhere: <strong>not published (status: unpublished)</strong></p>
+<p class="no-candidates">No eligible candidates</p></details></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  function applyFilters(){
+    const q = document.getElementById('searchBox').value.trim().toLowerCase();
+    const status = document.getElementById('statusFilter').value;
+    const priority = document.getElementById('priorityFilter').value;
+    const availability = document.getElementById('availabilityFilter').value;
+    const template = document.getElementById('templateFilter').value;
+
+    document.querySelectorAll('tr.node-row').forEach(function(row){
+      const haystack = row.dataset.search || '';
+      let visible = true;
+      if (q && !haystack.includes(q)) visible = false;
+      if (status && row.dataset.status !== status) visible = false;
+      if (priority && row.dataset.priority !== priority) visible = false;
+      if (availability && row.dataset.availability !== availability) visible = false;
+      if (template && row.dataset.template !== template) visible = false;
+
+      row.classList.toggle('hidden', !visible);
+      const details = row.nextElementSibling;
+      if (details && details.classList.contains('details-row')) {
+        details.classList.toggle('hidden', !visible);
+      }
+    });
+  }
+
+  document.getElementById('searchBox').addEventListener('input', applyFilters);
+  document.getElementById('statusFilter').addEventListener('change', applyFilters);
+  document.getElementById('priorityFilter').addEventListener('change', applyFilters);
+  document.getElementById('availabilityFilter').addEventListener('change', applyFilters);
+  document.getElementById('templateFilter').addEventListener('change', applyFilters);
+
+  document.querySelectorAll('code.copyable').forEach(function(el){
+    el.addEventListener('click', function(){
+      const text = el.textContent;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function(){
+          el.classList.add('copied');
+          setTimeout(function(){ el.classList.remove('copied'); }, 500);
+        }).catch(function(){});
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

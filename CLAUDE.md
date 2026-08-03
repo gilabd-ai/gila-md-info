@@ -78,6 +78,10 @@ The registry is expected to grow over time, but only with the user's explicit ap
 
 `docs/gila-categories-and-tags.html` is a generated, English-only, human-readable reference page (via `generate_categories_doc.py`) for the site owner to browse and copy exact ids from — it cross-validates against this registry at generation time so it can never disagree with it, and it is NOT a second source of truth, NOT part of the public site, and never copied into `dist/`.
 
+## `docs/gila-node-dashboard.html` — internal editorial dashboard
+
+Generated (via `generate_node_dashboard.py`) English-only view of every Node — published, draft, and the reserved template Node — showing classification/priority/dates, a validation status, and the full ranked Related Knowledge candidate list with a per-candidate score explanation. It is a GENERATED VIEW ONLY: not a source of truth, not part of the public site, never linked publicly, never copied into `dist/`. Critically, it reuses `build.py`'s `score_related_candidates()` / `ineligible_candidate_reason()` — the exact same functions `select_related_nodes()` wraps for the public site — so the dashboard's numbers can never independently drift from what production actually computes. Re-run after any Node change.
+
 ## `template.html` and the `{{TOKEN}}` system
 
 `build.py` does plain string-replacement of `{{TOKEN}}` placeholders in `template.html` (and `homepage-template.html`, `disclaimer-template.html`). These tokens never move and are always safe to rely on: `{{PAGE_TITLE}}`, `{{SEO_META_TAGS}}`, `{{JSONLD_SCRIPT}}`, `{{SITE_LOGO_BASE64}}`, `{{NODE_TITLE}}`, `{{NODE_DESCRIPTION}}`, `{{VIDEO_ID}}`, `{{NODE_ID}}`, `{{RELATED_SECTION_HTML}}`, `{{RELATED_CANDIDATES_JSON}}`, and others for header/nav/disclaimer text pulled from `site-config.json`.
