@@ -250,23 +250,46 @@ def validate_classification_and_priority(node: dict, registry: dict) -> list[str
     return errors
 
 
-def select_related_nodes(node: dict, nodes_by_id: dict[str, dict],
-                          published_only: bool) -> list[dict]:
+def ineligible_candidate_reason(candidate: dict, published_only: bool) -> Optional[str]:
     """
-    Returns up to MAX_RELATED_CANDIDATES real Node records related to
-    `node`, ranked best-first. This is the ONLY place that decides WHICH
-    Nodes are related and in what order — render_related_section() only
-    ever renders an already-decided list, and the browser-side variety
-    script in template.html only ever reorders/subsets this exact ranked
-    list, never re-ranks it.
+    Returns a short, human-readable reason `candidate` can never be
+    recommended as anyone's Related Knowledge (used both to SKIP it in
+    score_related_candidates() below, and — the same check, so it can
+    never drift from what production actually does — to explain on the
+    Editorial Node Dashboard why a given Node is excluded). Returns None
+    when the candidate has no such blanket exclusion (it may still fail
+    to match any specific source Node on category/tag overlap, which is
+    a separate, per-pair concern handled in score_related_candidates()).
+    """
+    status = candidate.get("publishing", {}).get("status")
+    if status == "draft":
+        return "draft"
+    if published_only and status != "published":
+        return f"not published (status: {status})"
+    if candidate.get("youtube", {}).get("availability") == "unavailable":
+        return "video unavailable"
+    priority = candidate.get("priority")
+    if priority == 0:
+        return "priority 0 (never recommend)"
+    return None
+
+
+def score_related_candidates(node: dict, nodes_by_id: dict[str, dict],
+                              published_only: bool) -> list[dict]:
+    """
+    The one place that computes Related Knowledge relatedness — both for
+    the public site (via select_related_nodes() below, a thin wrapper
+    around this) and for the Editorial Node Dashboard, so the two can
+    never independently drift apart.
+
+    Returns up to MAX_RELATED_CANDIDATES entries, best first, each as
+    {"node": candidate_dict, "score": int, "breakdown": [{"label", "points"}, ...]}
+    where sum(b["points"] for b in breakdown) == score, always.
 
     A candidate is eligible only if ALL of:
       - it is not `node` itself
-      - it is published, when published_only=True (and never a draft,
-        checked unconditionally regardless of published_only)
-      - its video is not confirmed unavailable (no dead links — it
-        isn't being built as a page at all, see build_all_published())
-      - its own priority is not 0 ("never recommend")
+      - ineligible_candidate_reason() returns None (not draft, published
+        when published_only=True, video not unavailable, priority != 0)
       - it shares at least one primaryCategoryId, primaryTagId, or
         secondaryTagId with `node` — priority alone never qualifies it
 
@@ -275,7 +298,9 @@ def select_related_nodes(node: dict, nodes_by_id: dict[str, dict],
     candidate (present in either's primary or secondary set), +100 if
     it's primary on both sides, otherwise +50 (covers primary<->secondary
     and secondary<->secondary matches — the topic is still genuinely
-    shared, just not a primary topic for both Nodes).
+    shared, just not a primary topic for both Nodes). Breakdown lines
+    for shared tags/categories are emitted in sorted-id order (not set
+    iteration order) so output is deterministic/reproducible run to run.
 
     Ties preserve nodes_by_id's iteration order (the order
     node_store.load_all_nodes() loaded files in — alphabetical by slug):
@@ -294,15 +319,9 @@ def select_related_nodes(node: dict, nodes_by_id: dict[str, dict],
     for candidate in nodes_by_id.values():
         if candidate.get("id") == own_id:
             continue
-        if candidate.get("publishing", {}).get("status") == "draft":
-            continue
-        if published_only and candidate.get("publishing", {}).get("status") != "published":
-            continue
-        if candidate.get("youtube", {}).get("availability") == "unavailable":
+        if ineligible_candidate_reason(candidate, published_only) is not None:
             continue
         priority = candidate.get("priority")
-        if priority == 0:
-            continue
 
         cand_classification = candidate.get("classification", {})
         cand_categories = set(cand_classification.get("primaryCategoryIds") or [])
@@ -316,15 +335,41 @@ def select_related_nodes(node: dict, nodes_by_id: dict[str, dict],
         if not (shared_categories or shared_tags):
             continue
 
-        tag_score = sum(
-            100 if (tag in own_primary_tags and tag in cand_primary_tags) else 50
-            for tag in shared_tags
-        )
-        score = tag_score + 50 * len(shared_categories) + PRIORITY_BONUS.get(priority, 0)
-        scored.append((score, candidate))
+        breakdown = []
+        for tag in sorted(shared_tags):
+            both_primary = tag in own_primary_tags and tag in cand_primary_tags
+            points = 100 if both_primary else 50
+            label = f"shared Primary Tag: {tag}" if both_primary else f"Primary/Secondary Tag match: {tag}"
+            breakdown.append({"label": label, "points": points})
+        for cat in sorted(shared_categories):
+            breakdown.append({"label": f"shared Category: {cat}", "points": 50})
+        breakdown.append({"label": f"candidate Priority: {priority}", "points": PRIORITY_BONUS.get(priority, 0)})
+
+        score = sum(b["points"] for b in breakdown)
+        scored.append((score, {"node": candidate, "score": score, "breakdown": breakdown}))
 
     scored.sort(key=lambda pair: pair[0], reverse=True)
-    return [c for _, c in scored[:MAX_RELATED_CANDIDATES]]
+    return [entry for _, entry in scored[:MAX_RELATED_CANDIDATES]]
+
+
+def select_related_nodes(node: dict, nodes_by_id: dict[str, dict],
+                          published_only: bool) -> list[dict]:
+    """
+    Returns up to MAX_RELATED_CANDIDATES real Node records related to
+    `node`, ranked best-first. This is the ONLY place that decides WHICH
+    Nodes are related and in what order — render_related_section() only
+    ever renders an already-decided list, and the browser-side variety
+    script in template.html only ever reorders/subsets this exact ranked
+    list, never re-ranks it.
+
+    A thin wrapper around score_related_candidates() — see that function
+    for the actual eligibility/scoring rules. Kept as its own function
+    (rather than inlining the list-comprehension at every call site) so
+    every existing caller's signature/return type stays exactly as it
+    was before the Editorial Node Dashboard needed per-candidate score
+    detail.
+    """
+    return [entry["node"] for entry in score_related_candidates(node, nodes_by_id, published_only)]
 
 
 # ──────────────────────────────────────────────────────────────────
@@ -829,31 +874,29 @@ def render_node_card_html(node: dict) -> str:
 def build_homepage(published_nodes: list[dict]) -> Path:
     """
     Build the real dist/index.html homepage: shared header/branding, a
-    short intro, and a list of every published Knowledge Node.
+    professional photo, a short welcome section, social links, and the
+    disclaimer strip. `published_nodes` is accepted (build_all_published
+    always passes the real, current list) but not currently rendered
+    directly on the homepage — Related Knowledge and future topic
+    browsing are how visitors reach individual Nodes for now.
 
     Knowledge Centers and a search bar are NOT implemented — they need a
     topic/category data model that does not exist yet, and inventing one
     is out of scope here per "do not redesign the data model unless
-    essential". This homepage is the real, working, non-placeholder entry
-    point required for this build; Knowledge Centers remain a documented
-    future step.
+    essential". Knowledge Centers remain a documented future step.
     """
     template = (BASE_DIR / "homepage-template.html").read_text(encoding="utf-8")
     site_config = json.loads((BASE_DIR / "site-config.json").read_text(encoding="utf-8"))
     social = {s["platform"]: s["url"] for s in site_config["socialLinks"]}
     homepage_cfg = site_config["homepage"]
     logo_base64 = (BASE_DIR / site_config["header"]["logoImagePath"]).read_text(encoding="utf-8").strip()
+    photo_base64 = (BASE_DIR / homepage_cfg["photoImagePath"]).read_text(encoding="utf-8").strip()
 
-    if published_nodes:
-        list_html = '  <div class="node-list">\n' + "\n".join(
-            render_node_card_html(n) for n in published_nodes
-        ) + "\n  </div>"
-    else:
-        list_html = f'  <div class="empty-state">{homepage_cfg["emptyStateText"]}</div>'
+    welcome_html = "\n".join(f"    <p>{p}</p>" for p in homepage_cfg["welcomeParagraphs"])
 
-    seo_description = generate_meta_description(homepage_cfg["intro"])
+    seo_description = generate_meta_description(homepage_cfg["welcomeParagraphs"][0])
     seo_meta_tags = render_seo_meta_tags(
-        page_title=homepage_cfg["title"],
+        page_title=homepage_cfg["pageTitle"],
         description=seo_description,
         path="/",
         image_url="",
@@ -872,11 +915,9 @@ def build_homepage(published_nodes: list[dict]) -> Path:
         "{{SOCIAL_INSTAGRAM_URL}}": social["Instagram"],
         "{{SOCIAL_FACEBOOK_URL}}": social["Facebook"],
         "{{SOCIAL_TIKTOK_URL}}": social["TikTok"],
-        "{{HOMEPAGE_EYEBROW}}": homepage_cfg["eyebrow"],
-        "{{HOMEPAGE_TITLE}}": homepage_cfg["title"],
-        "{{HOMEPAGE_INTRO}}": homepage_cfg["intro"],
-        "{{HOMEPAGE_LIST_LABEL}}": homepage_cfg["listLabel"],
-        "{{NODES_LIST_HTML}}": list_html,
+        "{{HOMEPAGE_PHOTO_BASE64}}": photo_base64,
+        "{{HOMEPAGE_PHOTO_ALT}}": homepage_cfg["photoAlt"],
+        "{{HOMEPAGE_WELCOME_HTML}}": welcome_html,
         "{{DISCLAIMER_ICON}}": site_config["disclaimer"]["icon"],
         "{{DISCLAIMER_SHORT_TEXT}}": site_config["disclaimer"]["shortText"],
         "{{DISCLAIMER_LINK_PREFIX}}": site_config["disclaimer"]["linkPrefix"],
