@@ -453,7 +453,7 @@ def make_snippet(text: str, max_chars: int = 160) -> str:
     """
     Shared helper for producing a short preview snippet from a longer
     description, so this truncation logic exists in exactly one place.
-    Used by both the homepage's Node cards (render_node_card_html) and
+    Used by both Topic pages' Node cards (render_node_card_html) and
     the Related Knowledge cards (render_related_section).
     """
     text = (text or "").strip()
@@ -847,13 +847,22 @@ def render_more_link_button_html(node: dict, site_config: dict, registry: dict) 
     (_first_public_topic_id(), array order). Omitted entirely (empty
     string) when the Node has no public category, e.g. the Template
     Node, rather than rendered with a dead/placeholder destination.
+
+    Carries data-topic-nav="primary" so the browser-side script in
+    template.html can find this specific button (not the second, always-
+    static "all topics" button, which also uses .more-link) and rewrite
+    its href to the Topic page the visitor actually arrived from, when
+    that context is available. See template.html for that logic — this
+    function's own computed href/text is always the correct SERVER-
+    RENDERED fallback for direct/external visits, and is left untouched
+    either way.
     """
     topic_id = _first_public_topic_id(node, registry)
     if topic_id is None:
         return ""
     text = html.escape(site_config["moreLinkButton"]["text"], quote=True)
     url = html.escape(f"/topics/{topic_id}/", quote=True)
-    return f'  <a class="more-link" href="{url}">{text}</a>\n'
+    return f'  <a class="more-link" data-topic-nav="primary" href="{url}">{text}</a>\n'
 
 
 def render_node_html(node: dict, template: str, site_config: dict,
@@ -962,11 +971,23 @@ def build_node(node: dict, nodes_by_id: dict[str, dict], published_only: bool = 
     return out_path
 
 
-def render_node_card_html(node: dict) -> str:
+def render_node_card_html(node: dict, from_topic_id: str | None = None) -> str:
+    """
+    `from_topic_id`, when given (only ever the Topic page's own id, from
+    build_topic_page()), is appended as a "?fromTopic={id}" query param —
+    temporary per-URL context so the Node page's first pink button can
+    send the visitor back to the Topic she actually browsed from, instead
+    of always falling back to the Node's first public category. Purely
+    a client-side hint (see template.html); never affects canonical
+    URLs, sitemap entries, or any other server-rendered output.
+    """
     title = node["youtube"]["title"]
     snippet = make_snippet(node["youtube"]["description"])
+    href = f'/nodes/{node["slug"]}/'
+    if from_topic_id:
+        href += f'?fromTopic={html.escape(from_topic_id, quote=True)}'
     return (
-        f'    <a class="node-card" href="/nodes/{node["slug"]}/">\n'
+        f'    <a class="node-card" href="{href}">\n'
         f'      <p class="node-card-title">{title}</p>\n'
         f'      <p class="node-card-desc">{snippet}</p>\n'
         '    </a>'
@@ -1182,7 +1203,7 @@ def build_topic_page(topic: dict, site_config: dict) -> Path:
     logo_base64 = (BASE_DIR / site_config["header"]["logoImagePath"]).read_text(encoding="utf-8").strip()
 
     nodes_html = '  <div class="node-list">\n' + "\n".join(
-        render_node_card_html(n) for n in topic["nodes"]
+        render_node_card_html(n, from_topic_id=topic["id"]) for n in topic["nodes"]
     ) + "\n  </div>"
 
     page_title = f'{topic["label"]} | {site_config["header"]["name"]}'

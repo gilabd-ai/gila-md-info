@@ -257,6 +257,20 @@ TOPIC NAVIGATION
       site-config.
     - Topic pages and /topics/ are included in sitemap.xml automatically
       — only ever the real, active set; nothing inactive is ever listed.
+    - Topic-context navigation: a Node card on a Topic page links to
+      /nodes/{slug}/?fromTopic={topicId}. On the Node page, a small
+      browser-side script reads that param and, if it looks like a real
+      topic id, points the Node's FIRST pink button back at that same
+      Topic page instead of its usual fallback (the Node's first public
+      category). This way, a visitor browsing the "contraception" Topic
+      who opens a Node that's also tagged "menstruation" gets sent back
+      to "contraception" when she clicks the button, not wherever the
+      Node's category order would otherwise send her. Visitors who
+      arrive directly (Google, YouTube, social, an external link — no
+      query param present) see the exact same fallback behavior as
+      before, unchanged. This is a throwaway, per-URL hint only — never
+      stored in localStorage, never sent to a server, and it has no
+      effect on canonical URLs, sitemap.xml, or robots.txt.
 
 nodes/  (folder)
     One JSON file per Knowledge Node, following Node Schema v1.0. Each

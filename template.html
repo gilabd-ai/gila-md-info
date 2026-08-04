@@ -511,6 +511,26 @@
     icon.style.transform = expanded ? 'rotate(180deg)' : 'rotate(0deg)';
   }
 
+  // ---- Topic-context navigation (browser-side, no localStorage) ----
+  // If this Node page was reached via a Topic page's own Node card
+  // (?fromTopic={topicId} in the URL — see render_node_card_html() in
+  // build.py), the first pink button should return the visitor to that
+  // same Topic instead of always using the Node's first public category.
+  // This is per-URL, throwaway context — never stored anywhere, unlike
+  // the Related Knowledge history below. If the param is absent,
+  // malformed, or this fails for any reason, the button simply keeps
+  // its server-rendered fallback href — nothing here can break the page.
+  function applyTopicNavContext(){
+    const params = new URLSearchParams(location.search);
+    const fromTopic = params.get('fromTopic');
+    if (!fromTopic || !/^[a-z0-9-]+$/.test(fromTopic)) return;
+
+    const btn = document.querySelector('[data-topic-nav="primary"]');
+    if (!btn) return; // e.g. the Template Node, which never renders this button
+
+    btn.href = '/topics/' + fromTopic + '/';
+  }
+
   // ---- Related Knowledge variety (browser-side, localStorage only) ----
   // Build already computed a ranked, relevant candidate list and rendered
   // the default top-3 directly into the HTML above (RELATED_CANDIDATES /
@@ -598,6 +618,7 @@
     grid.appendChild(fragment);
   }
 
+  try { applyTopicNavContext(); } catch (e){}
   try { recordVisit(CURRENT_NODE_ID); } catch (e){}
   try { applyRelatedVariety(); } catch (e){}
 
