@@ -1214,6 +1214,8 @@ def build_topic_page(topic: dict, site_config: dict) -> Path:
         "{{HOME_NAV_URL}}": site_config["homeNavBar"]["url"],
         "{{TOPIC_NAME_HE}}": topic["label"],
         "{{TOPIC_NODES_HTML}}": nodes_html,
+        "{{ALL_TOPICS_BUTTON_TEXT}}": site_config["allTopicsButton"]["text"],
+        "{{ALL_TOPICS_BUTTON_URL}}": site_config["allTopicsButton"]["url"],
         "{{DISCLAIMER_ICON}}": site_config["disclaimer"]["icon"],
         "{{DISCLAIMER_SHORT_TEXT}}": site_config["disclaimer"]["shortText"],
         "{{DISCLAIMER_LINK_PREFIX}}": site_config["disclaimer"]["linkPrefix"],
@@ -1242,7 +1244,7 @@ def render_topic_tile_html(topic: dict) -> str:
     return (
         f'    <a class="topic-tile" href="/topics/{html.escape(topic["id"], quote=True)}/">\n'
         f'      <p class="topic-tile-name">{label}</p>\n'
-        f'      <p class="topic-tile-count">{count}</p>\n'
+        f'      <p class="topic-tile-count">{count} תכנים</p>\n'
         '    </a>'
     )
 

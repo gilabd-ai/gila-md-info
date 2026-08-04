@@ -121,7 +121,7 @@ template.html
 homepage-template.html
     The shared template for the site's real homepage: same header and
     branding as a Node page, a professional photo, a short welcome
-    section, the Homepage Topic Selector, the "לכל הנושאים" ("All
+    section, the Homepage Topic Selector, the "לכל הנושאים באתר" ("All
     Topics") button, social links, and the disclaimer strip. Does NOT
     list Nodes directly — visitors reach individual Nodes via the Topic
     Selector, the All-Topics page, or Related Knowledge.
@@ -137,14 +137,16 @@ topic-template.html
     (/topics/{category-id}/) — same header/branding, the Topic's
     approved Hebrew name as the heading, a card for every published+
     available Node assigned that category (reuses render_node_card_html()
-    from build.py — no separate card-rendering logic), social links,
+    from build.py — no separate card-rendering logic), the same shared
+    "לכל הנושאים באתר" pink button used on Node pages and the homepage
+    (same .more-link CSS, no duplicated button component), social links,
     and the disclaimer strip. See "TOPIC NAVIGATION" below.
 
 topics-index-template.html
     The shared template for the "All Topics" page (/topics/) — same
     header/branding, "כל הנושאים" heading, one tile per active Topic
-    (Hebrew name + Node count) linking to its Topic page, social links,
-    and the disclaimer strip.
+    (Hebrew name + Node count, shown as "{count} תכנים") linking to its
+    Topic page, social links, and the disclaimer strip.
 
 approved-node-reference.html
     The original, hand-built, fully working "does a gynecological exam
@@ -231,9 +233,14 @@ TOPIC NAVIGATION
       navigates straight to /topics/{category-id}/.
     - Individual Topic pages (/topics/{category-id}/) list every
       matching published+available Node as a card (reusing
-      render_node_card_html() — no separate card-rendering logic).
+      render_node_card_html() — no separate card-rendering logic), and
+      also show the shared "לכל הנושאים באתר" pink button above the
+      disclaimer strip — same .more-link CSS and same top-level
+      allTopicsButton config as the homepage and Node pages, no
+      duplicated button component.
     - The All-Topics page (/topics/) lists every active Topic with its
-      Hebrew name and Node count, linking to its Topic page.
+      Hebrew name and Node count (shown as "{count} תכנים"), linking to
+      its Topic page.
     - The homepage's "לכל הנושאים באתר" button and each Node page's own
       second pink button share one site-config value (top-level
       allTopicsButton, both text and url) — they are literally the same

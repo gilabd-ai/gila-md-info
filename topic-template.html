@@ -131,6 +131,23 @@
     margin-bottom:30px;
   }
 
+  .more-link{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:fit-content;
+    margin:0 auto 30px;
+    padding:14px 32px;
+    border-radius:12px;
+    background: linear-gradient(135deg, rgba(242,90,166,0.90), rgba(216,64,142,0.90));
+    color:#fff;
+    font-size:15px;
+    font-weight:600;
+    text-decoration:none;
+    transition:box-shadow 0.15s ease;
+  }
+  .more-link:hover{ box-shadow: 0 4px 14px rgba(0,0,0,0.2); }
+
   .site-disclaimer{
     font-family:'Inter', sans-serif;
     font-size:12.5px;
@@ -178,6 +195,8 @@
   <h1 class="page-title">{{TOPIC_NAME_HE}}</h1>
 
 {{TOPIC_NODES_HTML}}
+
+  <a class="more-link" href="{{ALL_TOPICS_BUTTON_URL}}">{{ALL_TOPICS_BUTTON_TEXT}}</a>
 
   <a class="site-disclaimer" href="{{DISCLAIMER_LINK_URL}}">{{DISCLAIMER_ICON}} {{DISCLAIMER_SHORT_TEXT}} <span class="disclaimer-underline">{{DISCLAIMER_LINK_PREFIX}} {{DISCLAIMER_LINK_TEXT}}</span>.</a>
 </main>
