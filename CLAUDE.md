@@ -92,7 +92,7 @@ Generated (via `generate_node_dashboard.py`) English-only view of every Node —
 
 ## `site-config.json` — global, site-wide data
 
-`siteName`, `language`, `direction`, `baseUrl` (`"https://drgilamd.com"`), `aboutUrl` (currently `""` — the About page doesn't exist yet), `header` (doctor's name/role), `socialLinks`, `uiLabels`, `homepage` (photo, welcome paragraphs, `topicSelectorLabel`/`topicSelectorPlaceholder`, `allTopicsButton` — its own dedicated `{text, url}`, deliberately NOT shared with `moreLinkButton`), `topicsIndexPage`, `medicalDisclaimerPage`, `moreLinkButton` (Node pages' own button — separate config on purpose), `homeNavBar`.
+`siteName`, `language`, `direction`, `baseUrl` (`"https://drgilamd.com"`), `aboutUrl` (currently `""` — the About page doesn't exist yet), `header` (doctor's name/role), `socialLinks`, `uiLabels`, `homepage` (photo, welcome paragraphs, `topicSelectorLabel`/`topicSelectorPlaceholder`), `topicsIndexPage`, `medicalDisclaimerPage`, `allTopicsButton` (top-level `{text, url}` — the "לכל הנושאים באתר" button, shared as-is by both the homepage and every Node page's second nav button, since they are literally the same button in two places), `moreLinkButton` (Node pages' own FIRST nav button — `{text}` only, no stored `url`: its href is a dynamic per-Node `/topics/{id}/` computed at build time from the Node's own first public category, see Topic Navigation section below), `homeNavBar`.
 
 ## Related Knowledge — automatic, two-stage
 
@@ -112,6 +112,7 @@ Fully automatic since the classification-registry upgrade — there is no manual
 * Individual Topic pages (`topic-template.html` → `dist/topics/{category-id}/index.html`) — every matching published+available Node as a card, reusing `render_node_card_html()` (no duplicated card logic).
 * All-Topics page (`topics-index-template.html` → `dist/topics/index.html`) — one tile per active Topic (Hebrew name + Node count).
 * A Node with multiple `primaryCategoryIds` appears on every one of its Topics' pages. `/topics/` and every active Topic page are added to `sitemap.xml` automatically — only ever the real active set.
+* Each Node page has two pink nav buttons, both reusing the exact same `.more-link` CSS, stacked vertically. The first — `render_more_link_button_html()` in `build.py`, text from `moreLinkButton.text` — links to `/topics/{id}/` where `{id}` is `_first_public_topic_id()`: the first non-internal id in that Node's own `classification.primaryCategoryIds`, in array order (array order is the deliberate priority signal here — never any score). If a Node's `primaryCategoryIds` are all internal (e.g. the Template Node), this first button is omitted entirely rather than pointed at a placeholder. The second button is static and always rendered — same top-level `allTopicsButton` config and same `/topics/` destination as the homepage's own button.
 
 ## Build behavior
 
@@ -144,7 +145,7 @@ Never add a `[skip ci]` (or similarly worded) tag to any commit message in this 
 
 * Public category display names now exist (`categoryLabelsHe` in the registry, used by the Homepage Topic Selector and Topic pages) — but `BreadcrumbList` / other Knowledge-Center-style JSON-LD is still explicitly out of scope (see Search Foundations below); adding it needs a fresh decision, not just because the labels now exist.
 * No About page exists yet — `aboutUrl` is intentionally empty in `site-config.json` until it's built.
-* Node pages' own "לעוד תוכן בנושא" button (`template.html`'s `.more-link`, still pointing at `moreLinkButton`'s `"#"` url) is deliberately unchanged — whether Node pages get a global "All Topics" link, a "more in this Topic" link, or both, is a still-open product decision. Do not repurpose or remove it without being asked.
+* Node pages now have two working pink nav buttons — "לעוד תוכן בנושא הזה" (dynamic, links to the Node's own first public Topic) and "לכל הנושאים באתר" (static, same destination as the homepage's own button) — see Topic Navigation above. Resolved 2026-08-04; previously this was an open product decision and the button did nothing (`href="#"`).
 
 ## Operational lesson worth knowing
 

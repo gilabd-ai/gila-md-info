@@ -38,8 +38,11 @@
     "linkUrl": "/medical-disclaimer/"
   },
   "moreLinkButton": {
-    "text": "לעוד תוכן בנושא",
-    "url": "#"
+    "text": "לעוד תוכן בנושא הזה"
+  },
+  "allTopicsButton": {
+    "text": "לכל הנושאים באתר",
+    "url": "/topics/"
   },
   "homeNavBar": {
     "text": "לדף הבית",
@@ -59,11 +62,7 @@
       "ד\"ר גילה בן־דוד היא רופאת נשים, מומחית במיילדות, גינקולוגיה ופריון, ובוגרת בית הספר לרפואה של האוניברסיטה העברית והדסה."
     ],
     "topicSelectorLabel": "עיון לפי נושא",
-    "topicSelectorPlaceholder": "בחרו נושא",
-    "allTopicsButton": {
-      "text": "לכל הנושאים",
-      "url": "/topics/"
-    }
+    "topicSelectorPlaceholder": "בחרו נושא"
   },
   "topicsIndexPage": {
     "pageTitle": "כל הנושאים | ד\"ר גילה בן-דוד",

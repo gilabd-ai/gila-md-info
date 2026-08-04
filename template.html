@@ -281,6 +281,12 @@
   }
 
   /* ---------- More link ---------- */
+  .node-nav-buttons{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:14px;
+  }
   .more-link{
     display:flex;
     align-items:center;
@@ -465,7 +471,9 @@
 
 {{RELATED_SECTION_HTML}}
 
-  <a class="more-link" href="{{MORE_LINK_URL}}" onclick="return false;">{{MORE_LINK_TEXT}}</a>
+  <div class="node-nav-buttons">
+{{MORE_LINK_BUTTON_HTML}}  <a class="more-link" href="{{ALL_TOPICS_BUTTON_URL}}">{{ALL_TOPICS_BUTTON_TEXT}}</a>
+  </div>
 
   <a class="site-disclaimer" href="{{DISCLAIMER_LINK_URL}}">{{DISCLAIMER_ICON}} {{DISCLAIMER_SHORT_TEXT}} <span class="disclaimer-underline">{{DISCLAIMER_LINK_PREFIX}} {{DISCLAIMER_LINK_TEXT}}</span>.</a>
 </main>

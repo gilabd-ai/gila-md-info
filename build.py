@@ -410,6 +410,23 @@ def _is_internal_only(node: dict, registry: dict) -> bool:
     return set(category_ids) <= registry["internalCategoryIds"]
 
 
+def _first_public_topic_id(node: dict, registry: dict) -> str | None:
+    """
+    The first non-internal category id in `node`'s primaryCategoryIds,
+    in array order (array order is the deliberate priority — the
+    site owner controls it by ordering the field, not by any scoring).
+    Returns None if the Node has no public category at all (e.g. the
+    Template Node, which is internal-only), in which case the
+    "more content on this topic" button is omitted entirely rather
+    than pointing anywhere.
+    """
+    category_ids = node.get("classification", {}).get("primaryCategoryIds") or []
+    for category_id in category_ids:
+        if category_id not in registry["internalCategoryIds"]:
+            return category_id
+    return None
+
+
 def select_related_nodes(node: dict, nodes_by_id: dict[str, dict],
                           published_only: bool) -> list[dict]:
     """
@@ -825,6 +842,22 @@ def _json_for_inline_script(data) -> str:
     return raw
 
 
+def render_more_link_button_html(node: dict, site_config: dict, registry: dict) -> str:
+    """
+    The first of the two Node-page pink nav buttons — "more content on
+    this Topic" — linking to the Node's first public Topic page
+    (_first_public_topic_id(), array order). Omitted entirely (empty
+    string) when the Node has no public category, e.g. the Template
+    Node, rather than rendered with a dead/placeholder destination.
+    """
+    topic_id = _first_public_topic_id(node, registry)
+    if topic_id is None:
+        return ""
+    text = html.escape(site_config["moreLinkButton"]["text"], quote=True)
+    url = html.escape(f"/topics/{topic_id}/", quote=True)
+    return f'  <a class="more-link" href="{url}">{text}</a>\n'
+
+
 def render_node_html(node: dict, template: str, site_config: dict,
                       nodes_by_id: dict[str, dict], published_only: bool,
                       registry: dict) -> str:
@@ -884,8 +917,6 @@ def render_node_html(node: dict, template: str, site_config: dict,
         "{{UI_WATCH_LABEL}}": site_config["uiLabels"]["watchSectionLabel"],
         "{{UI_VIDEO_ENDED}}": site_config["uiLabels"]["videoEnded"],
         "{{UI_CLOSE_ARIA}}": site_config["uiLabels"]["closeVideoAriaLabel"],
-        "{{MORE_LINK_TEXT}}": site_config["moreLinkButton"]["text"],
-        "{{MORE_LINK_URL}}": site_config["moreLinkButton"]["url"],
         "{{HOME_NAV_TEXT}}": site_config["homeNavBar"]["text"],
         "{{HOME_NAV_URL}}": site_config["homeNavBar"]["url"],
         "{{DISCLAIMER_ICON}}": site_config["disclaimer"]["icon"],
@@ -897,6 +928,9 @@ def render_node_html(node: dict, template: str, site_config: dict,
         "{{END_CLOSE_LABEL}}": site_config["endOfVideoButtons"]["close"],
         "{{RELATED_SECTION_HTML}}": render_related_section(default_related_cards, site_config),
         "{{RELATED_CANDIDATES_JSON}}": _json_for_inline_script(related_candidates_payload),
+        "{{MORE_LINK_BUTTON_HTML}}": render_more_link_button_html(node, site_config, registry),
+        "{{ALL_TOPICS_BUTTON_TEXT}}": site_config["allTopicsButton"]["text"],
+        "{{ALL_TOPICS_BUTTON_URL}}": site_config["allTopicsButton"]["url"],
     }
 
     output = template
@@ -1002,8 +1036,8 @@ def build_homepage(published_nodes: list[dict], active_topics: list[dict]) -> Pa
         "{{TOPIC_SELECTOR_LABEL}}": homepage_cfg["topicSelectorLabel"],
         "{{TOPIC_SELECTOR_PLACEHOLDER}}": homepage_cfg["topicSelectorPlaceholder"],
         "{{TOPIC_SELECTOR_OPTIONS_HTML}}": topic_selector_options_html,
-        "{{ALL_TOPICS_BUTTON_TEXT}}": homepage_cfg["allTopicsButton"]["text"],
-        "{{ALL_TOPICS_BUTTON_URL}}": homepage_cfg["allTopicsButton"]["url"],
+        "{{ALL_TOPICS_BUTTON_TEXT}}": site_config["allTopicsButton"]["text"],
+        "{{ALL_TOPICS_BUTTON_URL}}": site_config["allTopicsButton"]["url"],
         "{{DISCLAIMER_ICON}}": site_config["disclaimer"]["icon"],
         "{{DISCLAIMER_SHORT_TEXT}}": site_config["disclaimer"]["shortText"],
         "{{DISCLAIMER_LINK_PREFIX}}": site_config["disclaimer"]["linkPrefix"],

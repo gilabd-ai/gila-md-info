@@ -234,11 +234,15 @@ TOPIC NAVIGATION
       render_node_card_html() — no separate card-rendering logic).
     - The All-Topics page (/topics/) lists every active Topic with its
       Hebrew name and Node count, linking to its Topic page.
-    - The homepage's "לכל הנושאים" button has its own dedicated
-      site-config value (homepage.allTopicsButton) — it deliberately
-      does NOT reuse moreLinkButton (the config already shared by every
-      Node page's own button), so changing one can never accidentally
-      change the other.
+    - The homepage's "לכל הנושאים באתר" button and each Node page's own
+      second pink button share one site-config value (top-level
+      allTopicsButton, both text and url) — they are literally the same
+      button in two places, so it made sense to share the config once
+      Node pages got their own "All Topics" button too. Node pages'
+      FIRST pink button (moreLinkButton) is a separate config on
+      purpose: it always renders the same text, but its href is
+      computed per-Node at build time (see below), not stored in
+      site-config.
     - Topic pages and /topics/ are included in sitemap.xml automatically
       — only ever the real, active set; nothing inactive is ever listed.
 
@@ -439,9 +443,9 @@ separate, explicit go-ahead.
 
 DONE / stable (unchanged from the approved design):
     - Header, home nav bar, video viewer, title, description with
-      read-more/show-less, three related-cards, "לעוד תוכן בנושא"
-      button, medical disclaimer strip — all pixel- and behavior-
-      identical to the originally approved Node.
+      read-more/show-less, three related-cards, medical disclaimer
+      strip — all pixel- and behavior-identical to the originally
+      approved Node.
 
 NEWLY BUILT in this pass:
     - Real build system with nodes/ and assets/ folders (previously
@@ -461,9 +465,13 @@ STILL OPEN / needs a decision before real production publishing:
     - Topic navigation (Homepage Topic Selector, individual Topic
       pages, the All-Topics page) is now built and automatic — see
       section 1, "TOPIC NAVIGATION". There is no free-text search bar
-      (the Topic Selector is a closed list, not search), and Node
-      pages' own "לעוד תוכן בנושא" button is intentionally unchanged for
-      now — that's a separate, not-yet-made product decision.
+      (the Topic Selector is a closed list, not search). Each Node page
+      now has two pink nav buttons: "לעוד תוכן בנושא הזה" (dynamic —
+      links to the Node's own first public Topic page, see section 1)
+      and "לכל הנושאים באתר" (static — same /topics/ destination as the
+      homepage button). A Node whose primaryCategoryIds are all
+      internal (e.g. the Template Node) gets only the second button —
+      the first is omitted rather than pointed nowhere.
     - Related Knowledge is now fully automatic — build-time ranking by
       shared category/tag/priority, plus a browser-side variety layer
       (see section 1, "RELATED KNOWLEDGE"). There is no manual
