@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0006",
+  "slug": "teenagers-gynecological-exam-before-birth-control-pills",
+  "youtube": {
+    "videoId": "wnx0FmTk-fs",
+    "title": "האם חייבים בדיקה גינקולוגית לפני התחלת גלולות?",
+    "description": "הרבה נערות דוחות את הפגישה הראשונה עם רופא או רופאת נשים רק בגלל החשש מהבדיקה הגינקולוגית.\nאבל אם את בריאה, אין לך תלונות מיוחדות, המחזורים שלך סדירים, וכל המטרה היא להתחיל גלולות כאמצעי מניעה – ברוב המקרים אין צורך בבדיקה גינקולוגית פנימית לפני התחלת גלולות.\nהפגישה הראשונה היא בעיקר שיחה. הרופא ישאל על הבריאות שלך, על מחלות רקע, על קרישי דם או קרישיות יתר אצלך או במשפחה, על תרופות קבועות, על עישון, על מיגרנות, על המחזורים שלך ועל גורמי סיכון נוספים. במידת הצורך הוא גם יוודא שיש מדידת לחץ דם עדכנית, ולעיתים יפנה לבדיקות נוספות, כמו בדיקות דם.\nבדיקה גינקולוגית פנימית נעשית רק כשיש לכך סיבה רפואית – למשל כאבים, דימומים חריגים, הפרשות לא רגילות או תלונות אחרות. היא אינה חלק שגרתי מהתחלת גלולות אצל נערה בריאה ללא תסמינים.\nאם החשש מהבדיקה הוא הדבר שמונע ממך להגיע לייעוץ – חשוב שתדעי שברוב המקרים אין סיבה לחשוש. אל תתני לפחד למנוע ממך לקבל אמצעי מניעה שמתאים לך ולהגן על עצמך.",
+    "publishedAt": "2026-05-19T16:54:27Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/wnx0FmTk-fs/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-08-04T07:02:13Z"
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "contraception",
+      "gynecological-exams",
+      "adolescent-gynaecology",
+      "common-myths"
+    ],
+    "primaryTagIds": [
+      "combined-pill",
+      "birth-control-pills",
+      "pelvic-exam",
+      "examination-anxiety",
+      "menstrual-education",
+      "adolescent-health",
+      "teen-contraception",
+      "medical-myths"
+    ],
+    "secondaryTagIds": [
+      "exam-preparation"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-08-04",
+    "status": "current"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-04"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
