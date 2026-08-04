@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0007",
+  "slug": "is-a-late-period-always-pregnancy",
+  "youtube": {
+    "videoId": "ymehQunKrKM",
+    "title": "איחור במחזור – האם זה בהכרח היריון?",
+    "description": "כשהמחזור מתעכב, המחשבה הראשונה של נשים רבות היא: \"אולי אני בהיריון?\"\nאבל חשוב לדעת שעיכוב במחזור לא תמיד קשור להיריון. יש לא מעט גורמים שיכולים להשפיע על מועד הופעת הווסת, גם אצל נשים שבדרך כלל המחזור שלהן סדיר.\nבין הסיבות האפשריות לעיכוב במחזור:\nמתח נפשי או תקופה עמוסה במיוחד.\nמחלה חריפה או חום.\nירידה או עלייה משמעותית במשקל.\nפעילות גופנית אינטנסיבית.\nשינויים בשעות השינה או ג'ט לג בעקבות טיסה.\nשינויים הורמונליים, כולל בתקופת ההתבגרות או לקראת גיל המעבר.\nשחלות פוליציסטיות (PCOS).\nהפרעות בתפקוד בלוטת התריס.\nתרופות מסוימות או שינויים באמצעי מניעה הורמונליים.\nאם קיימת אפשרות להיריון, כמובן שכדאי לבצע בדיקת היריון ביתית. אם הבדיקה שלילית והמחזור עדיין לא מגיע, או אם העיכובים חוזרים על עצמם, מומלץ לפנות לרופא או לרופאת נשים לצורך בירור. לעיתים מדובר בשינוי זמני וחולף, ולעיתים יש סיבה רפואית שכדאי לזהות ולטפל בה.\nהגוף שלנו מושפע מגורמים רבים, ולכן מחזור שמאחר אינו בהכרח סימן להיריון. הסתכלות על התמונה המלאה תעזור להבין מה הסיבה ומה הצעד הנכון הבא.",
+    "publishedAt": "2026-05-20T18:57:51Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/ymehQunKrKM/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-08-04T13:14:06Z"
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "menstruation"
+    ],
+    "primaryTagIds": [
+      "missed-period",
+      "period-delay",
+      "menstruation",
+      "pregnancy-test",
+      "early-pregnancy",
+      "pregnancy",
+      "pregnancy-myths",
+      "myths",
+      "irregular-periods",
+      "menstrual-cycle",
+      "menstrual-education"
+    ],
+    "secondaryTagIds": [
+      "trying-to-conceive",
+      "ovulation",
+      "menstrual-health",
+      "facts-vs-myths",
+      "medical-myths"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-08-04"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-04"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
