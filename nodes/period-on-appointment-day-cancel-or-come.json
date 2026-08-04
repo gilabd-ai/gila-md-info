@@ -12,14 +12,20 @@
     "lastSyncedAt": "2026-07-26T22:39:14Z"
   },
   "classification": {
-    "primaryCategoryIds": ["gynecological-exams"],
-    "primaryTagIds": ["menstruation", "appointment-planning"],
-    "secondaryTagIds": ["pelvic-exam"]
+    "primaryCategoryIds": [
+      "gynecological-exams"
+    ],
+    "primaryTagIds": [
+      "menstruation",
+      "appointment-planning"
+    ],
+    "secondaryTagIds": [
+      "pelvic-exam"
+    ]
   },
   "priority": 1,
   "clinical": {
-    "lastReviewedAt": "2026-07-19",
-    "status": "current"
+    "lastReviewedAt": "2026-07-19"
   },
   "publishing": {
     "status": "published",

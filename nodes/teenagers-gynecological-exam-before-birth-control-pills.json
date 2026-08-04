@@ -34,8 +34,7 @@
   },
   "priority": 1,
   "clinical": {
-    "lastReviewedAt": "2026-08-04",
-    "status": "current"
+    "lastReviewedAt": "2026-08-04"
   },
   "publishing": {
     "status": "published",

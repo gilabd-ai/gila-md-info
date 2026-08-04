@@ -12,14 +12,20 @@
     "lastSyncedAt": "2026-07-26T22:39:14Z"
   },
   "classification": {
-    "primaryCategoryIds": ["gynecological-exams"],
-    "primaryTagIds": ["pelvic-exam", "examination-position"],
-    "secondaryTagIds": ["patient-comfort"]
+    "primaryCategoryIds": [
+      "gynecological-exams"
+    ],
+    "primaryTagIds": [
+      "pelvic-exam",
+      "examination-position"
+    ],
+    "secondaryTagIds": [
+      "patient-comfort"
+    ]
   },
   "priority": 1,
   "clinical": {
-    "lastReviewedAt": "2026-07-18",
-    "status": "current"
+    "lastReviewedAt": "2026-07-18"
   },
   "publishing": {
     "status": "published",

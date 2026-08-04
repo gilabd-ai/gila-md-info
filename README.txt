@@ -18,6 +18,9 @@ HOW TO ADD A NEW KNOWLEDGE NODE
        new file name becomes the Node's slug/URL, so use only English
        letters, numbers, and hyphens, e.g.
        nodes/how-to-prepare-for-an-ultrasound.json
+       (When Claude is the one creating the Node, Claude proposes this
+       slug from the video's title and asks for approval first — it is
+       never picked silently.)
        (nodes/template-node.json itself is a permanently reserved Node
        that exists only to be copied. It IS published — it has a real,
        directly-accessible page at /nodes/template-node/ — but its
@@ -52,10 +55,12 @@ HOW TO ADD A NEW KNOWLEDGE NODE
                                               it. No default: the build
                                               fails if it's missing.
          - clinical.lastReviewedAt           the date it was medically reviewed
-         - clinical.status                   "current", "needs-review", or "outdated"
          - publishing.status                 "draft" while working on it,
                                               "published" when it's ready to go live
-         - publishing.publishedAt            the date it should go live
+         - publishing.publishedAt            set automatically to today's real
+                                              date the moment the Node is
+                                              published — you never need to
+                                              provide this yourself
     4. Save the file. That's the only file you ever need to touch to
        add a new Node — no HTML editing, ever. "Related Knowledge" cards
        are computed automatically at build time from classification and

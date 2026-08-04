@@ -12,14 +12,17 @@
     "lastSyncedAt": "2026-08-02T13:18:58Z"
   },
   "classification": {
-    "primaryCategoryIds": ["template-node"],
-    "primaryTagIds": ["template-node"],
+    "primaryCategoryIds": [
+      "template-node"
+    ],
+    "primaryTagIds": [
+      "template-node"
+    ],
     "secondaryTagIds": []
   },
   "priority": 0,
   "clinical": {
-    "lastReviewedAt": "2026-08-02",
-    "status": "current"
+    "lastReviewedAt": "2026-08-02"
   },
   "publishing": {
     "status": "published",

@@ -139,8 +139,6 @@ def validate_for_publication(node: dict) -> list[str]:
     clinical = node.get("clinical", {})
     if not clinical.get("lastReviewedAt"):
         errors.append("clinical.lastReviewedAt is missing")
-    if clinical.get("status") not in ("current", "needs-review", "outdated"):
-        errors.append("clinical.status must be 'current', 'needs-review', or 'outdated' (currently missing/invalid)")
 
     publishing = node.get("publishing", {})
     if not publishing.get("publishedAt"):
