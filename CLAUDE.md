@@ -10,7 +10,7 @@ Language: Hebrew throughout. Every page is `<html lang="he" dir="rtl">`.
 
 ## Hard, non-negotiable rule — read this first
 
-Claude must NEVER invent, guess, or assume any editorial, clinical, or classification data. This is a real medical website, not a demo. If a field is genuinely unset, it stays exactly as-is — `null`, `"unassigned"`, or whatever the real placeholder value is — never filled in with something plausible-sounding. This applies to category assignments, the clinical review date, priority, and anything a human (Dr. Ben-David) is meant to decide, not Claude. When in doubt, leave it unset and ask, rather than guess. (The two narrow, explicitly-requested exceptions are `publishing.publishedAt` and `slug` — see "Node-creation conventions" below — and even the slug still requires her approval before a Node is created.)
+Claude must NEVER invent, guess, or assume any editorial, clinical, or classification data. This is a real medical website, not a demo. If a field is genuinely unset, it stays exactly as-is — `null`, `"unassigned"`, or whatever the real placeholder value is — never filled in with something plausible-sounding. This applies to category assignments, priority, and anything a human (Dr. Ben-David) is meant to decide, not Claude. When in doubt, leave it unset and ask, rather than guess. (The narrow, explicitly-requested exceptions are `publishing.publishedAt`, `clinical.lastReviewedAt`, and `slug` — see "Node-creation conventions" below — and even the slug still requires her approval before a Node is created.)
 
 ## Architecture — three independent Python modules
 
@@ -58,8 +58,10 @@ priority                     0 | 1 | 2 | 3 — a TOP-LEVEL field, a sibling
                              1 = highest, 2 = normal, 3 = lowest. No
                              default: the build fails if it's missing.
 clinical:
-  lastReviewedAt              real date only — never invent; feeds the
-                             page's JSON-LD `lastReviewed` field
+  lastReviewedAt              real date; feeds the page's JSON-LD
+                             `lastReviewed` field. Filled in automatically
+                             (see "Node-creation conventions" below) —
+                             not asked for on every new Node
 publishing:
   status                      "draft" | "published" | "unpublished" | "archived"
   publishedAt                  the PAGE's own publish date (distinct from
@@ -72,9 +74,9 @@ timestamps:
 
 ### Node-creation conventions (workflow, not schema)
 
-These are things about *how a new Node file gets filled in*, not the schema itself — there's still no Node-creation UI (see "Known, deliberate gaps"), so a human is always the one writing the JSON, whether that's the site owner directly or Claude on her behalf in a session. Two standing conventions the site owner has asked for:
+These are things about *how a new Node file gets filled in*, not the schema itself — there's still no Node-creation UI (see "Known, deliberate gaps"), so a human is always the one writing the JSON, whether that's the site owner directly or Claude on her behalf in a session. Standing conventions the site owner has asked for:
 
-* `publishing.publishedAt` — Claude fills this in automatically with the real current date at the moment the Node is published, rather than asking the site owner for it. This is still a real, human-supplied value (not computed at build time — `build.py` must stay a pure, deterministic renderer, and re-deriving "today" on every rebuild would corrupt the "first went live" meaning documented above), it's just that Claude, not the site owner, is the one who fills it in.
+* `publishing.publishedAt` and `clinical.lastReviewedAt` — Claude fills both in automatically with the real current date at the moment the Node is published, rather than asking the site owner for either. Her stated workflow is "I create the video, then I create the Node" — she is the one making the content, so for her the review date and the publish date are always the same real-world moment; asking for it separately every time was pure friction. This is still real, human-supplied data (not computed at build time — `build.py` must stay a pure, deterministic renderer, and re-deriving "today" on every rebuild would corrupt the "first went live"/"last reviewed" meanings documented above), it's just that Claude, not the site owner, is the one who fills it in — and only at the moment a Node actually becomes `published`, never silently updated on a later edit to an already-published Node (e.g. a classification/tag change) unless she explicitly asks for a re-review.
 * `slug` — Claude proposes a slug (in English, derived from the video's title/topic) for every new Node, but always presents it to the site owner for approval before finalizing, rather than picking one silently. She may want to adjust it.
 
 ## `data/code-categories-and-tags.json` — the classification registry

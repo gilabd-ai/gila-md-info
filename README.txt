@@ -54,7 +54,14 @@ HOW TO ADD A NEW KNOWLEDGE NODE
                                               "classification", not inside
                                               it. No default: the build
                                               fails if it's missing.
-         - clinical.lastReviewedAt           the date it was medically reviewed
+         - clinical.lastReviewedAt           set automatically to today's real
+                                              date the moment the Node is
+                                              published — you never need to
+                                              provide this yourself (same
+                                              convention as publishing.publishedAt
+                                              below, since for this site the
+                                              review date and publish date are
+                                              always the same real moment)
          - publishing.status                 "draft" while working on it,
                                               "published" when it's ready to go live
          - publishing.publishedAt            set automatically to today's real
