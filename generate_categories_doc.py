@@ -33,55 +33,137 @@ OUTPUT_PATH = BASE_DIR / "docs" / "gila-categories-and-tags.html"
 # relevant to both); that repetition is a display choice and has no
 # effect on the canonical registry, which stores each id exactly once.
 CATEGORY_TAG_GROUPS = [
-    ("gynecological-exams", ["pelvic-exam", "patient-comfort", "examination-position",
-        "speculum-exam", "bimanual-exam", "cervix-visualization", "exam-preparation",
-        "exam-during-period", "appointment-planning"]),
-    ("menstruation", ["heavy-bleeding", "painful-periods", "irregular-periods",
-        "missed-period", "spotting", "period-delay", "period-length", "menstrual-cycle"]),
-    ("contraception", ["birth-control-pills", "continuous-pill-use", "iud",
-        "emergency-contraception", "contraceptive-implant", "contraceptive-ring",
-        "contraceptive-patch"]),
-    ("fertility", ["ovulation", "trying-to-conceive", "fertility-evaluation",
-        "fertile-window", "amh", "ivf", "embryo-transfer", "menstruation"]),
-    ("pregnancy", ["pregnancy-test", "early-pregnancy", "pregnancy-symptoms",
-        "nutrition-in-pregnancy", "exercise-in-pregnancy", "travel-in-pregnancy",
-        "vaccination-in-pregnancy"]),
-    ("pregnancy-loss", ["miscarriage", "recurrent-miscarriage", "missed-miscarriage",
-        "medical-management", "surgical-management", "recovery-after-miscarriage"]),
-    ("postpartum", ["breastfeeding", "postpartum-recovery", "baby-blues",
-        "postpartum-bleeding", "pelvic-floor", "postpartum-checkup"]),
-    ("menopause", ["hot-flashes", "night-sweats", "sleep", "mood", "weight", "bone-health"]),
-    ("hormone-replacement-therapy", ["hrt-benefits", "hrt-risks", "breast-cancer-risk",
-        "hrt-types", "estrogen", "progesterone", "hrt-myths"]),
-    ("sexual-health", ["pain-during-sex", "low-libido", "sexual-function", "lubricants", "intimacy"]),
-    ("vulva-and-vagina", ["vaginal-discharge", "itching", "yeast-infection",
-        "bacterial-vaginosis", "vaginal-dryness"]),
-    ("cervix", ["pap-smear", "colposcopy", "cervical-polyp", "cervicitis"]),
-    ("uterus", ["endometrial-polyp", "adenomyosis", "abnormal-bleeding", "endometrial-thickness"]),
-    ("ovaries", ["ovarian-cyst", "ovarian-torsion", "ovarian-reserve", "ovulation-pain"]),
-    ("pelvic-pain", ["chronic-pelvic-pain", "acute-pelvic-pain", "pelvic-infection", "diagnosis"]),
-    ("endometriosis-and-adenomyosis", ["endometriosis", "adenomyosis", "diagnosis",
-        "treatment", "fertility-impact"]),
-    ("pcos", ["pcos-diagnosis", "irregular-periods", "acne", "hirsutism",
-        "weight-management", "fertility"]),
-    ("fibroids", ["fibroids", "heavy-bleeding", "fibroid-treatment", "embolization", "myomectomy"]),
-    ("hpv", ["hpv-vaccine", "hpv-testing", "hpv-transmission", "hpv-clearance", "high-risk-hpv"]),
-    ("cervical-cancer-prevention", ["screening", "pap-smear", "hpv-testing", "vaccination"]),
-    ("breast-health", ["breast-pain", "breast-lump", "breast-self-awareness",
-        "mammography", "breast-ultrasound"]),
-    ("gynecologic-cancers", ["ovarian-cancer", "endometrial-cancer", "cervical-cancer", "warning-signs"]),
-    ("urogynaecology", ["urinary-incontinence", "pelvic-organ-prolapse", "overactive-bladder", "pelvic-floor"]),
-    ("adolescent-gynaecology", ["first-period", "puberty", "teen-contraception", "confidentiality"]),
-    ("sexual-development", ["puberty", "breast-development", "menarche", "normal-development"]),
-    ("sexually-transmitted-infections", ["chlamydia", "gonorrhea", "herpes", "syphilis", "hiv"]),
-    ("preventive-medicine", ["screening", "vaccination", "healthy-lifestyle", "routine-checkup"]),
-    ("common-myths", ["myths", "misconceptions", "social-media", "evidence-based-medicine"]),
-    ("medical-procedures", ["hysteroscopy", "endometrial-biopsy", "ultrasound", "office-procedures"]),
-    ("general-womens-health", ["healthy-lifestyle", "nutrition", "exercise", "mental-health"]),
-    # No tags approved yet for these two — see CLAUDE.md / README.txt:
-    # never add a tag here without the user's explicit approval.
-    ("body-and-mind", []),
-    ("medical-innovation", []),
+    ("gynecological-exams", [
+        "pelvic-exam", "patient-comfort", "examination-position", "speculum-exam",
+        "bimanual-exam", "cervix-visualization", "exam-preparation", "exam-during-period",
+        "appointment-planning", "pelvic-floor", "examination-pain", "examination-tips",
+        "examination-anxiety"
+    ]),
+    ("menstruation", [
+        "heavy-bleeding", "painful-periods", "irregular-periods", "missed-period", "spotting",
+        "period-delay", "period-length", "menstrual-cycle", "menstruation",
+        "appointment-planning", "menstrual-health"
+    ]),
+    ("contraception", [
+        "birth-control-pills", "continuous-pill-use", "iud", "emergency-contraception",
+        "contraceptive-implant", "contraceptive-ring", "contraceptive-patch", "combined-pill",
+        "mini-pill", "hormonal-iud", "copper-iud", "contraception-myths"
+    ]),
+    ("fertility", [
+        "ovulation", "trying-to-conceive", "fertility-evaluation", "fertile-window", "amh",
+        "ivf", "embryo-transfer", "menstruation", "fertility", "ovarian-reserve",
+        "fertility-treatment", "sperm", "conception"
+    ]),
+    ("pregnancy", [
+        "pregnancy-test", "early-pregnancy", "pregnancy-symptoms", "nutrition-in-pregnancy",
+        "exercise-in-pregnancy", "travel-in-pregnancy", "vaccination-in-pregnancy", "pregnancy",
+        "first-trimester", "second-trimester", "third-trimester", "fetal-movement",
+        "pregnancy-care", "pregnancy-myths"
+    ]),
+    ("pregnancy-loss", [
+        "miscarriage", "recurrent-miscarriage", "missed-miscarriage", "medical-management",
+        "surgical-management", "recovery-after-miscarriage", "ectopic-pregnancy",
+        "missed-abortion", "pregnancy-loss", "miscarriage-recovery", "miscarriage-myths"
+    ]),
+    ("postpartum", [
+        "breastfeeding", "postpartum-recovery", "baby-blues", "postpartum-bleeding",
+        "pelvic-floor", "postpartum-checkup", "postpartum", "postpartum-depression",
+        "cesarean-recovery", "pelvic-floor-recovery"
+    ]),
+    ("menopause", [
+        "hot-flashes", "night-sweats", "sleep", "mood", "weight", "bone-health", "menopause",
+        "perimenopause", "vaginal-dryness", "menopause-symptoms", "menopause-myths"
+    ]),
+    ("hormone-replacement-therapy", [
+        "hrt-benefits", "hrt-risks", "breast-cancer-risk", "hrt-types", "estrogen",
+        "progesterone", "hrt-myths", "hormone-therapy", "whi-study", "benefits-and-risks",
+        "hormone-therapy-myths"
+    ]),
+    ("sexual-health", [
+        "pain-during-sex", "low-libido", "sexual-function", "lubricants", "intimacy",
+        "sexual-health", "painful-intercourse", "orgasm", "vaginal-lubrication"
+    ]),
+    ("vulva-and-vagina", [
+        "vaginal-discharge", "itching", "yeast-infection", "bacterial-vaginosis",
+        "vaginal-dryness", "vulva", "vagina", "vaginal-itching", "vaginal-odor"
+    ]),
+    ("cervix", [
+        "pap-smear", "colposcopy", "cervical-polyp", "cervicitis", "cervix", "cervical-biopsy"
+    ]),
+    ("uterus", [
+        "endometrial-polyp", "adenomyosis", "abnormal-bleeding", "endometrial-thickness",
+        "uterus", "endometrium", "uterine-anatomy", "uterine-bleeding", "uterine-health"
+    ]),
+    ("ovaries", [
+        "ovarian-cyst", "ovarian-torsion", "ovarian-reserve", "ovulation-pain", "ovaries",
+        "ovulation", "ovarian-health"
+    ]),
+    ("pelvic-pain", [
+        "chronic-pelvic-pain", "acute-pelvic-pain", "pelvic-infection", "diagnosis",
+        "pelvic-pain", "pelvic-cramps", "pelvic-evaluation"
+    ]),
+    ("endometriosis-and-adenomyosis", [
+        "endometriosis", "adenomyosis", "diagnosis", "treatment", "fertility-impact",
+        "endometriosis-diagnosis", "endometriosis-treatment", "chronic-pain"
+    ]),
+    ("pcos", [
+        "pcos-diagnosis", "irregular-periods", "acne", "hirsutism", "weight-management",
+        "fertility", "pcos", "irregular-ovulation", "excess-hair", "insulin-resistance"
+    ]),
+    ("fibroids", [
+        "fibroids", "heavy-bleeding", "fibroid-treatment", "embolization", "myomectomy",
+        "myoma", "uterine-fibroids"
+    ]),
+    ("hpv", [
+        "hpv-vaccine", "hpv-testing", "hpv-transmission", "hpv-clearance", "high-risk-hpv",
+        "hpv", "hpv-infection"
+    ]),
+    ("cervical-cancer-prevention", [
+        "screening", "pap-smear", "hpv-testing", "vaccination", "cervical-cancer",
+        "cervical-prevention"
+    ]),
+    ("breast-health", [
+        "breast-pain", "breast-lump", "breast-self-awareness", "mammography",
+        "breast-ultrasound", "breast-health"
+    ]),
+    ("gynecologic-cancers", [
+        "ovarian-cancer", "endometrial-cancer", "cervical-cancer", "warning-signs",
+        "uterine-cancer", "vulvar-cancer"
+    ]),
+    ("urogynaecology", [
+        "urinary-incontinence", "pelvic-organ-prolapse", "overactive-bladder", "pelvic-floor",
+        "prolapse", "bladder"
+    ]),
+    ("adolescent-gynaecology", [
+        "first-period", "puberty", "teen-contraception", "confidentiality", "adolescent-health",
+        "menstrual-education"
+    ]),
+    ("sexual-development", [
+        "puberty", "breast-development", "menarche", "normal-development", "growth",
+        "adolescence"
+    ]),
+    ("sexually-transmitted-infections", [
+        "chlamydia", "gonorrhea", "herpes", "syphilis", "hiv", "sti"
+    ]),
+    ("preventive-medicine", [
+        "screening", "vaccination", "healthy-lifestyle", "routine-checkup", "prevention"
+    ]),
+    ("common-myths", [
+        "myths", "misconceptions", "social-media", "evidence-based-medicine", "medical-myths",
+        "facts-vs-myths"
+    ]),
+    ("medical-procedures", [
+        "hysteroscopy", "endometrial-biopsy", "ultrasound", "office-procedures", "biopsy",
+        "colposcopy", "surgery"
+    ]),
+    ("general-womens-health", [
+        "healthy-lifestyle", "nutrition", "exercise", "mental-health", "womens-health",
+        "preventive-care"
+    ]),
+    ("body-and-mind", ["stress", "mental-health", "anxiety", "resilience", "wellbeing"]),
+    ("medical-innovation", [
+        "artificial-intelligence", "ai-in-medicine", "research", "innovation", "new-guidelines"
+    ]),
 ]
 
 # Reserved for the internal template Node (nodes/template-node.json) only.
