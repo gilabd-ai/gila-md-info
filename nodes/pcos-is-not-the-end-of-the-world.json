@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0008",
+  "slug": "pcos-is-not-the-end-of-the-world",
+  "youtube": {
+    "videoId": "pTuuQr8CU4o",
+    "title": "שחלות פוליציסטיות: האם אפשר להיכנס להריון ולחיות חיים רגילים?",
+    "description": "שחלות פוליציסטיות הן אחת ההפרעות ההורמונליות השכיחות ביותר בקרב נשים בגיל הפוריות. בשנים האחרונות המונח PCOS (Polycystic Ovary Syndrome) מפנה יותר ויותר מקום לשם PCOM/PCO (Polycystic Ovarian Morphology) כאשר מתייחסים למראה השחלות בלבד, משום שלא כל אישה עם מראה פוליציסטי בשחלות סובלת מהתסמונת עצמה. לכן חשוב להבין שלא מדובר רק בבדיקת אולטרסאונד, אלא באבחנה המבוססת על שילוב של תסמינים, בדיקות דם והערכה רפואית.\nהתסמונת יכולה להתבטא במחזורים לא סדירים, ביוץ לא סדיר, אקנה, שיעור יתר, נשירת שיער ולעיתים גם קושי להרות. אצל חלק מהנשים היא מלווה גם בתנגודת לאינסולין ובשינויים מטבוליים, ולכן חשוב להסתכל על התמונה הבריאותית המלאה – ולא רק על הפוריות.\nהחדשות הטובות הן שיש הרבה מה לעשות. אבחון נכון, התאמת טיפול ושינויים באורח החיים יכולים לשפר משמעותית את התסמינים, לאזן את המחזור, להפחית סיכונים בריאותיים עתידיים, ובמקרים רבים גם לאפשר הריון תקין כאשר זה רלוונטי.\nאם אובחנת עם שחלות פוליציסטיות – את ממש לא לבד. עם ליווי מקצועי נכון אפשר לנהל את המצב, להבין את הגוף שלך ולקבל החלטות שמתאימות לך ולמטרות שלך.",
+    "publishedAt": "2026-05-24T17:18:06Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/pTuuQr8CU4o/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-08-04T13:52:39Z"
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "pcos",
+      "fertility"
+    ],
+    "primaryTagIds": [
+      "pcos-diagnosis",
+      "irregular-periods",
+      "acne",
+      "hirsutism",
+      "weight-management",
+      "fertility",
+      "pcos",
+      "irregular-ovulation",
+      "excess-hair",
+      "insulin-resistance",
+      "ovulation",
+      "healthy-lifestyle",
+      "exercise",
+      "preventive-care",
+      "stress"
+    ],
+    "secondaryTagIds": [
+      "myths",
+      "combined-pill",
+      "mini-pill"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-08-04"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-04"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
