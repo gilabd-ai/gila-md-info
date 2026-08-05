@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0011",
+  "slug": "candida-after-antibiotics",
+  "youtube": {
+    "videoId": "zmJ95UTzLYc",
+    "title": "פטרייה אחרי אנטיביוטיקה – למה זה קורה?",
+    "description": "פטרת אחרי טיפול אנטיביוטי היא תופעה שכיחה, ורבות מהנשים מכירות אותה. הסיבה לכך אינה שהאנטיביוטיקה \"יוצרת\" את הפטרת, אלא שהיא עלולה להפר את האיזון הטבעי של המיקרוביום בנרתיק.\n\nבנרתיק חיים באופן טבעי חיידקים \"טובים\", בעיקר לקטובצילים, שעוזרים לשמור על סביבה חומצית ומגנים מפני התרבות של פטריית הקנדידה. אנטיביוטיקה עלולה להפחית גם את החיידקים המועילים הללו, וכך לאפשר לפטרייה להתרבות ולגרום לתסמינים כמו גרד, צריבה, אודם והפרשה אופיינית.\n\nהבשורה הטובה היא שפטרת לאחר אנטיביוטיקה היא בדרך כלל קלה לאבחון ומגיבה היטב לטיפול המתאים.",
+    "publishedAt": "2026-05-27T14:26:09Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/zmJ95UTzLYc/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-08-05T11:13:12Z"
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "vulva-and-vagina"
+    ],
+    "primaryTagIds": [
+      "vaginal-discharge",
+      "itching",
+      "yeast-infection",
+      "vulva",
+      "vagina",
+      "vaginal-itching",
+      "vaginal-odor",
+      "myths",
+      "misconceptions",
+      "facts-vs-myths"
+    ],
+    "secondaryTagIds": [
+      "healthy-lifestyle",
+      "preventive-care",
+      "herpes",
+      "gonorrhea",
+      "syphilis",
+      "hiv",
+      "sti"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-08-04"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-04"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
