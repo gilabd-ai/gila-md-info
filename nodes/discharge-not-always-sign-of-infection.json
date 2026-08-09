@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0012",
+  "slug": "discharge-not-always-sign-of-infection",
+  "youtube": {
+    "videoId": "KLcdUoOAIOM",
+    "title": "הפרשות מרובות מהנרתיק – האם זה סימן לדלקת?\"",
+    "description": "נשים רבות חושבות שהפרשות מרובות מהנרתיק הן סימן לדלקת, אבל זה ממש לא תמיד נכון.\nהפרשות הן חלק טבעי וחשוב ממערכת ההגנה של הנרתיק. הן מסייעות לשמור על הלחות, על האיזון הטבעי של החיידקים ועל ניקוי עצמי של הנרתיק. לכן, עצם קיומן של הפרשות – ואפילו כמות גדולה יחסית – לא בהכרח מעידים על בעיה.\nכמות ההפרשות משתנה מאוד בין אישה לאישה, וגם אצל אותה אישה היא יכולה להשתנות לאורך המחזור החודשי, סביב הביוץ, בעקבות שינויים הורמונליים, בהריון, עם שימוש בגלולות ובתקופות שונות בחיים.\nאז מתי כן כדאי להיבדק? כאשר מופיעים תסמינים נוספים כמו ריח חריג, גרד, צריבה, כאבים, או שינוי משמעותי וחדש באופי ההפרשה. במקרים כאלה חשוב לפנות לבדיקה כדי לשלול זיהום או מצבים אחרים.\nבקיצור – לא כל הפרשה היא דלקת, ולא כל הפרשה מרובה דורשת טיפול. הכרת הגוף שלך והבנת מה נחשב רגיל עבורך הן חלק חשוב מהבריאות הנשית.",
+    "publishedAt": "2026-05-28T20:32:54Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/KLcdUoOAIOM/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-08-09T15:58:23Z"
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "vulva-and-vagina"
+    ],
+    "primaryTagIds": [
+      "vulva",
+      "vagina",
+      "vaginal-discharge",
+      "vaginal-odor",
+      "vaginal-itching",
+      "itching",
+      "yeast-infection",
+      "bacterial-vaginosis",
+      "pelvic-infection",
+      "menstrual-cycle",
+      "ovulation"
+    ],
+    "secondaryTagIds": [
+      "pregnancy",
+      "birth-control-pills"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-08-04"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-04"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
