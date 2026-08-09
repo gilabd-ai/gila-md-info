@@ -95,6 +95,8 @@
     "watchSectionLabel": "כדאי לצפות",
     "relatedSectionLabel": "אולי יעניין אותך גם",
     "videoEnded": "הסרטון הסתיים",
-    "closeVideoAriaLabel": "סגירת סרטון"
+    "closeVideoAriaLabel": "סגירת סרטון",
+    "topicModalTitle": "בחירת נושא",
+    "topicModalCloseAriaLabel": "סגירת בחירת נושא"
   }
 }

@@ -125,6 +125,106 @@
     outline-offset:2px;
   }
 
+  /* ---------- Topic Selector modal (progressive enhancement over the
+     native <select> above — see script at the bottom of the page) ---------- */
+  .topic-selector-trigger{
+    display:none; /* shown by JS only once the modal has initialized successfully */
+    text-align:right;
+    font-family:'Inter', sans-serif;
+  }
+  .topic-selector-trigger:focus-visible{
+    outline:2px solid var(--blush-deep);
+    outline-offset:2px;
+  }
+
+  .topic-modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(18,50,48,0.45);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:16px;
+    z-index:500;
+  }
+  .topic-modal-overlay[hidden]{ display:none; }
+
+  .topic-modal-dialog{
+    direction:rtl;
+    display:flex;
+    flex-direction:column;
+    width:90vw;
+    max-width:600px;
+    max-height:75vh;
+    background:var(--paper);
+    border:1px solid rgba(242,90,166,0.35);
+    border-radius:var(--radius);
+    box-shadow: 0 20px 50px rgba(18,50,48,0.30);
+    overflow:hidden;
+  }
+
+  .topic-modal-header{
+    flex:none;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:18px 20px;
+    border-bottom:1px solid var(--line);
+    background:var(--paper);
+  }
+  .topic-modal-title{
+    margin:0;
+    font-size:18px;
+    color:var(--teal-deep);
+    text-align:right;
+  }
+  .topic-modal-close{
+    flex:none;
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    border:none;
+    background:rgba(242,90,166,0.12);
+    color:var(--blush-deep);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:background 0.15s ease;
+  }
+  .topic-modal-close:hover{ background:rgba(242,90,166,0.22); }
+  .topic-modal-close:focus-visible{
+    outline:2px solid var(--blush-deep);
+    outline-offset:2px;
+  }
+  .topic-modal-close svg{ width:16px; height:16px; }
+
+  .topic-modal-list{
+    list-style:none;
+    margin:0;
+    padding:10px 12px 18px;
+    overflow-y:auto;
+  }
+  .topic-modal-row{
+    display:block;
+    width:100%;
+    padding:14px 12px;
+    border-radius:10px;
+    text-align:right;
+    color:var(--ink);
+    text-decoration:none;
+    font-size:15px;
+    transition:background 0.12s ease;
+  }
+  .topic-modal-row:hover{ background:rgba(242,90,166,0.10); }
+  .topic-modal-row:focus-visible{
+    outline:2px solid var(--blush-deep);
+    outline-offset:-2px;
+    background:rgba(242,90,166,0.10);
+  }
+  .topic-modal-row:active{ background:rgba(242,90,166,0.18); }
+
   .more-link{
     display:flex;
     align-items:center;
@@ -209,9 +309,14 @@
 {{HOMEPAGE_WELCOME_HTML}}
   </section>
 
-  <!-- Homepage Topic Selector: native <select> only — no free text input,
-       no framework. Keyboard/mobile/screen-reader support come from the
-       browser for free. Navigates on change; never a "#" link. -->
+  <!-- Homepage Topic Selector. The real <select> below is the no-JavaScript
+       fallback and is always fully functional on its own — no free text
+       input, no framework, browser-native keyboard/mobile/screen-reader
+       support. The trigger button + modal are a progressive enhancement:
+       script at the bottom of the page hides this <select> and shows the
+       button ONLY once the modal has initialized successfully. If the
+       script fails or JS is disabled, this <select> is all a visitor
+       ever sees, and it still navigates correctly on change. -->
   <div class="topic-selector-wrap">
     <p class="section-label">{{TOPIC_SELECTOR_LABEL}}</p>
     <select id="topicSelector" class="topic-selector" aria-label="{{TOPIC_SELECTOR_LABEL}}"
@@ -219,6 +324,21 @@
       <option value="" disabled selected>{{TOPIC_SELECTOR_PLACEHOLDER}}</option>
 {{TOPIC_SELECTOR_OPTIONS_HTML}}
     </select>
+    <button type="button" id="topicSelectorTrigger" class="topic-selector topic-selector-trigger" aria-haspopup="dialog">
+      {{TOPIC_SELECTOR_PLACEHOLDER}}
+    </button>
+  </div>
+
+  <div id="topicModalOverlay" class="topic-modal-overlay" hidden>
+    <div id="topicModalDialog" class="topic-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="topicModalTitle">
+      <div class="topic-modal-header">
+        <h2 id="topicModalTitle" class="topic-modal-title">{{TOPIC_MODAL_TITLE}}</h2>
+        <button type="button" id="topicModalClose" class="topic-modal-close" aria-label="{{TOPIC_MODAL_CLOSE_ARIA}}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <ul id="topicModalList" class="topic-modal-list" aria-label="{{TOPIC_SELECTOR_LABEL}}"></ul>
+    </div>
   </div>
 
   <a class="more-link" href="{{ALL_TOPICS_BUTTON_URL}}">{{ALL_TOPICS_BUTTON_TEXT}}</a>
@@ -241,5 +361,95 @@
   <a class="site-disclaimer" href="{{DISCLAIMER_LINK_URL}}">{{DISCLAIMER_ICON}} {{DISCLAIMER_SHORT_TEXT}} <span class="disclaimer-underline">{{DISCLAIMER_LINK_PREFIX}} {{DISCLAIMER_LINK_TEXT}}</span>.</a>
 </main>
 
+<script>
+  // ---- Topic Selector modal (progressive enhancement over the real
+  // <select> above) ----
+  // The <select> is the complete, working fallback — it's never removed
+  // from the page, only visually hidden, and only after everything below
+  // has set up successfully. Any failure here (missing element, JS
+  // disabled, an error) simply leaves the native <select> as the only
+  // thing visitors see, exactly as it always worked before this change.
+  // No Topic data is invented or duplicated: the modal's rows are built
+  // directly from this page's own already-rendered <option> elements.
+  (function(){
+    const nativeSelect = document.getElementById('topicSelector');
+    const trigger = document.getElementById('topicSelectorTrigger');
+    const overlay = document.getElementById('topicModalOverlay');
+    const dialog = document.getElementById('topicModalDialog');
+    const closeBtn = document.getElementById('topicModalClose');
+    const listEl = document.getElementById('topicModalList');
+    if (!nativeSelect || !trigger || !overlay || !dialog || !closeBtn || !listEl) return;
+
+    const options = Array.from(nativeSelect.options).filter(function(o){ return o.value; });
+    if (options.length === 0) return; // no active Topics — nothing to enhance
+
+    options.forEach(function(opt){
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.className = 'topic-modal-row';
+      a.href = opt.value;
+      a.textContent = opt.textContent;
+      li.appendChild(a);
+      listEl.appendChild(li);
+    });
+
+    let lastFocused = null;
+    let previousBodyOverflow = '';
+
+    function getFocusable(){
+      return Array.from(dialog.querySelectorAll('a[href], button:not([disabled])'));
+    }
+
+    function onKeydown(e){
+      if (e.key === 'Escape'){
+        e.preventDefault();
+        closeModal();
+        return;
+      }
+      if (e.key === 'Tab'){
+        const focusable = getFocusable();
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first){
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last){
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+
+    function openModal(){
+      lastFocused = document.activeElement;
+      overlay.hidden = false;
+      previousBodyOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      document.addEventListener('keydown', onKeydown);
+      closeBtn.focus();
+    }
+
+    function closeModal(){
+      overlay.hidden = true;
+      document.body.style.overflow = previousBodyOverflow;
+      document.removeEventListener('keydown', onKeydown);
+      if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+    }
+
+    trigger.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    // Selecting a Topic is a real <a href> navigation — no extra JS needed,
+    // the browser just follows the link and leaves the page.
+    // Deliberately no click-outside-to-close and no backdrop click handler.
+
+    // Everything above worked — now, and only now, swap the native
+    // <select> for the nicer trigger + modal.
+    nativeSelect.style.display = 'none';
+    nativeSelect.setAttribute('aria-hidden', 'true');
+    nativeSelect.tabIndex = -1;
+    trigger.style.display = 'block';
+  })();
+</script>
 </body>
 </html>

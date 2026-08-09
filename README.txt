@@ -242,7 +242,18 @@ TOPIC NAVIGATION
     - Homepage Topic Selector: a native <select> (never free text, never
       a "#" link) showing only active Topics' approved Hebrew names —
       English category ids never reach the visible page. Selecting one
-      navigates straight to /topics/{category-id}/.
+      navigates straight to /topics/{category-id}/. This <select> is a
+      complete, always-working implementation on its own — it's the
+      no-JavaScript fallback. A small inline script in
+      homepage-template.html progressively enhances it into a custom RTL
+      modal/popup (fixed header with "בחירת נושא" + a close button,
+      scrollable full-row Topic list, focus trap), but only swaps to the
+      modal after everything initializes successfully — if JS fails or
+      is disabled, visitors just get the plain <select>, unchanged. The
+      modal's rows are read directly from the <select>'s own <option>
+      elements, never a second copy of Topic data. Closes only on
+      selecting a Topic, the close (X) button, or Escape — deliberately
+      not on clicking outside the modal.
     - Individual Topic pages (/topics/{category-id}/) list every
       matching published+available Node as a card (reusing
       render_node_card_html() — no separate card-rendering logic), and

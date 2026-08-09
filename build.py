@@ -1055,6 +1055,8 @@ def build_homepage(published_nodes: list[dict], active_topics: list[dict]) -> Pa
         "{{TOPIC_SELECTOR_LABEL}}": homepage_cfg["topicSelectorLabel"],
         "{{TOPIC_SELECTOR_PLACEHOLDER}}": homepage_cfg["topicSelectorPlaceholder"],
         "{{TOPIC_SELECTOR_OPTIONS_HTML}}": topic_selector_options_html,
+        "{{TOPIC_MODAL_TITLE}}": site_config["uiLabels"]["topicModalTitle"],
+        "{{TOPIC_MODAL_CLOSE_ARIA}}": site_config["uiLabels"]["topicModalCloseAriaLabel"],
         "{{ALL_TOPICS_BUTTON_TEXT}}": site_config["allTopicsButton"]["text"],
         "{{ALL_TOPICS_BUTTON_URL}}": site_config["allTopicsButton"]["url"],
         "{{DISCLAIMER_ICON}}": site_config["disclaimer"]["icon"],
