@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0014",
+  "slug": "brca-genetic-testing-breast-ovarian-cancer",
+  "youtube": {
+    "videoId": "2HRZGdBLqe4",
+    "title": "BRCA – בדיקה גנטית לסיכון לסרטן השד והשחלות לנשים ממוצא אשכנזי או אתיופי",
+    "description": "בדיקת סקר גנטית שיכולה לזהות סיכון מוגבר לסרטן השד והשחלות מתבצעת באמצעות בדיקת דם פשוטה.\n\nהגנים BRCA1 ו-BRCA2 מעורבים בתיקון נזקים ב-DNA. נשאות של מוטציות מסוימות בגנים האלה מעלה משמעותית את הסיכון להתפתחות סרטן השד והשחלות, וגם קשורה לסיכון מוגבר לסוגי סרטן נוספים.\n\nבישראל קיימות מוטציות שכיחות במיוחד באוכלוסייה ממוצא אשכנזי ובאוכלוסייה ממוצא אתיופי. לכן נשים ממוצא אשכנזי או אתיופי, גם אם המוצא חלקי, זכאיות כיום לבדיקת סקר גנטית במסגרת סל הבריאות וללא תשלום.\n\nחשוב לדעת: לא צריך לחכות שיהיה סיפור משפחתי של סרטן. חלק מהנשים שנושאות מוטציה ב-BRCA אינן מכירות סיפור משפחתי משמעותי, ולכן בדיקת הסקר מיועדת גם לנשים בריאות.\n\nאם מתגלה נשאות, המשמעות אינה שבהכרח יתפתח סרטן — אלא שקיים סיכון מוגבר. הידיעה מאפשרת להתאים מעקב רפואי ואמצעים להפחתת הסיכון.\n\nאם יש במשפחה מקרים של סרטן שד, שחלה, לבלב או ערמונית, או מוטציה גנטית ידועה במשפחה, חשוב לציין זאת בפני הרופא/ה, משום שבמצבים כאלה ייתכן שיידרשו ייעוץ גנטי ובירור רחב יותר ולא רק בדיקת הסקר.",
+    "publishedAt": "2026-05-31T21:19:13Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/2HRZGdBLqe4/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-08-09T20:46:19Z"
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "preventive-medicine",
+      "gynecologic-cancers"
+    ],
+    "primaryTagIds": [
+      "breast-cancer-risk",
+      "ovarian-cancer",
+      "screening",
+      "prevention",
+      "preventive-care"
+    ],
+    "secondaryTagIds": [
+      "routine-checkup",
+      "healthy-lifestyle",
+      "womens-health"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-08-04"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-04"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
