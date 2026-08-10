@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0015",
+  "slug": "hpv-positive-is-negative",
+  "youtube": {
+    "videoId": "Re8evKjidJ8",
+    "title": "בדיקת HPV (פפילומה): מה המשמעות של תוצאה חיובית או שלילית?",
+    "description": "בדיקת HPV בודקת אם בדגימה שנלקחה מצוואר הרחם זוהה נגיף הפפילומה האנושי.\n\nתוצאה שלילית פירושה שבבדיקה הנוכחית לא זוהה HPV מהסוגים שנבדקים. תוצאה חיובית פירושה שהנגיף זוהה — אבל חשוב מאוד: תוצאה חיובית אינה אומרת שיש סרטן, ואפילו לא בהכרח שיש שינוי בתאי צוואר הרחם.\n\nומה אם במשך שנים הבדיקות היו שליליות ופתאום התקבלה תשובה חיובית?\n\nזה לא בהכרח אומר שההדבקה התרחשה לאחרונה. HPV יכול להישאר בגוף ברמה שאינה ניתנת לזיהוי בבדיקה, ולעיתים להתגלות שוב בהמשך. לכן מתוצאה חיובית בלבד אי אפשר לקבוע מתי התרחשה ההדבקה או להסיק מסקנות לגבי בן או בת הזוג.\n\nHPV הוא נגיף נפוץ מאוד, וברוב המקרים מערכת החיסון מצליחה לדכא או לסלק את הזיהום עם הזמן.\n\nמה שחשוב הוא לא להיבהל — אבל גם לא להתעלם. המשמעות של התוצאה והמשך המעקב תלויים בין היתר בסוג ה־HPV שנמצא, בתוצאות בדיקת התאים אם בוצעה, בגיל ובהיסטוריה של הבדיקות הקודמות. בהתאם לכך מחליטים אם יש צורך בבדיקה חוזרת על אופן המעקב והמשך בירור לי צורך",
+    "publishedAt": "2026-06-04T16:58:02Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/Re8evKjidJ8/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-08-10T12:07:55Z"
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "hpv-and-cervical-health",
+      "preventive-medicine"
+    ],
+    "primaryTagIds": [
+      "preventive-care",
+      "womens-health",
+      "pap-smear",
+      "cervix",
+      "hpv-testing",
+      "hpv-infection",
+      "hpv",
+      "screening",
+      "cervical-prevention",
+      "prevention"
+    ],
+    "secondaryTagIds": [
+      "hpv-clearance",
+      "colposcopy",
+      "sti",
+      "pelvic-exam",
+      "diagnosis",
+      "high-risk-hpv"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-08-10"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-10"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
