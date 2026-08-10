@@ -87,9 +87,6 @@ CATEGORY_TAG_GROUPS = [
         "vaginal-discharge", "itching", "yeast-infection", "bacterial-vaginosis",
         "vaginal-dryness", "vulva", "vagina", "vaginal-itching", "vaginal-odor"
     ]),
-    ("cervix", [
-        "pap-smear", "colposcopy", "cervical-polyp", "cervicitis", "cervix", "cervical-biopsy"
-    ]),
     ("uterus", [
         "endometrial-polyp", "adenomyosis", "abnormal-bleeding", "endometrial-thickness",
         "uterus", "endometrium", "uterine-anatomy", "uterine-bleeding", "uterine-health"
@@ -114,12 +111,10 @@ CATEGORY_TAG_GROUPS = [
         "fibroids", "heavy-bleeding", "fibroid-treatment", "embolization", "myomectomy",
         "myoma", "uterine-fibroids"
     ]),
-    ("hpv", [
+    ("hpv-and-cervical-health", [
+        "pap-smear", "colposcopy", "cervical-polyp", "cervicitis", "cervix", "cervical-biopsy",
         "hpv-vaccine", "hpv-testing", "hpv-transmission", "hpv-clearance", "high-risk-hpv",
-        "hpv", "hpv-infection"
-    ]),
-    ("cervical-cancer-prevention", [
-        "screening", "pap-smear", "hpv-testing", "vaccination", "cervical-cancer",
+        "hpv", "hpv-infection", "screening", "vaccination", "cervical-cancer",
         "cervical-prevention"
     ]),
     ("breast-health", [
