@@ -70,11 +70,9 @@ CATEGORY_TAG_GROUPS = [
         "pelvic-floor", "postpartum-checkup", "postpartum", "postpartum-depression",
         "cesarean-recovery", "pelvic-floor-recovery"
     ]),
-    ("menopause", [
+    ("menopause-and-hrt", [
         "hot-flashes", "night-sweats", "sleep", "mood", "weight", "bone-health", "menopause",
-        "perimenopause", "vaginal-dryness", "menopause-symptoms", "menopause-myths"
-    ]),
-    ("hormone-replacement-therapy", [
+        "perimenopause", "vaginal-dryness", "menopause-symptoms", "menopause-myths",
         "hrt-benefits", "hrt-risks", "breast-cancer-risk", "hrt-types", "estrogen",
         "progesterone", "hrt-myths", "hormone-therapy", "whi-study", "benefits-and-risks",
         "hormone-therapy-myths"
