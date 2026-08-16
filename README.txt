@@ -36,6 +36,16 @@ HOW TO ADD A NEW KNOWLEDGE NODE
          - youtube.title                     becomes the page's title
          - youtube.description                becomes the page's body text
          - youtube.thumbnailUrl              the video's thumbnail image URL
+         - youtube.durationSeconds           NEVER fill this in by hand —
+                                              leave it as-is and run
+                                                  python3 youtube_sync.py --node YOUR-SLUG-HERE
+                                              before publishing. Sync reads
+                                              the video's real duration
+                                              from YouTube and stores it
+                                              here automatically. A
+                                              "published" Node with no
+                                              durationSeconds fails the
+                                              build.
          - classification.primaryCategoryIds  1+ category ids, copied
                                               exactly from
                                               data/code-categories-and-tags.json

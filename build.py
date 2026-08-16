@@ -135,6 +135,8 @@ def validate_for_publication(node: dict) -> list[str]:
         errors.append("youtube.title is missing or empty")
     if not yt.get("description"):
         errors.append("youtube.description is missing or empty")
+    if yt.get("durationSeconds") is None:
+        errors.append("youtube.durationSeconds is missing")
 
     clinical = node.get("clinical", {})
     if not clinical.get("lastReviewedAt"):
@@ -541,6 +543,28 @@ def generate_meta_description(full_description: str, max_chars: int = META_DESCR
     return window[:last_space].rstrip() + "…"
 
 
+def format_duration_he(duration_seconds: int) -> str:
+    """
+    Renders youtube.durationSeconds (a plain integer, Sync-managed — see
+    youtube_sync.py) as the natural-Hebrew duration line shown under the
+    "כדאי לצפות" heading. Deterministic, offline — no rounding beyond
+    whole seconds, since durationSeconds is already a whole number.
+
+    Under 60s:      "אורך הסרטון: 18 שניות"
+    Exact minutes:  "אורך הסרטון: 2 דקות"
+    Minutes+seconds: "אורך הסרטון: 1 דקות ו־17 שניות"
+
+    Deliberately never clock format ("0:18", "1:17") — see the approved
+    UI spec this was built against.
+    """
+    minutes, seconds = divmod(duration_seconds, 60)
+    if minutes == 0:
+        return f"אורך הסרטון: {seconds} שניות"
+    if seconds == 0:
+        return f"אורך הסרטון: {minutes} דקות"
+    return f"אורך הסרטון: {minutes} דקות ו־{seconds} שניות"
+
+
 def _canonical_url(site_config: dict, path: str) -> str:
     """
     Absolute canonical URL for `path` (e.g. "/nodes/some-slug/") built
@@ -914,8 +938,9 @@ def render_node_html(node: dict, template: str, site_config: dict,
         "{{SOCIAL_FACEBOOK_URL}}": social["Facebook"],
         "{{SOCIAL_TIKTOK_URL}}": social["TikTok"],
         "{{NODE_ID}}": node["id"],
-        "{{NODE_TITLE}}": node["youtube"]["title"],
-        "{{NODE_DESCRIPTION}}": node["youtube"]["description"],
+        "{{NODE_TITLE}}": html.escape(node["youtube"]["title"], quote=True),
+        "{{NODE_DESCRIPTION}}": html.escape(node["youtube"]["description"], quote=True),
+        "{{VIDEO_DURATION_TEXT}}": format_duration_he(node["youtube"]["durationSeconds"]),
         "{{VIDEO_ID}}": video_id,
         "{{VIDEO_THUMBNAIL_URL}}": thumbnail_url,
         "{{VIDEO_THUMBNAIL_FALLBACK_URL}}": thumbnail_fallback_url,
