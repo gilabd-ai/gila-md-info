@@ -4,12 +4,13 @@
   "slug": "template-node",
   "youtube": {
     "videoId": "ixOtOOGkcYY",
-    "title": "template node",
-    "description": "template node",
+    "title": "טמפלייט עמוד תבנית",
+    "description": "עמוד תבנית טמפלייט",
     "publishedAt": "2026-08-02T12:47:52Z",
     "thumbnailUrl": "https://i.ytimg.com/vi/ixOtOOGkcYY/maxresdefault.jpg",
     "availability": "available",
-    "lastSyncedAt": "2026-08-02T13:18:58Z"
+    "lastSyncedAt": "2026-08-16T17:22:23Z",
+    "durationSeconds": 7
   },
   "classification": {
     "primaryCategoryIds": [

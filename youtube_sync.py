@@ -17,11 +17,12 @@ reports), never saved to a Node file.
 ──────────────────────────────────────────────────────────────────────
 WHAT SYNC UPDATES, AND WHAT IT NEVER TOUCHES
 ──────────────────────────────────────────────────────────────────────
-Sync may update ONLY these six fields, inside a Node's "youtube" object:
+Sync may update ONLY these seven fields, inside a Node's "youtube" object:
     youtube.title
     youtube.description
     youtube.publishedAt
     youtube.thumbnailUrl
+    youtube.durationSeconds
     youtube.availability
     youtube.lastSyncedAt
 
@@ -34,15 +35,15 @@ any template, or any file outside nodes/*.json.
 THE THREE POSSIBLE OUTCOMES FOR ANY ONE NODE
 ──────────────────────────────────────────────────────────────────────
 1. YouTube responds successfully, video found
-   -> availability = "available", the six fields above are refreshed
+   -> availability = "available", the seven fields above are refreshed
       from YouTube's current data, lastSyncedAt = now.
 
 2. YouTube responds successfully, but this video ID is NOT in the
    results (confirmed missing — deleted, private, etc.)
    -> availability = "unavailable". Previously stored title,
-      description, publishedAt, and thumbnailUrl are LEFT ALONE (not
-      erased). lastSyncedAt IS updated to now, because a real,
-      completed check did happen.
+      description, publishedAt, thumbnailUrl, and durationSeconds are
+      LEFT ALONE (not erased). lastSyncedAt IS updated to now, because
+      a real, completed check did happen.
 
 3. The request itself fails for a technical reason (network error,
    timeout, invalid/quota-exceeded API key, malformed response, or an
@@ -89,6 +90,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import re
 import sys
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -107,10 +109,33 @@ BATCH_SIZE = 50  # YouTube Data API v3's maximum ids per videos.list call
 # apply_sync_result(), which is the only function that writes to a
 # Node's "youtube" object.
 SYNC_MANAGED_FIELDS = (
-    "title", "description", "publishedAt", "thumbnailUrl", "availability", "lastSyncedAt",
+    "title", "description", "publishedAt", "thumbnailUrl", "durationSeconds",
+    "availability", "lastSyncedAt",
 )
 
 _THUMBNAIL_PREFERENCE = ["maxres", "standard", "high", "medium", "default"]
+
+_ISO8601_DURATION_RE = re.compile(
+    r"^PT(?:(?P<hours>\d+)H)?(?:(?P<minutes>\d+)M)?(?:(?P<seconds>\d+)S)?$"
+)
+
+
+def _parse_iso8601_duration(duration: str) -> Optional[int]:
+    """
+    Converts YouTube's contentDetails.duration (ISO 8601, e.g. "PT1M17S",
+    "PT18S", "PT2M") into a whole number of seconds. Returns None if the
+    string doesn't match the expected format — the caller treats that the
+    same as a malformed/missing item, never as "video is 0 seconds long".
+    """
+    if not duration:
+        return None
+    match = _ISO8601_DURATION_RE.match(duration)
+    if not match or not any(match.groups()):
+        return None
+    hours = int(match.group("hours") or 0)
+    minutes = int(match.group("minutes") or 0)
+    seconds = int(match.group("seconds") or 0)
+    return hours * 3600 + minutes * 60 + seconds
 
 
 class SyncError(Exception):
@@ -173,7 +198,7 @@ def fetch_videos_batch(video_ids: list[str], api_key: str) -> dict[str, dict]:
         raise ValueError(f"fetch_videos_batch supports at most {BATCH_SIZE} video IDs per call")
 
     params = {
-        "part": "snippet",
+        "part": "snippet,contentDetails",
         "id": ",".join(video_ids),
         "key": api_key,
     }
@@ -220,11 +245,13 @@ def fetch_videos_batch(video_ids: list[str], api_key: str) -> dict[str, dict]:
         if not title:
             continue
         thumbnails = snippet.get("thumbnails") or {}
+        content_details = item.get("contentDetails") or {}
         results[video_id] = {
             "title": title,
             "description": snippet.get("description", ""),
             "publishedAt": snippet.get("publishedAt"),
             "thumbnailUrl": _select_thumbnail(thumbnails),
+            "durationSeconds": _parse_iso8601_duration(content_details.get("duration")),
         }
 
     return results
@@ -239,10 +266,11 @@ def apply_sync_result(node: dict, fetched: Optional[dict], now_iso: str) -> None
     enforced list of what it's allowed to touch.
 
     fetched = a normalized metadata dict -> video confirmed available;
-              refresh all six managed fields from it.
+              refresh all seven managed fields from it.
     fetched = None -> video confirmed NOT in YouTube's response; mark
               unavailable, and deliberately leave title/description/
-              publishedAt/thumbnailUrl exactly as they were.
+              publishedAt/thumbnailUrl/durationSeconds exactly as they
+              were.
 
     In both cases, lastSyncedAt is updated to now_iso, because a real,
     completed check happened either way.
@@ -255,6 +283,8 @@ def apply_sync_result(node: dict, fetched: Optional[dict], now_iso: str) -> None
             yt["publishedAt"] = fetched["publishedAt"]
         if fetched["thumbnailUrl"]:
             yt["thumbnailUrl"] = fetched["thumbnailUrl"]
+        if fetched["durationSeconds"] is not None:
+            yt["durationSeconds"] = fetched["durationSeconds"]
         yt["availability"] = "available"
     else:
         yt["availability"] = "unavailable"

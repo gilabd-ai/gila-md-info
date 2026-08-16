@@ -42,6 +42,11 @@ youtube:
                              verbatim on the page; never summarized or rewritten
   publishedAt                the video's own YouTube publish date
   thumbnailUrl
+  durationSeconds             the video's real duration in whole seconds,
+                             from YouTube's contentDetails.duration —
+                             Sync-managed, never entered manually; a
+                             published Node with no durationSeconds
+                             fails the build
   availability               "available" | "unavailable" — see Sync section
   lastSyncedAt                ISO-8601 UTC, set by Sync
 classification:
@@ -130,8 +135,8 @@ Fully automatic since the classification-registry upgrade — there is no manual
 
 ## YouTube Sync — three-state model
 
-1. YouTube responds, video found → `availability = "available"`, refresh all 6 Sync-managed fields (`title`, `description`, `publishedAt`, `thumbnailUrl`, `availability`, `lastSyncedAt`).
-2. YouTube responds, video NOT in the results (confirmed missing) → `availability = "unavailable"`. Previously stored title/description/ publishedAt/thumbnailUrl are preserved, not erased. `lastSyncedAt` still updates (a real check happened).
+1. YouTube responds, video found → `availability = "available"`, refresh all 7 Sync-managed fields (`title`, `description`, `publishedAt`, `thumbnailUrl`, `durationSeconds`, `availability`, `lastSyncedAt`).
+2. YouTube responds, video NOT in the results (confirmed missing) → `availability = "unavailable"`. Previously stored title/description/publishedAt/thumbnailUrl/durationSeconds are preserved, not erased. `lastSyncedAt` still updates (a real check happened).
 3. The request itself fails technically (network, timeout, bad/quota'd API key, malformed response) → nothing is touched at all, not even `availability`. Reported as a sync failure, never confused with "video is actually gone."
 
 Sync only ever touches those 6 `youtube.*` fields — never `videoId`, `classification`, top-level `priority`, `publishing`, `clinical`, or anything else. `sync_one_node()` is the primary, canonical engine; `sync_all_nodes()` batches up to 50 video IDs per YouTube API request but funnels every single Node through that exact same underlying logic — the two are guaranteed to produce identical results for the same Node, verified by direct testing, not just by design intent. If an entire batch request fails technically, every Node in that batch is left completely untouched.

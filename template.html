@@ -166,6 +166,7 @@
     font-size:15px;
     line-height:1.6;
     margin:0;
+    white-space:pre-line;
     display:-webkit-box;
     -webkit-line-clamp:4;
     -webkit-box-orient:vertical;
@@ -199,10 +200,16 @@
     font-weight:600;
     margin:0 0 10px;
   }
+  .video-duration-note{
+    font-size:12px;
+    font-weight:400;
+    color:rgba(32,48,44,0.55);
+    margin:-6px 0 10px;
+  }
   .video-thumb-wrap{
     position:relative;
     width:100%;
-    max-width:320px;
+    max-width:230px;
     margin:0 auto;
     aspect-ratio: 9 / 16;
     border-radius: 18px;
@@ -460,6 +467,7 @@
 
   <section class="video-section">
     <p class="section-label">{{UI_WATCH_LABEL}}</p>
+    <p class="video-duration-note">{{VIDEO_DURATION_TEXT}}</p>
     <div class="video-thumb-wrap" id="videoThumb" onclick="openModal()">
       <img src="{{VIDEO_THUMBNAIL_URL}}" alt="Video thumbnail"
            onerror="this.onerror=null; this.src='{{VIDEO_THUMBNAIL_FALLBACK_URL}}';">
