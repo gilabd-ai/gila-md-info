@@ -21,7 +21,8 @@
       "appointment-planning"
     ],
     "secondaryTagIds": [
-      "pelvic-exam"
+      "pelvic-exam",
+      "speculum-exam"
     ]
   },
   "priority": 1,

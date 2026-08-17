@@ -21,7 +21,9 @@
       "cervix-visualization"
     ],
     "secondaryTagIds": [
-      "patient-comfort"
+      "patient-comfort",
+      "speculum-exam",
+      "appointment-planning"
     ]
   },
   "priority": 1,

@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0022",
+  "slug": "gynecological-exam-empty-before",
+  "youtube": {
+    "videoId": "Zr3pU5Outvg",
+    "title": "איך להתכונן לבדיקה גינקולוגית? למה כדאי להתרוקן לפני הבדיקה",
+    "description": "עוד דבר קטן שכדאי לעשות לפני הבדיקה: להתרוקן.\n \nשלפוחית השתן והמעיים נמצאים בצמידות לאיברי האגן – לרחם ולשחלות. כשהם מלאים, הם תופסים יותר מקום ויכולים ליצור לחץ נוסף בזמן הבדיקה.\n \nלכן, אם מתאפשר, כדאי להגיע לאחר ריקון של שלפוחית השתן וגם לאחר יציאה. כשהאזור פחות עמוס, יש פחות לחץ על האיברים הסמוכים והבדיקה יכולה להיות קלה ונוחה יותר – גם עבורך וגם עבור הרופאה הבודקת.\n \nזה כמובן לא תנאי לבדיקה ולא סיבה לדחות תור אם לא הצלחת להתרוקן לפניו. זה פשוט עוד טיפ קטן שיכול לעזור.",
+    "publishedAt": "2026-06-14T17:30:05Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/Zr3pU5Outvg/maxresdefault.jpg",
+    "durationSeconds": 14,
+    "availability": "available",
+    "lastSyncedAt": "2026-08-17T18:15:23Z"
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "gynecological-exams"
+    ],
+    "primaryTagIds": [
+      "pelvic-exam",
+      "patient-comfort",
+      "exam-preparation"
+    ],
+    "secondaryTagIds": [
+      "speculum-exam"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-08-17"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-17"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
