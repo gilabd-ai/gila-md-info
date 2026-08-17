@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0024",
+  "slug": "no-words-can-comfort-after-failed-ivf",
+  "youtube": {
+    "videoId": "C1awidws6iY",
+    "title": "טיפול IVF שלא הצליח – מה עושים אחרי כישלון בהפריה חוץ־גופית?",
+    "description": "יש רגעים בטיפולי פוריות שבהם באמת אין משפט שיכול להפוך את הבשורה לקלה יותר. \n\nעוד טיפול, עוד זריקות, עוד בדיקות, עוד תקווה — ואז שוב תשובה שלילית.\n\nעבור חלק מהנשים והזוגות הדרך להריון קצרה יחסית, אבל עבור אחרים היא יכולה להיות ארוכה, מתישה ומלאה באכזבות. \n\nוכשזה קורה שוב ושוב, מותר להיות עצובה, כועסת, מותשת ומתוסכלת. לא חייבים מיד \"לחשוב חיובי\".\n\nאבל כישלון של טיפול, וגם יותר מכישלון אחד, לא בהכרח אומר שהדרך הסתיימה.\n\nאחרי מספר טיפולים שלא הצליחו, לפעמים נכון לעצור לרגע ולעבור מחדש על התמונה כולה: מה כבר נעשה, האם הבירור מספק, האם יש משהו שכדאי לבדוק שוב, והאם יש מקום לשנות את הגישה או את תוכנית הטיפול. \n\nלפעמים גם חוות דעת נוספת יכולה לתת נקודת מבט אחרת.\n\nלא תמיד נמצא הסבר לכישלונות, ולא כל שינוי בהכרח ישנה את התוצאה. אבל כן חשוב לוודא שלא ממשיכים שוב ושוב בדיוק באותה הדרך רק מכוח האינרציה.\n\nובתוך כל הקושי הזה — נסי לא להסיק מטיפול אחד שלא הצליח, ואפילו מכמה טיפולים שלא הצליחו, שאין יותר סיכוי.\n\nלפעמים הדרך פשוט ארוכה יותר ממה שקיווינו.",
+    "publishedAt": "2026-06-16T18:17:00Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/C1awidws6iY/maxresdefault.jpg",
+    "durationSeconds": 7,
+    "availability": "available",
+    "lastSyncedAt": "2026-08-17T20:07:52Z"
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "fertility"
+    ],
+    "primaryTagIds": [
+      "trying-to-conceive",
+      "ivf",
+      "embryo-transfer",
+      "menstruation",
+      "fertility",
+      "fertility-treatment",
+      "conception"
+    ],
+    "secondaryTagIds": [
+      "recovery-after-miscarriage",
+      "anxiety",
+      "resilience"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-08-17"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-17"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
