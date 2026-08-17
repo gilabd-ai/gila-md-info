@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0021",
+  "slug": "early-miscarriage-did-i-do-something-wrong",
+  "youtube": {
+    "videoId": "UL7kAPAc8oI",
+    "title": "הפלה מוקדמת – למה זה קרה והאם עשיתי משהו לא נכון?",
+    "description": "הפלה מוקדמת, בשליש הראשון של ההיריון, היא הרבה יותר שכיחה ממה שרוב הנשים חושבות.\n\nחלק מההפלות מתרחשות בשלב מוקדם מאוד. אחרות מתרחשות אחרי שכבר ראו שק היריון באולטרסאונד, חלקן אחרי שכבר נראה עובר, וחלקן גם אחרי שכבר נצפה דופק.\n\nבהפלות מוקדמות, אחת הסיבות השכיחות ביותר היא בעיה כרומוזומלית שנוצרה בזמן ההפריה או בשלבים הראשונים של התפתחות ההיריון ובמקרים רבים לא ניתן לדעת בדיוק מדוע ההפלה התרחשה.\n\nברוב המקרים הפלה מוקדמת היא אירוע אקראי. היא לא אומרת שיש בעיית פוריות, ולא אומרת שגם ההיריון הבא יסתיים בהפלה. לרוב הנשים שעברו הפלה מוקדמת יש סיכוי מצויין להיריון תקין ומוצלח בהמשך.",
+    "publishedAt": "2026-06-12T11:02:42Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/UL7kAPAc8oI/maxresdefault.jpg",
+    "durationSeconds": 25,
+    "availability": "available",
+    "lastSyncedAt": "2026-08-17T17:57:48Z"
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "pregnancy-loss"
+    ],
+    "primaryTagIds": [
+      "miscarriage",
+      "missed-miscarriage",
+      "recovery-after-miscarriage",
+      "missed-abortion",
+      "pregnancy-loss",
+      "miscarriage-myths"
+    ],
+    "secondaryTagIds": [
+      "conception",
+      "trying-to-conceive",
+      "heavy-bleeding",
+      "menstruation",
+      "missed-period",
+      "period-delay"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-08-17"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-17"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}

@@ -63,7 +63,7 @@ CATEGORY_TAG_GROUPS = [
     ("pregnancy-loss", [
         "miscarriage", "recurrent-miscarriage", "missed-miscarriage", "medical-management",
         "surgical-management", "recovery-after-miscarriage", "ectopic-pregnancy",
-        "missed-abortion", "pregnancy-loss", "miscarriage-recovery", "miscarriage-myths"
+        "missed-abortion", "pregnancy-loss", "miscarriage-myths"
     ]),
     ("postpartum", [
         "breastfeeding", "postpartum-recovery", "baby-blues", "postpartum-bleeding",
