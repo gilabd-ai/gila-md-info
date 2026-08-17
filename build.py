@@ -1109,8 +1109,12 @@ def build_disclaimer_page() -> Path:
     """
     Build the permanent Medical Disclaimer page at dist/medical-disclaimer/index.html.
     Uses the shared header/branding, contains the full approved Hebrew
-    disclaimer text, and a link back to the homepage. No video, no
-    Related Knowledge cards, no "All content in this topic" button.
+    disclaimer text, and a bottom button to the All Topics page — reuses
+    the exact same top-level allTopicsButton text+url as the homepage
+    and every Node page's second nav button, just rendered with this
+    page's own existing button styling. Home navigation is covered by
+    the shared sticky home-nav-bar already in the header, so there is
+    no separate Home button here. No video, no Related Knowledge cards.
     """
     template = (BASE_DIR / "disclaimer-template.html").read_text(encoding="utf-8")
     site_config = json.loads((BASE_DIR / "site-config.json").read_text(encoding="utf-8"))
@@ -1150,6 +1154,8 @@ def build_disclaimer_page() -> Path:
         "{{DISCLAIMER_PAGE_TITLE}}": disclaimer_cfg["title"],
         "{{DISCLAIMER_PARAGRAPHS_HTML}}": paragraphs_html,
         "{{DISCLAIMER_LAST_UPDATED}}": disclaimer_cfg["lastUpdated"],
+        "{{ALL_TOPICS_BUTTON_TEXT}}": site_config["allTopicsButton"]["text"],
+        "{{ALL_TOPICS_BUTTON_URL}}": site_config["allTopicsButton"]["url"],
     }
 
     html = template
