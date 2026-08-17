@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0019",
+  "slug": "first-pregnancy-vs-fourth-pregnancy",
+  "youtube": {
+    "videoId": "v6Y-J-W6D28",
+    "title": "הריון ראשון לעומת הריון רביעי: למה בהריון הראשון יש כל כך הרבה שאלות?",
+    "description": "בהריון הראשון הכול חדש.\n\nכל תחושה מעלה שאלה, כל בדיקה היא משהו שעוד לא הכרנו, ויש לא מעט חוסר ודאות — ולפעמים גם הרבה חששות.\n\nאז שואלים. על מה מותר ומה אסור, על בדיקות, על תסמינים, על הלידה, על התינוק — ובעצם על הכול.\n\nבהריונות הבאים כבר מגיעים עם ניסיון. הרבה מהדברים שפעם היו חדשים ומלחיצים כבר מוכרים.\n\nוכמובן, בהריון רביעי יש גם עוד שלושה ילדים שמחכים בבית... 😅",
+    "publishedAt": "2026-06-10T14:51:56Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/v6Y-J-W6D28/maxresdefault.jpg",
+    "durationSeconds": 21,
+    "availability": "available",
+    "lastSyncedAt": "2026-08-17T11:26:28Z"
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "pregnancy"
+    ],
+    "primaryTagIds": [
+      "early-pregnancy",
+      "pregnancy-test",
+      "exercise-in-pregnancy",
+      "pregnancy",
+      "first-trimester",
+      "second-trimester",
+      "third-trimester",
+      "pregnancy-care",
+      "pregnancy-symptoms",
+      "appointment-planning",
+      "anxiety"
+    ],
+    "secondaryTagIds": []
+  },
+  "priority": 3,
+  "clinical": {
+    "lastReviewedAt": "2026-08-17"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-17"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
