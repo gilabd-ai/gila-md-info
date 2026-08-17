@@ -996,7 +996,7 @@ def build_node(node: dict, nodes_by_id: dict[str, dict], published_only: bool = 
     return out_path
 
 
-def render_node_card_html(node: dict, read_more_text: str, from_topic_id: str | None = None) -> str:
+def render_node_card_html(node: dict, cta_text: str, from_topic_id: str | None = None) -> str:
     """
     `from_topic_id`, when given (only ever the Topic page's own id, from
     build_topic_page()), is appended as a "?fromTopic={id}" query param —
@@ -1006,9 +1006,11 @@ def render_node_card_html(node: dict, read_more_text: str, from_topic_id: str | 
     a client-side hint (see template.html); never affects canonical
     URLs, sitemap entries, or any other server-rendered output.
 
-    `read_more_text` renders as a static visual cue below the excerpt —
-    unlike the Node page's "קראו עוד", it's plain text, not an expand/
-    collapse toggle (the whole card is already the click target).
+    `cta_text` renders as a static visual cue below the excerpt — plain
+    text, not an expand/collapse toggle (the whole card is already the
+    click target). Its own uiLabels.topicCardCta value, deliberately
+    separate from uiLabels.readMore ("קראו עוד"), which stays exclusive
+    to the individual Node page's actual read-more/show-less toggle.
     """
     title = node["youtube"]["title"]
     snippet = make_snippet(node["youtube"]["description"])
@@ -1019,7 +1021,7 @@ def render_node_card_html(node: dict, read_more_text: str, from_topic_id: str | 
         f'    <a class="node-card" href="{href}">\n'
         f'      <p class="node-card-title">{title}</p>\n'
         f'      <p class="node-card-desc">{snippet}</p>\n'
-        f'      <p class="node-card-readmore">{html.escape(read_more_text, quote=True)}</p>\n'
+        f'      <p class="node-card-readmore">{html.escape(cta_text, quote=True)}</p>\n'
         '    </a>'
     )
 
@@ -1241,7 +1243,7 @@ def build_topic_page(topic: dict, site_config: dict) -> Path:
     logo_base64 = (BASE_DIR / site_config["header"]["logoImagePath"]).read_text(encoding="utf-8").strip()
 
     nodes_html = '  <div class="node-list">\n' + "\n".join(
-        render_node_card_html(n, site_config["uiLabels"]["readMore"], from_topic_id=topic["id"])
+        render_node_card_html(n, site_config["uiLabels"]["topicCardCta"], from_topic_id=topic["id"])
         for n in topic["nodes"]
     ) + "\n  </div>"
 
