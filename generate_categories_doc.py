@@ -127,13 +127,10 @@ CATEGORY_TAG_GROUPS = [
         "urinary-incontinence", "pelvic-organ-prolapse", "overactive-bladder", "pelvic-floor",
         "prolapse", "bladder"
     ]),
-    ("adolescent-gynaecology", [
+    ("adolescent-and-sexual-development", [
         "first-period", "puberty", "teen-contraception", "confidentiality", "adolescent-health",
-        "menstrual-education"
-    ]),
-    ("sexual-development", [
-        "puberty", "breast-development", "menarche", "normal-development", "growth",
-        "adolescence"
+        "menstrual-education", "breast-development", "menarche", "normal-development",
+        "growth", "adolescence"
     ]),
     ("sexually-transmitted-infections", [
         "chlamydia", "gonorrhea", "herpes", "syphilis", "hiv", "sti"
