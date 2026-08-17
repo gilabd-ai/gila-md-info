@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0023",
+  "slug": "breast-asymmetry-is-it-normal",
+  "youtube": {
+    "videoId": "2jVYm9xn8kE",
+    "title": "שד אחד גדול יותר מהשני – האם זה תקין?",
+    "description": "שד אחד גדול יותר מהשני? זה מצב שכיח מאוד, וברוב המקרים מדובר בשונות טבעית ותקינה בין שני צדי הגוף.\n \nהשדיים אינם חייבים להיות סימטריים. אצל חלק מהנשים ההבדל קטן וכמעט לא מורגש, ואצל אחרות הוא בולט יותר. ההבדל יכול להיות בגודל, בצורה, בגובה של השד או במיקום ובצורה של הפטמות. \n\nאסימטריה יכולה להיות קיימת כבר מגיל ההתבגרות, והיא גם עשויה להשתנות במהלך החיים, למשל בעקבות שינויים הורמונליים, היריון, הנקה ושינויים במשקל.\n \nחשוב להבדיל בין אסימטריה שמוכרת לך וקיימת לאורך זמן לבין שינוי חדש. אם שד אחד השתנה לאחרונה בגודל או בצורה, או אם הופיע גוש חדש, שינוי בעור או בפטמה, הפרשה דמית מהפטמה או שינוי אחר שלא היה קודם – כדאי לפנות לבדיקה רפואית.\n \nאבל אם שד אחד שלך פשוט שונה מעט מהשני כבר זמן רב – את לא לבד. אצל נשים רבות זה חלק מהמבנה הטבעי של הגוף.",
+    "publishedAt": "2026-06-16T08:39:54Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/2jVYm9xn8kE/maxresdefault.jpg",
+    "durationSeconds": 8,
+    "availability": "available",
+    "lastSyncedAt": "2026-08-17T19:50:06Z"
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "general-womens-health",
+      "adolescent-and-sexual-development",
+      "body-and-mind"
+    ],
+    "primaryTagIds": [
+      "breast-development",
+      "breast-self-awareness",
+      "breast-lump",
+      "warning-signs",
+      "normal-development",
+      "growth",
+      "adolescence",
+      "breastfeeding",
+      "weight",
+      "wellbeing"
+    ],
+    "secondaryTagIds": [
+      "myths",
+      "screening",
+      "puberty",
+      "adolescent-health"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-08-17"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-17"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
