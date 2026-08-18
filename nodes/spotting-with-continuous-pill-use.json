@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0029",
+  "slug": "spotting-with-continuous-pill-use",
+  "youtube": {
+    "videoId": "yxaFq9HgIVs",
+    "title": "הכתמות עם גלולות ברצף – האם זה תקין ומה אפשר לעשות?",
+    "description": "הכתמות בזמן נטילת גלולות ברצף הן תופעה שכיחה, במיוחד בחודשים הראשונים, וברוב המקרים הן אינן מעידות על בעיה. בדרך כלל ההכתמות פוחתות עם המשך הנטילה.\n\nאם מדובר בהכתמות קלות שאינן מפריעות, אפשר בדרך כלל להמשיך לקחת את הגלולות כרגיל. אם ההכתמות נמשכות או מפריעות, קיימות דרכים להתמודד איתן, ובהן במקרים המתאימים הפסקה קצרה של 3–4 ימים מהגלולות הפעילות ולאחריה חזרה לנטילה ברצף.\n\nאם הדימום משמעותי, ממושך או שונה מהרגיל, כדאי לפנות לבדיקה כדי לוודא שאין סיבה אחרת לדימום.",
+    "publishedAt": "2026-06-23T16:44:32Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/yxaFq9HgIVs/maxresdefault.jpg",
+    "durationSeconds": 6,
+    "availability": "available",
+    "lastSyncedAt": "2026-08-18T18:47:22Z"
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "contraception"
+    ],
+    "primaryTagIds": [
+      "continuous-pill-use",
+      "birth-control-pills",
+      "combined-pill",
+      "menstrual-cycle",
+      "painful-periods",
+      "spotting"
+    ],
+    "secondaryTagIds": [
+      "pelvic-pain",
+      "endometriosis",
+      "abnormal-bleeding"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-08-18"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-18"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
