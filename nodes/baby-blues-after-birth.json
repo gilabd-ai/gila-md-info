@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0027",
+  "slug": "baby-blues-after-birth",
+  "youtube": {
+    "videoId": "ujPmZeP7EbY",
+    "title": "בייבי בלוז אחרי לידה – למה בוכים אחרי הלידה ומתי זה חולף?",
+    "description": "תופעה שכיחה שנשים רבות חוות בימים הראשונים שאחרי הלידה, אבל לא מדברים עליה מספיק, היא ה־Baby Blues.\n\nלפעמים זה מבלבל במיוחד כי דווקא אחרי אירוע שכל כך חיכית לו, ובתקופה שבה נדמה לך שאת אמורה להיות מאושרת ומתרגשת, את מוצאת את עצמך בוכה ולא מבינה למה. הפער בין מה שציפית להרגיש לבין מה שאת מרגישה בפועל יכול לעורר גם תחושות אשמה ולהכביד עוד יותר.\n\nהמנגנון שגורם לתופעה עדיין אינו מובן במלואו, אבל השינויים ההורמונליים החדים אחרי הלידה, העייפות, ההתאוששות מהלידה וההסתגלות לחיים החדשים – כולם תורמים להתפתחותה.\n\nברוב המקרים התחושות משתפרות בהדרגה וחולפות בתוך כשבועיים.\n\nאם התחושות נמשכות מעבר לכך, מחמירות או מקשות על התפקוד, חשוב לפנות לרופא. ייתכן שמדובר בדיכאון אחרי לידה – מצב רפואי שחשוב לזהות ולטפל בו.\n\n#BabyBlues #אחרילידה #בריאותהאישה #נשים #בכיאחרילידה",
+    "publishedAt": "2026-06-20T21:00:29Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/ujPmZeP7EbY/maxresdefault.jpg",
+    "durationSeconds": 17,
+    "availability": "available",
+    "lastSyncedAt": "2026-08-18T17:51:59Z"
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "postpartum"
+    ],
+    "primaryTagIds": [
+      "postpartum-recovery",
+      "baby-blues",
+      "postpartum",
+      "postpartum-depression"
+    ],
+    "secondaryTagIds": [
+      "cesarean-recovery",
+      "pregnancy",
+      "mental-health",
+      "wellbeing"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-08-18"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-18"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
