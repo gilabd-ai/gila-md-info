@@ -37,6 +37,18 @@ youtube:
                              there is intentionally NO "url" field; a watch
                              URL is generated from videoId only when needed,
                              never stored
+  orientation               "short" (the normal case — a vertical
+                             Shorts-style video) or "wide" (the exception
+                             — a real 16:9 widescreen video). Controls
+                             which shape build.py renders both the
+                             thumbnail preview and the full-screen player
+                             in. Never Sync-managed — verified directly
+                             against live YouTube API data that nothing
+                             (not even the served thumbnail image bytes)
+                             reveals a video's true orientation, so this
+                             is set by hand per Node, same as videoId. No
+                             default: a published Node with no
+                             orientation fails the build.
   title
   description                the full, real, human-written text — shown
                              verbatim on the page; never summarized or rewritten

@@ -104,6 +104,15 @@ MAX_RELATED_CANDIDATES = 10    # how many ranked candidates are computed/exposed
 # Priority 0 ("never recommend") is excluded before scoring — never looked up here.
 PRIORITY_BONUS = {1: 100, 2: 50, 3: 0}
 
+# youtube.orientation — which real shape a Node's video is: "short" (today's
+# normal vertical Shorts-style video) or "wide" (the exception, real 16:9
+# widescreen). Cannot be derived from YouTube's API — verified directly
+# against live API data that no field (thumbnail dimensions included, even
+# the served image bytes) reveals true video orientation — so this is set
+# by hand per Node, same as videoId. No default: the build fails if it's
+# missing, same enforcement style as priority.
+VALID_ORIENTATIONS = ("short", "wide")
+
 
 # ──────────────────────────────────────────────────────────────────
 # Publication & Classification validation
@@ -137,6 +146,8 @@ def validate_for_publication(node: dict) -> list[str]:
         errors.append("youtube.description is missing or empty")
     if yt.get("durationSeconds") is None:
         errors.append("youtube.durationSeconds is missing")
+    if yt.get("orientation") not in VALID_ORIENTATIONS:
+        errors.append(f"youtube.orientation must be one of {VALID_ORIENTATIONS} (got {yt.get('orientation')!r})")
 
     clinical = node.get("clinical", {})
     if not clinical.get("lastReviewedAt"):
@@ -894,6 +905,7 @@ def render_node_html(node: dict, template: str, site_config: dict,
                       registry: dict) -> str:
     social = {s["platform"]: s["url"] for s in site_config["socialLinks"]}
     video_id = node["youtube"]["videoId"]
+    video_orientation_class = "video-wide" if node["youtube"]["orientation"] == "wide" else ""
 
     # thumbnailUrl is real YouTube-sourced data and must be used if present.
     # Derivation from videoId is only a FALLBACK for missing data, never a replacement.
@@ -942,6 +954,7 @@ def render_node_html(node: dict, template: str, site_config: dict,
         "{{NODE_DESCRIPTION}}": html.escape(node["youtube"]["description"], quote=True),
         "{{VIDEO_DURATION_TEXT}}": format_duration_he(node["youtube"]["durationSeconds"]),
         "{{VIDEO_ID}}": video_id,
+        "{{VIDEO_ORIENTATION_CLASS}}": video_orientation_class,
         "{{VIDEO_THUMBNAIL_URL}}": thumbnail_url,
         "{{VIDEO_THUMBNAIL_FALLBACK_URL}}": thumbnail_fallback_url,
         "{{UI_READ_MORE}}": site_config["uiLabels"]["readMore"],

@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0030",
+  "slug": "pcos-symptoms-fertility-treatment-2019",
+  "youtube": {
+    "videoId": "6M-r7PNH404",
+    "orientation": "wide",
+    "title": "שחלות פוליציסטיות (PCOS): תסמינים, פוריות, טיפול והשלכות בריאותיות",
+    "description": "תסמונת השחלות הפוליציסטיות היא תסמונת הורמונלית שכיחה, שיכולה להתבטא בצורה שונה בתקופות שונות בחיים.\n\nבגיל צעיר התסמינים הבולטים עשויים להיות אקנה ושיעור יתר. בגיל הפוריות מחזורים לא סדירים וביוץ לא סדיר עלולים להקשות לעיתים על הכניסה להריון. בהמשך החיים קיימת גם נטייה מוגברת להפרעות מטבוליות, ובהן סוכרת, ובמצבים של וסתות מרוחקות מאוד לאורך זמן עלול לעלות גם הסיכון לשינויים ברירית הרחם.\n\nהטיפול מותאם לתסמינים, לצרכים ולשלב בחיים: ניתן לטפל באקנה ובשיעור היתר, גלולות עשויות לסייע בהסדרת הדימום ובתסמינים ההורמונליים, ובמידת הצורך קיימים טיפולים לעידוד ביוץ וטיפולי פוריות.\n\nחשוב לזכור שלתסמונת עשויות להיות גם השלכות בריאותיות ארוכות טווח. לכן מומלץ כבר מגיל צעיר להקפיד על אורח חיים בריא, תזונה מאוזנת ופעילות גופנית. אלה עשויים לשפר את הבריאות המטבולית, ובחלק מהנשים גם לסייע לסדירות הביוץ ולפוריות.\n\nולשחלות פוליציסטיות יש גם נקודת אור: אצל רבות מהנשים מספר הזקיקים בשחלות גבוה יחסית. בהקשרים מסוימים זה עשוי להיות יתרון בטיפולי הפריה חוץ־גופית ובטיפולים לשימור פוריות, כמו הקפאת ביציות.",
+    "publishedAt": "2019-07-08T16:09:12Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/6M-r7PNH404/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-08-24T19:02:09Z",
+    "durationSeconds": 347
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "pcos"
+    ],
+    "primaryTagIds": [
+      "pcos",
+      "irregular-periods",
+      "irregular-ovulation",
+      "acne",
+      "hirsutism",
+      "insulin-resistance",
+      "fertility",
+      "fertility-treatment",
+      "ivf",
+      "healthy-lifestyle",
+      "exercise",
+      "preventive-care"
+    ],
+    "secondaryTagIds": [
+      "ovarian-reserve"
+    ]
+  },
+  "priority": 0,
+  "clinical": {
+    "lastReviewedAt": "2019-07-08"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-24"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
