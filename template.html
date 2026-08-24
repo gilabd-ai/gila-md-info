@@ -225,6 +225,13 @@
     box-shadow: var(--shadow);
     cursor:pointer;
   }
+  /* Real widescreen (16:9) videos — the exception, youtube.orientation
+     "wide". Same box, just sized for the video's real shape instead of
+     the default Shorts-style vertical crop. */
+  .video-thumb-wrap.video-wide{
+    max-width:none;
+    aspect-ratio: 16 / 9;
+  }
   .video-thumb-wrap img{
     width:100%; height:100%;
     object-fit:cover;
@@ -359,6 +366,17 @@
     max-height:100%;
     aspect-ratio: 9 / 16;
   }
+  /* Widescreen player — fills the whole available modal area on both
+     axes (instead of being cropped to a tall narrow 9:16 box), so it
+     expands automatically on rotation to landscape. The real 16:9 shape
+     is preserved by YouTube's own player, which always letterboxes its
+     video internally to fit whatever iframe box it's given — same as
+     any normal YouTube embed — so the outer box doesn't need its own
+     aspect-ratio lock here. */
+  .video-frame-box.video-wide{
+    width:100%;
+    height:100%;
+  }
   .video-frame-box iframe{
     position:absolute;
     inset:0;
@@ -478,7 +496,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
       {{VIDEO_DURATION_TEXT}}
     </p>
-    <div class="video-thumb-wrap" id="videoThumb" onclick="openModal()">
+    <div class="video-thumb-wrap {{VIDEO_ORIENTATION_CLASS}}" id="videoThumb" onclick="openModal()">
       <img src="{{VIDEO_THUMBNAIL_URL}}" alt="Video thumbnail"
            onerror="this.onerror=null; this.src='{{VIDEO_THUMBNAIL_FALLBACK_URL}}';">
       <div class="play-button">
@@ -498,7 +516,7 @@
 
 <!-- Full-screen video viewer -->
 <div class="modal-overlay" id="modalOverlay">
-  <div class="video-frame-box" id="videoFrameBox">
+  <div class="video-frame-box {{VIDEO_ORIENTATION_CLASS}}" id="videoFrameBox">
     <div id="playerHost" style="width:100%;height:100%;"></div>
     <button class="modal-close" onclick="closeModal()" aria-label="{{UI_CLOSE_ARIA}}">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg>

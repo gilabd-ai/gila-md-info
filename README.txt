@@ -33,6 +33,18 @@ HOW TO ADD A NEW KNOWLEDGE NODE
          - id                                a new unique id, e.g. "node-0002"
          - slug                              must exactly match the file name (no ".json")
          - youtube.videoId                   the YouTube video's ID
+         - youtube.orientation               "short" (the normal case — a
+                                              vertical Shorts-style video)
+                                              or "wide" (the exception — a
+                                              real 16:9 widescreen video).
+                                              YouTube's API cannot tell us
+                                              this (verified — not even the
+                                              served thumbnail files reveal
+                                              true orientation), so you must
+                                              set it correctly by hand every
+                                              time. No default: a "published"
+                                              Node with no orientation fails
+                                              the build.
          - youtube.title                     becomes the page's title
          - youtube.description                becomes the page's body text
          - youtube.thumbnailUrl              the video's thumbnail image URL
