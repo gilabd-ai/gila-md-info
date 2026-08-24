@@ -5,7 +5,7 @@
   "baseUrl": "https://drgilamd.com",
   "aboutUrl": "",
   "header": {
-    "name": "ד\"ר גילה בן-דוד",
+    "name": "האתר של ד״ר גילה בן-דוד",
     "role": "מומחית ברפואת נשים",
     "logoImagePath": "assets/logo-base64.txt"
   },
@@ -45,7 +45,7 @@
     "url": "/topics/"
   },
   "homeNavBar": {
-    "text": "לדף הבית",
+    "text": "לדף הבית של האתר",
     "url": "/"
   },
   "homepage": {
