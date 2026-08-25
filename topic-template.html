@@ -133,13 +133,28 @@
     margin-bottom:30px;
   }
 
+  /* ---------- Nav-button group spacing ---------- */
+  /* Shared wrapper for a stack of nav buttons (Back + the pink CTA below
+     it). gap:14px matches .node-nav-buttons on template.html exactly —
+     that's the source of truth for inter-button spacing, so a 2-button
+     stack here and the 3-button stack on Node pages always look the
+     same. The individual button classes only carry the outer margin
+     needed to space the whole group from what follows (e.g. the
+     disclaimer line) — never their own inter-button spacing. */
+  .nav-buttons-stack{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:14px;
+    margin-bottom:30px;
+  }
   .more-link{
     display:flex;
     align-items:center;
     justify-content:center;
     width:fit-content;
     min-width:225px;
-    margin:0 auto 30px;
+    margin:0 auto;
     padding:14px 32px;
     border-radius:12px;
     background: linear-gradient(135deg, rgba(242,90,166,0.90), rgba(216,64,142,0.90));
@@ -161,7 +176,7 @@
     width:fit-content;
     min-width:225px;
     line-height:1;
-    margin:0 auto 30px;
+    margin:0 auto;
     padding:14px 32px;
     border-radius:12px;
     background: rgba(242,90,166,0.10);
@@ -227,10 +242,13 @@
 
 {{TOPIC_NODES_HTML}}
 
-  <button type="button" id="backLinkBtn" class="back-link" onclick="history.back()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-    {{UI_BACK_BUTTON_TEXT}}
-  </button>
+  <div class="nav-buttons-stack">
+    <button type="button" id="backLinkBtn" class="back-link" onclick="history.back()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      {{UI_BACK_BUTTON_TEXT}}
+    </button>
+    <a class="more-link" href="{{ALL_TOPICS_BUTTON_URL}}">{{ALL_TOPICS_BUTTON_TEXT}}</a>
+  </div>
   <script>
     try {
       if (document.referrer && document.referrer.indexOf(location.origin) === 0 && window.history.length > 1){
@@ -238,8 +256,6 @@
       }
     } catch (e) {}
   </script>
-
-  <a class="more-link" href="{{ALL_TOPICS_BUTTON_URL}}">{{ALL_TOPICS_BUTTON_TEXT}}</a>
 
   <a class="site-disclaimer" href="{{DISCLAIMER_LINK_URL}}">{{DISCLAIMER_ICON}} {{DISCLAIMER_SHORT_TEXT}} <span class="disclaimer-underline">{{DISCLAIMER_LINK_PREFIX}} {{DISCLAIMER_LINK_TEXT}}</span>.</a>
 </main>
