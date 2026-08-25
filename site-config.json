@@ -98,6 +98,7 @@
     "videoEnded": "הסרטון הסתיים",
     "closeVideoAriaLabel": "סגירת סרטון",
     "topicModalTitle": "בחירת נושא",
-    "topicModalCloseAriaLabel": "סגירת בחירת נושא"
+    "topicModalCloseAriaLabel": "סגירת בחירת נושא",
+    "backButtonText": "בחזרה לעמוד הקודם"
   }
 }
