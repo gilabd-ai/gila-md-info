@@ -316,6 +316,7 @@
     align-items:center;
     justify-content:center;
     width:fit-content;
+    min-width:225px;
     margin:0 auto;
     padding:14px 32px;
     border-radius:12px;
@@ -327,6 +328,40 @@
     transition:box-shadow 0.15s ease;
   }
   .more-link:hover{ box-shadow: 0 4px 14px rgba(0,0,0,0.2); }
+
+  /* ---------- Back-to-previous-page button ---------- */
+  /* Same size/shape as .more-link — identical padding/radius/typography,
+     and the same min-width so both classes always render pixel-identical
+     width regardless of each one's own text length (the icon+gap here
+     would otherwise make this button visibly wider) — but the site's
+     existing translucent-pink treatment (same colors as .home-nav-bar)
+     instead of the solid pink CTA fill, since this is a secondary
+     control, not a primary one. Hidden by default; a tiny inline script
+     next to the button only ever adds ".show" when there is a genuine
+     same-site previous page AND a real history entry to return to. */
+  .back-link{
+    display:none;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    width:fit-content;
+    min-width:225px;
+    line-height:1;
+    margin:0 auto;
+    padding:14px 32px;
+    border-radius:12px;
+    background: rgba(242,90,166,0.10);
+    border: 1px solid rgba(242,90,166,0.25);
+    color: rgba(216,64,142,0.95);
+    font-family:'Inter', sans-serif;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition: background 0.15s ease;
+  }
+  .back-link.show{ display:flex; }
+  .back-link:hover{ background: rgba(242,90,166,0.18); }
+  .back-link svg{ width:18px; height:18px; flex:none; }
 
   .site-disclaimer{
     font-family:'Inter', sans-serif;
@@ -513,8 +548,19 @@
 {{RELATED_SECTION_HTML}}
 
   <div class="node-nav-buttons">
+    <button type="button" id="backLinkBtn" class="back-link" onclick="history.back()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      {{UI_BACK_BUTTON_TEXT}}
+    </button>
 {{MORE_LINK_BUTTON_HTML}}  <a class="more-link" href="{{ALL_TOPICS_BUTTON_URL}}">{{ALL_TOPICS_BUTTON_TEXT}}</a>
   </div>
+  <script>
+    try {
+      if (document.referrer && document.referrer.indexOf(location.origin) === 0 && window.history.length > 1){
+        document.getElementById('backLinkBtn').classList.add('show');
+      }
+    } catch (e) {}
+  </script>
 
   <a class="site-disclaimer" href="{{DISCLAIMER_LINK_URL}}">{{DISCLAIMER_ICON}} {{DISCLAIMER_SHORT_TEXT}} <span class="disclaimer-underline">{{DISCLAIMER_LINK_PREFIX}} {{DISCLAIMER_LINK_TEXT}}</span>.</a>
 </main>

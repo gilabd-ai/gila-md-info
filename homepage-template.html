@@ -225,12 +225,22 @@
   }
   .topic-modal-row:active{ background:rgba(242,90,166,0.18); }
 
+  /* ---------- Nav-button group spacing (see template.html's
+     .node-nav-buttons — same 14px value, the source of truth) ---------- */
+  .nav-buttons-stack{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:14px;
+    margin-bottom:30px;
+  }
   .more-link{
     display:flex;
     align-items:center;
     justify-content:center;
     width:fit-content;
-    margin:0 auto 30px;
+    min-width:225px;
+    margin:0 auto;
     padding:14px 32px;
     border-radius:12px;
     background: linear-gradient(135deg, rgba(242,90,166,0.90), rgba(216,64,142,0.90));
@@ -260,6 +270,32 @@
   }
   .social-btn-lg:hover{ transform: translateY(-2px); }
   .social-btn-lg svg{ width:20px; height:20px; }
+
+  /* ---------- Back-to-previous-page button (see template.html for the
+     full rationale — identical treatment on every page type) ---------- */
+  .back-link{
+    display:none;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    width:fit-content;
+    min-width:225px;
+    line-height:1;
+    margin:0 auto;
+    padding:14px 32px;
+    border-radius:12px;
+    background: rgba(242,90,166,0.10);
+    border: 1px solid rgba(242,90,166,0.25);
+    color: rgba(216,64,142,0.95);
+    font-family:'Inter', sans-serif;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition: background 0.15s ease;
+  }
+  .back-link.show{ display:flex; }
+  .back-link:hover{ background: rgba(242,90,166,0.18); }
+  .back-link svg{ width:18px; height:18px; flex:none; }
 
   .site-disclaimer{
     font-family:'Inter', sans-serif;
@@ -341,7 +377,20 @@
     </div>
   </div>
 
-  <a class="more-link" href="{{ALL_TOPICS_BUTTON_URL}}">{{ALL_TOPICS_BUTTON_TEXT}}</a>
+  <div class="nav-buttons-stack">
+    <a class="more-link" href="{{ALL_TOPICS_BUTTON_URL}}">{{ALL_TOPICS_BUTTON_TEXT}}</a>
+    <button type="button" id="backLinkBtn" class="back-link" onclick="history.back()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      {{UI_BACK_BUTTON_TEXT}}
+    </button>
+  </div>
+  <script>
+    try {
+      if (document.referrer && document.referrer.indexOf(location.origin) === 0 && window.history.length > 1){
+        document.getElementById('backLinkBtn').classList.add('show');
+      }
+    } catch (e) {}
+  </script>
 
   <div class="homepage-social-links">
     <a class="social-btn-lg" href="{{SOCIAL_YOUTUBE_URL}}" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
