@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0032",
+  "slug": "will-ai-replace-doctors",
+  "youtube": {
+    "videoId": "azHEmvSUaxw",
+    "orientation": "short",
+    "title": "בינה מלאכותית ברפואה: האם AI יחליף רופאים?",
+    "description": "בינה מלאכותית כבר נכנסת לעולם הרפואה — והשאלה היא כבר לא האם יהיה לה תפקיד, אלא מה יהיה התפקיד שלה.\n\nמחקרים מראים שמודלים של AI יכולים להגיע לביצועים מרשימים מאוד גם במשימות של אבחון וחשיבה קלינית. אבל לצד היכולות המרשימות, עדיין קיימות מגבלות משמעותיות באופן שבו המודלים מגיעים למסקנות וביכולת שלהם להתמודד עם אי־ודאות.\n\nאז האם AI יחליף רופאים? אולי — אבל כנראה לא בעתיד הקרוב.  \nהאם הוא ישנה את הדרך שבה אנחנו עוסקים ברפואה? בהחלט.  \nלמעשה, זה כבר קורה.\n\nהמחקר המוזכר בסרטון פורסם ב־JAMA Internal Medicine:  \nhttps://jamanetwork.com/journals/jamainternalmedicine/fullarticle/2817046",
+    "publishedAt": "2026-06-26T12:23:18Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/azHEmvSUaxw/maxresdefault.jpg",
+    "durationSeconds": 22,
+    "availability": "available",
+    "lastSyncedAt": "2026-08-25T13:09:16Z"
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "medical-innovation"
+    ],
+    "primaryTagIds": [
+      "artificial-intelligence",
+      "ai-in-medicine",
+      "research",
+      "innovation"
+    ],
+    "secondaryTagIds": [
+      "diagnosis",
+      "pelvic-exam",
+      "myths",
+      "prevention"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-06-26"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-25"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
