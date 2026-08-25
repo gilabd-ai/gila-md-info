@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0031",
+  "slug": "pain-during-intercourse-causes-and-treatment",
+  "youtube": {
+    "videoId": "Z2CtPYwAzAg",
+    "orientation": "short",
+    "title": "כאב בקיום יחסים – מה הסיבות ואיך מטפלים?",
+    "description": "כאב בקיום יחסים יכול להופיע בגילאים שונים ובשלבים שונים בחיים. זו תופעה שכיחה, אבל לא תמיד מדברים עליה — ולעיתים נשים ממשיכות לסבול ממנה זמן רב בלי לפנות לבירור.\n\nהסיבות יכולות להיות שונות, וכשמזהים את הסיבה אפשר להתאים את הטיפול. למשל, כשמדובר ביובש נרתיקי אפשר להיעזר בחומרי סיכה, בתכשירי לחות,  ובטיפול מקומי באסטרוגן בהתאמה למקרה.\nכדאי לבדוק ויש מה לעשות.",
+    "publishedAt": "2026-06-25T18:34:06Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/Z2CtPYwAzAg/maxresdefault.jpg",
+    "durationSeconds": 12,
+    "availability": "available",
+    "lastSyncedAt": "2026-08-25T10:29:37Z"
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "vulva-and-vagina"
+    ],
+    "primaryTagIds": [
+      "painful-intercourse",
+      "pain-during-sex",
+      "vaginal-dryness",
+      "lubricants",
+      "pelvic-floor",
+      "menopause"
+    ],
+    "secondaryTagIds": [
+      "sexual-function",
+      "vaginal-lubrication",
+      "estrogen",
+      "treatment",
+      "diagnosis",
+      "womens-health",
+      "vagina",
+      "pelvic-pain",
+      "pelvic-organ-prolapse"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-08-25"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-25"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
