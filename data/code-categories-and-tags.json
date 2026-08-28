@@ -1,6 +1,7 @@
 {
   "schemaVersion": 1,
   "categories": [
+    "childrens-books",
     "gynecological-exams",
     "menstruation",
     "contraception",
@@ -35,6 +36,7 @@
     "template-node"
   ],
   "categoryLabelsHe": {
+    "childrens-books": "ספרי ילדים",
     "gynecological-exams": "בדיקות גינקולוגיות",
     "menstruation": "וסת ומחזור",
     "contraception": "אמצעי מניעה",
@@ -65,6 +67,14 @@
     "medical-innovation": "חדשנות רפואית"
   },
   "tags": [
+    "children",
+    "childrens-books",
+    "bedtime-story",
+    "emotions",
+    "social-skills",
+    "emotional-development",
+    "learning-through-story",
+    "parenting-and-children",
     "pelvic-exam",
     "patient-comfort",
     "examination-position",

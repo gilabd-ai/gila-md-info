@@ -33,6 +33,10 @@ OUTPUT_PATH = BASE_DIR / "docs" / "gila-categories-and-tags.html"
 # relevant to both); that repetition is a display choice and has no
 # effect on the canonical registry, which stores each id exactly once.
 CATEGORY_TAG_GROUPS = [
+    ("childrens-books", [
+        "children", "childrens-books", "bedtime-story", "emotions", "social-skills",
+        "emotional-development", "learning-through-story", "parenting-and-children"
+    ]),
     ("gynecological-exams", [
         "pelvic-exam", "patient-comfort", "examination-position", "speculum-exam",
         "bimanual-exam", "cervix-visualization", "exam-preparation", "exam-during-period",

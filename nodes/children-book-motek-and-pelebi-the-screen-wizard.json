@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0033",
+  "slug": "children-book-motek-and-pelebi-the-screen-wizard",
+  "youtube": {
+    "videoId": "JIzMvPhPTcg",
+    "orientation": "wide",
+    "title": "סיפור ילדים על מסכים וזמן מסך | מוֹתֶק וּפֶלֶאבִּי – קוֹסֵם הַמָּסַכִּים",
+    "description": "כמה קשה לילדים להניח את המסך — גם כשבחוץ מחכה להם עולם שלם?\n״מוֹתֶק וּפֶלֶאבִּי — קוֹסֵם הַמָּסַכִּים״ הוא סיפור ילדים על הקסם הגדול של המסכים, ועל מה שלפעמים נשכח כשנשארים איתם קצת יותר מדי.\nדרך מותק ופלאבי, הילדים פוגשים בלי הטפות ובלי הפחדות את ההבדל בין העולם המרתק שבתוך המסך לבין כל מה שמחכה להם בחוץ — חברים, משחק, תנועה, טבע ודמיון.\nסיפור שאפשר פשוט לראות יחד עם הילדים — ואולי אחר כך גם לדבר קצת על המסכים שלנו.\nמאת ד״ר גילה בן-דוד",
+    "publishedAt": "2026-08-28T10:52:16Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/JIzMvPhPTcg/maxresdefault.jpg",
+    "durationSeconds": 182,
+    "availability": "available",
+    "lastSyncedAt": "2026-08-28T11:08:28Z"
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "childrens-books"
+    ],
+    "primaryTagIds": [
+      "children",
+      "childrens-books",
+      "bedtime-story",
+      "learning-through-story"
+    ],
+    "secondaryTagIds": [
+      "emotions",
+      "social-skills",
+      "emotional-development",
+      "parenting-and-children"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-08-28"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-28"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
