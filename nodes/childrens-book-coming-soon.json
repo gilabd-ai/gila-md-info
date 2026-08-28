@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0034",
+  "slug": "childrens-book-coming-soon",
+  "youtube": {
+    "videoId": "_Fd6C3G8vTI",
+    "orientation": "wide",
+    "title": "בקרוב: סיפור ילדים חדש 🌿",
+    "description": "עוד סיפור ילדים בדרך 🌿\nבקרוב יצטרף לכאן סיפור חדש.",
+    "publishedAt": null,
+    "thumbnailUrl": "https://i.ytimg.com/vi/_Fd6C3G8vTI/maxresdefault.jpg",
+    "durationSeconds": 7,
+    "availability": "available",
+    "lastSyncedAt": null
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "childrens-books"
+    ],
+    "primaryTagIds": [],
+    "secondaryTagIds": []
+  },
+  "priority": 0,
+  "clinical": {
+    "lastReviewedAt": "2026-08-28"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-28"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
