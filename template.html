@@ -101,6 +101,29 @@
   .proto-hamburger:focus-visible{
     outline:2px solid #ffffff; outline-offset:-3px; border-radius:8px;
   }
+  /* Search icon: own 48px touch target, immediately left of the hamburger's
+     own 48px target, with an 8px visible gap between them (367-16-... see
+     right offset math: hamburger right:8px + 48px wide + 8px gap = 64px).
+     Same top:50%/translateY(-50%) vertical-centering formula as the
+     hamburger, so both sit on exactly the same horizontal axis. */
+  .proto-search{
+    position:absolute; top:50%; right:64px; transform:translateY(-50%);
+    width:48px; height:48px;
+    display:flex; align-items:center; justify-content:center;
+    background:none; border:none; padding:0; margin:0;
+    color:#ffffff; cursor:pointer;
+  }
+  .proto-search svg{ width:26px; height:26px; }
+  .proto-search:focus-visible{
+    outline:2px solid #ffffff; outline-offset:-3px; border-radius:8px;
+  }
+  .topic-selector-native{
+    position:absolute;
+    width:1px; height:1px;
+    overflow:hidden;
+    clip:rect(0,0,0,0);
+    white-space:nowrap;
+  }
 
   /* ---------- Hamburger menu modal — 3 fixed site destinations. Same
      modal shell/CSS as the Homepage's Topic Selector (see
@@ -518,11 +541,21 @@
 
 <!-- PROTOTYPE: ported from the approved All Topics page prototype.
      Hamburger opens the main site navigation menu (3 fixed destinations)
-     — see modal below. -->
+     — see modal below. The search icon is new: opens the full Topics
+     list (same data/links as the Homepage's Topic Selector), reusing
+     this hidden <select> as its data source, same as before. -->
+<select id="topicSelector" class="topic-selector-native" aria-hidden="true" tabindex="-1">
+  <option value="" disabled selected>{{TOPIC_SELECTOR_PLACEHOLDER}}</option>
+{{TOPIC_SELECTOR_OPTIONS_HTML}}
+</select>
+
 <div class="site-header-fixed">
 <header class="node-header">
   <button type="button" id="topicSelectorTrigger" class="proto-hamburger" aria-haspopup="dialog" aria-label="{{TOPIC_SELECTOR_LABEL}}">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+  </button>
+  <button type="button" id="topicSearchTrigger" class="proto-search" aria-haspopup="dialog" aria-label="{{TOPIC_SELECTOR_LABEL}}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
   </button>
   <!-- PROTOTYPE: hardcoded here (not from site-config's shared header.titleLine1/2)
        so this text experiment stays isolated. -->
@@ -563,6 +596,96 @@
     const closeBtn = document.getElementById('topicModalClose');
     const listEl = document.getElementById('topicModalList');
     if (!trigger || !overlay || !dialog || !closeBtn || !listEl) return;
+
+    let lastFocused = null;
+    let previousBodyOverflow = '';
+
+    function getFocusable(){
+      return Array.from(dialog.querySelectorAll('a[href], button:not([disabled])'));
+    }
+
+    function onKeydown(e){
+      if (e.key === 'Escape'){
+        e.preventDefault();
+        closeModal();
+        return;
+      }
+      if (e.key === 'Tab'){
+        const focusable = getFocusable();
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first){
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last){
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+
+    function openModal(){
+      lastFocused = document.activeElement;
+      overlay.hidden = false;
+      previousBodyOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      document.addEventListener('keydown', onKeydown);
+      closeBtn.focus();
+    }
+
+    function closeModal(){
+      overlay.hidden = true;
+      document.body.style.overflow = previousBodyOverflow;
+      document.removeEventListener('keydown', onKeydown);
+      if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+    }
+
+    trigger.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+  })();
+</script>
+
+<!-- Search-by-topic modal — separate instance from the hamburger's menu
+     above (own ids, own overlay/dialog), so the hamburger's existing
+     behavior is completely untouched. Rows are built from the hidden
+     <select> above, same data/links as the Homepage's Topic Selector. -->
+<div id="topicSearchModalOverlay" class="topic-modal-overlay" hidden>
+  <div id="topicSearchModalDialog" class="topic-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="topicSearchModalTitle">
+    <div class="topic-modal-header">
+      <h2 id="topicSearchModalTitle" class="topic-modal-title">{{TOPIC_MODAL_TITLE}}</h2>
+      <button type="button" id="topicSearchModalClose" class="topic-modal-close" aria-label="{{TOPIC_MODAL_CLOSE_ARIA}}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <ul id="topicSearchModalList" class="topic-modal-list" aria-label="{{TOPIC_SELECTOR_LABEL}}"></ul>
+  </div>
+</div>
+<script>
+  // ---- Search-by-topic modal (magnifying glass). Rows are built from
+  // the hidden <select> options — same data source/links as the
+  // Homepage's Topic Selector, no new navigation system. ----
+  (function(){
+    const nativeSelect = document.getElementById('topicSelector');
+    const trigger = document.getElementById('topicSearchTrigger');
+    const overlay = document.getElementById('topicSearchModalOverlay');
+    const dialog = document.getElementById('topicSearchModalDialog');
+    const closeBtn = document.getElementById('topicSearchModalClose');
+    const listEl = document.getElementById('topicSearchModalList');
+    if (!nativeSelect || !trigger || !overlay || !dialog || !closeBtn || !listEl) return;
+
+    const options = Array.from(nativeSelect.options).filter(function(o){ return o.value; });
+    if (options.length === 0) return;
+
+    options.forEach(function(opt){
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.className = 'topic-modal-row';
+      a.href = opt.value;
+      a.textContent = opt.textContent;
+      li.appendChild(a);
+      listEl.appendChild(li);
+    });
 
     let lastFocused = null;
     let previousBodyOverflow = '';

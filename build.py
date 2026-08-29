@@ -902,8 +902,11 @@ def render_more_link_button_html(node: dict, site_config: dict, registry: dict) 
 
 def render_node_html(node: dict, template: str, site_config: dict,
                       nodes_by_id: dict[str, dict], published_only: bool,
-                      registry: dict) -> str:
+                      registry: dict, active_topics: list[dict]) -> str:
     social = {s["platform"]: s["url"] for s in site_config["socialLinks"]}
+    # PROTOTYPE: search icon opens the same Topic Selector data as the
+    # Homepage/All Topics page prototype. Page-specific wiring.
+    topic_selector_options_html = render_topic_selector_options_html(active_topics)
     video_id = node["youtube"]["videoId"]
     video_orientation_class = "video-wide" if node["youtube"]["orientation"] == "wide" else ""
 
@@ -965,7 +968,9 @@ def render_node_html(node: dict, template: str, site_config: dict,
         "{{UI_BACK_BUTTON_TEXT}}": site_config["uiLabels"]["backButtonText"],
         "{{HOME_NAV_TEXT}}": site_config["homeNavBar"]["text"],
         "{{HOME_NAV_URL}}": site_config["homeNavBar"]["url"],
+        "{{TOPIC_SELECTOR_OPTIONS_HTML}}": topic_selector_options_html,
         "{{TOPIC_SELECTOR_LABEL}}": site_config["homepage"]["topicSelectorLabel"],
+        "{{TOPIC_SELECTOR_PLACEHOLDER}}": site_config["homepage"]["topicSelectorPlaceholder"],
         "{{TOPIC_MODAL_TITLE}}": site_config["uiLabels"]["topicModalTitle"],
         "{{TOPIC_MODAL_CLOSE_ARIA}}": site_config["uiLabels"]["topicModalCloseAriaLabel"],
         "{{DISCLAIMER_ICON}}": site_config["disclaimer"]["icon"],
@@ -997,14 +1002,15 @@ def render_node_html(node: dict, template: str, site_config: dict,
 # Build orchestration
 # ──────────────────────────────────────────────────────────────────
 
-def build_node(node: dict, nodes_by_id: dict[str, dict], published_only: bool = True) -> Path:
+def build_node(node: dict, nodes_by_id: dict[str, dict], active_topics: list[dict],
+                published_only: bool = True) -> Path:
     """Build a single Node to dist/nodes/{slug}/index.html. Returns the output path."""
     template = (BASE_DIR / "template.html").read_text(encoding="utf-8")
     site_config = json.loads((BASE_DIR / "site-config.json").read_text(encoding="utf-8"))
     registry = load_categories_and_tags()
 
     html_out = render_node_html(node, template, site_config, nodes_by_id, published_only=published_only,
-                                 registry=registry)
+                                 registry=registry, active_topics=active_topics)
 
     out_dir = DIST_DIR / "nodes" / node["slug"]
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -1341,6 +1347,9 @@ def build_all_topics_page(active_topics: list[dict], site_config: dict) -> Path:
     social = {s["platform"]: s["url"] for s in site_config["socialLinks"]}
     logo_base64 = (BASE_DIR / site_config["header"]["logoImagePath"]).read_text(encoding="utf-8").strip()
     topics_cfg = site_config["topicsIndexPage"]
+    # PROTOTYPE: search icon opens the same Topic Selector data as the
+    # Homepage prototype. Page-specific wiring.
+    topic_selector_options_html = render_topic_selector_options_html(active_topics)
 
     if active_topics:
         tiles_html = '  <div class="topics-grid">\n' + "\n".join(
@@ -1377,7 +1386,9 @@ def build_all_topics_page(active_topics: list[dict], site_config: dict) -> Path:
         "{{UI_BACK_BUTTON_TEXT}}": site_config["uiLabels"]["backButtonText"],
         "{{TOPICS_INDEX_HEADING}}": topics_cfg["heading"],
         "{{TOPICS_LIST_HTML}}": tiles_html,
+        "{{TOPIC_SELECTOR_OPTIONS_HTML}}": topic_selector_options_html,
         "{{TOPIC_SELECTOR_LABEL}}": site_config["homepage"]["topicSelectorLabel"],
+        "{{TOPIC_SELECTOR_PLACEHOLDER}}": site_config["homepage"]["topicSelectorPlaceholder"],
         "{{TOPIC_MODAL_TITLE}}": site_config["uiLabels"]["topicModalTitle"],
         "{{TOPIC_MODAL_CLOSE_ARIA}}": site_config["uiLabels"]["topicModalCloseAriaLabel"],
         "{{DISCLAIMER_ICON}}": site_config["disclaimer"]["icon"],
@@ -1441,7 +1452,7 @@ def build_all_published():
     site_config = json.loads((BASE_DIR / "site-config.json").read_text(encoding="utf-8"))
     active_topics = derive_active_topics(buildable, registry)
 
-    built_paths = [build_node(n, nodes_by_id, published_only=True) for n in buildable]
+    built_paths = [build_node(n, nodes_by_id, active_topics, published_only=True) for n in buildable]
     build_homepage(buildable, active_topics)
     build_disclaimer_page()
     for topic in active_topics:
@@ -1500,7 +1511,6 @@ def build_single_for_dev(slug: str):
     matches = [n for n in all_nodes if n["slug"] == slug]
     if not matches:
         raise SystemExit(f"No node found with slug '{slug}'")
-    out_path = build_node(matches[0], nodes_by_id, published_only=True)
 
     # Also refresh homepage + disclaimer page so their links work while
     # previewing locally. Homepage only ever lists real 'published',
@@ -1513,6 +1523,7 @@ def build_single_for_dev(slug: str):
         if n["publishing"]["status"] == "published" and n["youtube"].get("availability") != "unavailable"
     ]
     active_topics = derive_active_topics(published, registry)
+    out_path = build_node(matches[0], nodes_by_id, active_topics, published_only=True)
     build_homepage(published, active_topics)
     build_disclaimer_page()
 
