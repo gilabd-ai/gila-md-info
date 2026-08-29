@@ -64,7 +64,7 @@
     color: rgba(216,64,142,0.95);
     text-decoration:none;
   }
-  .home-nav-bar svg{ width:16px; height:16px; flex:none; }
+  .home-nav-bar svg{ width:16px; height:16px; flex:none; margin-right:8px; } /* shifts icon left so its center lines up under the 48px hamburger's center */
 
   header.node-header{
     position:relative;
@@ -271,8 +271,10 @@
   <button type="button" id="topicSelectorTrigger" class="proto-hamburger" aria-haspopup="dialog" aria-label="{{TOPIC_SELECTOR_LABEL}}">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
   </button>
-  <div class="header-title-line">{{SITE_HEADER_TITLE_LINE1}}</div>
-  <div class="header-title-line">{{SITE_HEADER_TITLE_LINE2}}</div>
+  <!-- PROTOTYPE: hardcoded here (not from site-config's shared header.titleLine1/2)
+       so this text experiment stays isolated to this one page. -->
+  <div class="header-title-line">ד״ר גילה בן-דוד</div>
+  <div class="header-title-line">האתר שלי בשבילכן</div>
   <img class="header-logo" src="data:image/png;base64,{{SITE_LOGO_BASE64}}" alt="Gila MD logo">
 </header>
 <a class="home-nav-bar" href="{{HOME_NAV_URL}}">
