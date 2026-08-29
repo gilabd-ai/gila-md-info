@@ -1338,6 +1338,11 @@ def build_all_topics_page(active_topics: list[dict], site_config: dict) -> Path:
     social = {s["platform"]: s["url"] for s in site_config["socialLinks"]}
     logo_base64 = (BASE_DIR / site_config["header"]["logoImagePath"]).read_text(encoding="utf-8").strip()
     topics_cfg = site_config["topicsIndexPage"]
+    # PROTOTYPE (All Topics page only): hamburger reuses the Homepage's
+    # Topic Selector modal, sourced from the same active_topics data this
+    # function already receives. Page-specific — no other page's build
+    # function is touched.
+    topic_selector_options_html = render_topic_selector_options_html(active_topics)
 
     if active_topics:
         tiles_html = '  <div class="topics-grid">\n' + "\n".join(
@@ -1373,6 +1378,11 @@ def build_all_topics_page(active_topics: list[dict], site_config: dict) -> Path:
         "{{UI_BACK_BUTTON_TEXT}}": site_config["uiLabels"]["backButtonText"],
         "{{TOPICS_INDEX_HEADING}}": topics_cfg["heading"],
         "{{TOPICS_LIST_HTML}}": tiles_html,
+        "{{TOPIC_SELECTOR_OPTIONS_HTML}}": topic_selector_options_html,
+        "{{TOPIC_SELECTOR_LABEL}}": site_config["homepage"]["topicSelectorLabel"],
+        "{{TOPIC_SELECTOR_PLACEHOLDER}}": site_config["homepage"]["topicSelectorPlaceholder"],
+        "{{TOPIC_MODAL_TITLE}}": site_config["uiLabels"]["topicModalTitle"],
+        "{{TOPIC_MODAL_CLOSE_ARIA}}": site_config["uiLabels"]["topicModalCloseAriaLabel"],
         "{{DISCLAIMER_ICON}}": site_config["disclaimer"]["icon"],
         "{{DISCLAIMER_SHORT_TEXT}}": site_config["disclaimer"]["shortText"],
         "{{DISCLAIMER_LINK_PREFIX}}": site_config["disclaimer"]["linkPrefix"],
