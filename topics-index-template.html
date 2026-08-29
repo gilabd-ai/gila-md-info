@@ -8,7 +8,7 @@
 {{JSONLD_SCRIPT}}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#20302c;
@@ -84,9 +84,11 @@
     background:#fff; box-shadow: 0 2px 6px rgba(0,0,0,0.15);
   }
   .header-title-line{
-    font-family:'Rubik', sans-serif; font-size:23px; font-weight:700; line-height:1.22;
+    font-family:'Rubik', sans-serif; line-height:1.22;
     text-align:center; width:100%;
   }
+  .header-title-line.primary{ font-size:23px; font-weight:700; }
+  .header-title-line.secondary{ font-size:14px; font-weight:500; margin-top:2px; }
   .proto-hamburger{
     position:absolute; top:50%; right:8px; transform:translateY(-50%);
     width:48px; height:48px;
@@ -99,18 +101,9 @@
     outline:2px solid #ffffff; outline-offset:-3px; border-radius:8px;
   }
 
-  /* ---------- Topic Selector modal (ported as-is from the Homepage's
-     progressive-enhancement modal — same markup/CSS/JS, same data source
-     via the hidden native <select> below. See homepage-template.html for
-     the canonical version and full rationale; this is a duplicate for
-     prototype isolation, not a new navigation system.) ---------- */
-  .topic-selector-native{
-    position:absolute;
-    width:1px; height:1px;
-    overflow:hidden;
-    clip:rect(0,0,0,0);
-    white-space:nowrap;
-  }
+  /* ---------- Hamburger menu modal — 3 fixed site destinations. Same
+     modal shell/CSS as the Homepage's Topic Selector (see
+     homepage-template.html), reused here for the main site nav. ---------- */
   .topic-modal-overlay{
     position:fixed;
     inset:0;
@@ -258,14 +251,8 @@
 </head>
 <body>
 
-<!-- PROTOTYPE (All Topics page only): 72px header, hamburger opens the same
-     Topic Selector modal used on the Homepage, reusing the same active-Topic
-     data via this hidden <select>. See CSS block above for full context. -->
-<select id="topicSelector" class="topic-selector-native" aria-hidden="true" tabindex="-1">
-  <option value="" disabled selected>{{TOPIC_SELECTOR_PLACEHOLDER}}</option>
-{{TOPIC_SELECTOR_OPTIONS_HTML}}
-</select>
-
+<!-- PROTOTYPE (All Topics page only): 72px header. Hamburger opens the
+     main site navigation menu (3 fixed destinations) — see modal below. -->
 <div class="site-header-fixed">
 <header class="node-header">
   <button type="button" id="topicSelectorTrigger" class="proto-hamburger" aria-haspopup="dialog" aria-label="{{TOPIC_SELECTOR_LABEL}}">
@@ -273,8 +260,8 @@
   </button>
   <!-- PROTOTYPE: hardcoded here (not from site-config's shared header.titleLine1/2)
        so this text experiment stays isolated to this one page. -->
-  <div class="header-title-line">ד״ר גילה בן-דוד</div>
-  <div class="header-title-line">האתר</div>
+  <div class="header-title-line primary">ד״ר גילה בן-דוד</div>
+  <div class="header-title-line secondary">רופאת נשים</div>
   <img class="header-logo" src="data:image/png;base64,{{SITE_LOGO_BASE64}}" alt="Gila MD logo">
 </header>
 <a class="home-nav-bar" href="{{HOME_NAV_URL}}">
@@ -291,35 +278,25 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
     </div>
-    <ul id="topicModalList" class="topic-modal-list" aria-label="{{TOPIC_SELECTOR_LABEL}}"></ul>
+    <ul id="topicModalList" class="topic-modal-list" aria-label="{{TOPIC_SELECTOR_LABEL}}">
+      <li><a class="topic-modal-row" href="/">דף הבית</a></li>
+      <li><a class="topic-modal-row" href="{{ALL_TOPICS_BUTTON_URL}}">כל הנושאים</a></li>
+      <li><a class="topic-modal-row" href="{{DISCLAIMER_LINK_URL}}">דיסקליימר רפואי</a></li>
+    </ul>
   </div>
 </div>
 <script>
-  // ---- Topic Selector modal (ported as-is from the Homepage's
-  // progressive-enhancement modal; see homepage-template.html for the
-  // canonical version). Rows are built from this page's own hidden
-  // <select> options — same data, no new navigation system. ----
+  // ---- Main site navigation menu (hamburger). Same modal shell as the
+  // Homepage's Topic Selector (see homepage-template.html), but this one
+  // is a fixed 3-item site menu, not a topic list — rows are static HTML
+  // above, not built from data. ----
   (function(){
-    const nativeSelect = document.getElementById('topicSelector');
     const trigger = document.getElementById('topicSelectorTrigger');
     const overlay = document.getElementById('topicModalOverlay');
     const dialog = document.getElementById('topicModalDialog');
     const closeBtn = document.getElementById('topicModalClose');
     const listEl = document.getElementById('topicModalList');
-    if (!nativeSelect || !trigger || !overlay || !dialog || !closeBtn || !listEl) return;
-
-    const options = Array.from(nativeSelect.options).filter(function(o){ return o.value; });
-    if (options.length === 0) return;
-
-    options.forEach(function(opt){
-      const li = document.createElement('li');
-      const a = document.createElement('a');
-      a.className = 'topic-modal-row';
-      a.href = opt.value;
-      a.textContent = opt.textContent;
-      li.appendChild(a);
-      listEl.appendChild(li);
-    });
+    if (!trigger || !overlay || !dialog || !closeBtn || !listEl) return;
 
     let lastFocused = null;
     let previousBodyOverflow = '';
