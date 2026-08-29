@@ -100,20 +100,25 @@
   .proto-hamburger:focus-visible{
     outline:2px solid #ffffff; outline-offset:-3px; border-radius:8px;
   }
-  /* Search icon: own 44x44 touch target (the minimum, not 48 — needed to
-     fit this closer to the hamburger without touching the centered title
-     text; measured the real primary-line text glyphs via a Range and they
-     extended to within ~1.5px of the icon's OLD 48px box, i.e. were
-     already overlapping it — this box is sized/positioned to clear that
-     with margin, not just look closer). right:60px puts a real ~4px gap
-     to the hamburger's box (left edge 56px-from-edge) and a real ~6.5px
-     gap to the text's actual right edge. Same top:50%/translateY(-50%)
-     formula as the hamburger, so both sit on exactly the same horizontal
-     axis regardless of the two boxes' different heights. */
+  /* Search icon: the VISIBLE icon and its 44x44 touch target are
+     deliberately decoupled, per explicit direction — the touch target's
+     own footprint must not dictate how close the two icon GRAPHICS look.
+     justify-content:flex-start (= physical right in this inherited-RTL
+     button, same mechanism already used by .home-nav-bar) pushes the
+     icon glyph flush against the box's hamburger-facing edge, so the
+     44px-wide box extends its slack entirely toward the text side
+     instead. right:57px puts the box's hamburger-facing edge 1px clear
+     of the hamburger's own box (no overlap) — and since the icon sits
+     flush there too, the real icon-to-icon gap (measured via Range,
+     not guessed) lands at 12px, the top of the requested 8-12px window,
+     while the icon-to-text gap is ~27.5px, clearly larger. Same
+     top:50%/translateY(-50%) formula as the hamburger, so both sit on
+     exactly the same horizontal axis regardless of the two boxes'
+     different heights. */
   .proto-search{
-    position:absolute; top:50%; right:60px; transform:translateY(-50%);
+    position:absolute; top:50%; right:57px; transform:translateY(-50%);
     width:44px; height:44px;
-    display:flex; align-items:center; justify-content:center;
+    display:flex; align-items:center; justify-content:flex-start;
     background:none; border:none; padding:0; margin:0;
     color:#ffffff; cursor:pointer;
   }
