@@ -29,7 +29,7 @@
     color:var(--ink);
     font-family:'Inter', sans-serif;
     -webkit-font-smoothing:antialiased;
-    padding-top: 120px; /* PROTOTYPE (All Topics page only): shorter 72px header + compact 48px nav bar — see below. Not shared with other pages. */
+    padding-top: 114px; /* PROTOTYPE (All Topics page only): shorter 72px header + slimmer ~41px nav bar — see below. Not shared with other pages. */
   }
   h1,h2,h3, .display{
     font-family:'Rubik', sans-serif;
@@ -54,17 +54,17 @@
   .home-nav-bar{
     display:flex;
     align-items:center;
-    justify-content:center;
+    justify-content:flex-start; /* right-aligned: main-start = right in this RTL page */
     gap:8px;
-    padding:14px 16px;
+    padding:12px 16px; /* horizontal 16px matches main's own side padding below */
     background: rgba(242,90,166,0.10);
     border-bottom: 1px solid rgba(242,90,166,0.25);
-    font-size:13.5px;
+    font-size:12px;
     font-weight:700;
     color: rgba(216,64,142,0.95);
     text-decoration:none;
   }
-  .home-nav-bar svg{ width:18px; height:18px; flex:none; }
+  .home-nav-bar svg{ width:16px; height:16px; flex:none; }
 
   header.node-header{
     position:relative;
