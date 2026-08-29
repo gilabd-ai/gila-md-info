@@ -7,6 +7,8 @@
   "header": {
     "name": "האתר של ד״ר גילה בן-דוד",
     "role": "מומחית ברפואת נשים",
+    "titleLine1": "האתר של",
+    "titleLine2": "ד״ר גילה בן־דוד",
     "logoImagePath": "assets/logo-base64.txt"
   },
   "socialLinks": [
@@ -45,8 +47,8 @@
     "url": "/topics/"
   },
   "homeNavBar": {
-    "text": "לדף הבית של האתר",
-    "url": "/"
+    "text": "לכל הנושאים באתר",
+    "url": "/topics/"
   },
   "homepage": {
     "pageTitle": "ד\"ר גילה בן-דוד | ספריית ידע",
