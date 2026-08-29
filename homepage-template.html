@@ -325,15 +325,10 @@
 </head>
 <body>
 
-<!-- Approved shared header/nav, ported from the other page templates.
-     IMPORTANT — id note: this page's HAMBURGER menu uses distinct
-     headerMenu* ids (not the usual topicSelectorTrigger/topicModal*
-     ids other pages use) — kept from when the homepage still had its
-     own separate mid-page Topic Selector using those ids. That widget
-     is gone now (redundant with the header's own search icon), but the
-     headerMenu* naming stayed rather than being renamed back, since
-     renaming carries no functional benefit and this is called out here
-     for anyone maintaining this file. -->
+<!-- Approved shared header/nav, ported verbatim from the other page
+     templates — including ids, now that the homepage's old mid-page
+     Topic Selector (which used to own these same ids) has been
+     removed. -->
 <select id="topicSelector" class="topic-selector-native" aria-hidden="true" tabindex="-1">
   <option value="" disabled selected>{{TOPIC_SELECTOR_PLACEHOLDER}}</option>
 {{TOPIC_SELECTOR_OPTIONS_HTML}}
@@ -341,7 +336,7 @@
 
 <div class="site-header-fixed">
 <header class="node-header">
-  <button type="button" id="headerMenuTrigger" class="proto-hamburger" aria-haspopup="dialog" aria-label="{{TOPIC_SELECTOR_LABEL}}">
+  <button type="button" id="topicSelectorTrigger" class="proto-hamburger" aria-haspopup="dialog" aria-label="{{TOPIC_SELECTOR_LABEL}}">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
   </button>
   <button type="button" id="topicSearchTrigger" class="proto-search" aria-haspopup="dialog" aria-label="{{TOPIC_SELECTOR_LABEL}}">
@@ -357,15 +352,15 @@
 </a>
 </div>
 
-<div id="headerMenuModalOverlay" class="topic-modal-overlay" hidden>
-  <div id="headerMenuModalDialog" class="topic-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="headerMenuModalTitle">
+<div id="topicModalOverlay" class="topic-modal-overlay" hidden>
+  <div id="topicModalDialog" class="topic-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="topicModalTitle">
     <div class="topic-modal-header">
-      <h2 id="headerMenuModalTitle" class="topic-modal-title">{{TOPIC_MODAL_TITLE}}</h2>
-      <button type="button" id="headerMenuModalClose" class="topic-modal-close" aria-label="{{TOPIC_MODAL_CLOSE_ARIA}}">
+      <h2 id="topicModalTitle" class="topic-modal-title">{{TOPIC_MODAL_TITLE}}</h2>
+      <button type="button" id="topicModalClose" class="topic-modal-close" aria-label="{{TOPIC_MODAL_CLOSE_ARIA}}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
     </div>
-    <ul id="headerMenuModalList" class="topic-modal-list" aria-label="{{TOPIC_SELECTOR_LABEL}}">
+    <ul id="topicModalList" class="topic-modal-list" aria-label="{{TOPIC_SELECTOR_LABEL}}">
       <li><a class="topic-modal-row" href="/">דף הבית</a></li>
       <li><a class="topic-modal-row" href="{{ALL_TOPICS_BUTTON_URL}}">כל הנושאים</a></li>
       <li><a class="topic-modal-row" href="{{DISCLAIMER_LINK_URL}}">דיסקליימר רפואי</a></li>
@@ -373,14 +368,15 @@
   </div>
 </div>
 <script>
-  // ---- Main site navigation menu (hamburger) — distinct ids from the
-  // homepage's own mid-page Topic Selector, see note above. ----
+  // ---- Main site navigation menu (hamburger). Same modal shell as the
+  // search icon below, but this one is a fixed 3-item site menu, not a
+  // topic list — rows are static HTML above, not built from data. ----
   (function(){
-    const trigger = document.getElementById('headerMenuTrigger');
-    const overlay = document.getElementById('headerMenuModalOverlay');
-    const dialog = document.getElementById('headerMenuModalDialog');
-    const closeBtn = document.getElementById('headerMenuModalClose');
-    const listEl = document.getElementById('headerMenuModalList');
+    const trigger = document.getElementById('topicSelectorTrigger');
+    const overlay = document.getElementById('topicModalOverlay');
+    const dialog = document.getElementById('topicModalDialog');
+    const closeBtn = document.getElementById('topicModalClose');
+    const listEl = document.getElementById('topicModalList');
     if (!trigger || !overlay || !dialog || !closeBtn || !listEl) return;
 
     let lastFocused = null;
