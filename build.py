@@ -1107,6 +1107,8 @@ def build_homepage(published_nodes: list[dict], active_topics: list[dict]) -> Pa
         "{{HOMEPAGE_PHOTO_BASE64}}": photo_base64,
         "{{HOMEPAGE_PHOTO_ALT}}": homepage_cfg["photoAlt"],
         "{{HOMEPAGE_WELCOME_HTML}}": welcome_html,
+        "{{HOME_NAV_TEXT}}": site_config["homeNavBar"]["text"],
+        "{{HOME_NAV_URL}}": site_config["homeNavBar"]["url"],
         "{{TOPIC_SELECTOR_LABEL}}": homepage_cfg["topicSelectorLabel"],
         "{{TOPIC_SELECTOR_PLACEHOLDER}}": homepage_cfg["topicSelectorPlaceholder"],
         "{{TOPIC_SELECTOR_OPTIONS_HTML}}": topic_selector_options_html,
@@ -1136,7 +1138,7 @@ def build_homepage(published_nodes: list[dict], active_topics: list[dict]) -> Pa
     return out_path
 
 
-def build_disclaimer_page() -> Path:
+def build_disclaimer_page(active_topics: list[dict]) -> Path:
     """
     Build the permanent Medical Disclaimer page at dist/medical-disclaimer/index.html.
     Uses the shared header/branding, contains the full approved Hebrew
@@ -1152,6 +1154,9 @@ def build_disclaimer_page() -> Path:
     social = {s["platform"]: s["url"] for s in site_config["socialLinks"]}
     disclaimer_cfg = site_config["medicalDisclaimerPage"]
     logo_base64 = (BASE_DIR / site_config["header"]["logoImagePath"]).read_text(encoding="utf-8").strip()
+    # Shared header's search icon reuses the same Topic Selector data as
+    # every other page.
+    topic_selector_options_html = render_topic_selector_options_html(active_topics)
 
     paragraphs_html = "\n".join(f"    <p>{p}</p>" for p in disclaimer_cfg["paragraphs"])
 
@@ -1182,10 +1187,16 @@ def build_disclaimer_page() -> Path:
         "{{SOCIAL_TIKTOK_URL}}": social["TikTok"],
         "{{HOME_NAV_TEXT}}": site_config["homeNavBar"]["text"],
         "{{HOME_NAV_URL}}": site_config["homeNavBar"]["url"],
+        "{{TOPIC_SELECTOR_OPTIONS_HTML}}": topic_selector_options_html,
+        "{{TOPIC_SELECTOR_LABEL}}": site_config["homepage"]["topicSelectorLabel"],
+        "{{TOPIC_SELECTOR_PLACEHOLDER}}": site_config["homepage"]["topicSelectorPlaceholder"],
+        "{{TOPIC_MODAL_TITLE}}": site_config["uiLabels"]["topicModalTitle"],
+        "{{TOPIC_MODAL_CLOSE_ARIA}}": site_config["uiLabels"]["topicModalCloseAriaLabel"],
         "{{UI_BACK_BUTTON_TEXT}}": site_config["uiLabels"]["backButtonText"],
         "{{DISCLAIMER_PAGE_TITLE}}": disclaimer_cfg["title"],
         "{{DISCLAIMER_PARAGRAPHS_HTML}}": paragraphs_html,
         "{{DISCLAIMER_LAST_UPDATED}}": disclaimer_cfg["lastUpdated"],
+        "{{DISCLAIMER_LINK_URL}}": site_config["disclaimer"]["linkUrl"],
         "{{ALL_TOPICS_BUTTON_TEXT}}": site_config["allTopicsButton"]["text"],
         "{{ALL_TOPICS_BUTTON_URL}}": site_config["allTopicsButton"]["url"],
     }
@@ -1254,7 +1265,7 @@ def derive_active_topics(nodes: list[dict], registry: dict) -> list[dict]:
     return topics
 
 
-def build_topic_page(topic: dict, site_config: dict) -> Path:
+def build_topic_page(topic: dict, site_config: dict, active_topics: list[dict]) -> Path:
     """
     Build one Topic page to dist/topics/{id}/index.html — shared
     header, the Hebrew Topic name as the heading, a card for every Node
@@ -1266,6 +1277,9 @@ def build_topic_page(topic: dict, site_config: dict) -> Path:
     template = (BASE_DIR / "topic-template.html").read_text(encoding="utf-8")
     social = {s["platform"]: s["url"] for s in site_config["socialLinks"]}
     logo_base64 = (BASE_DIR / site_config["header"]["logoImagePath"]).read_text(encoding="utf-8").strip()
+    # Shared header's search icon reuses the same Topic Selector data as
+    # every other page.
+    topic_selector_options_html = render_topic_selector_options_html(active_topics)
 
     nodes_html = '  <div class="node-list">\n' + "\n".join(
         render_node_card_html(n, site_config["uiLabels"]["topicCardCta"], from_topic_id=topic["id"])
@@ -1297,6 +1311,11 @@ def build_topic_page(topic: dict, site_config: dict) -> Path:
         "{{SOCIAL_TIKTOK_URL}}": social["TikTok"],
         "{{HOME_NAV_TEXT}}": site_config["homeNavBar"]["text"],
         "{{HOME_NAV_URL}}": site_config["homeNavBar"]["url"],
+        "{{TOPIC_SELECTOR_OPTIONS_HTML}}": topic_selector_options_html,
+        "{{TOPIC_SELECTOR_LABEL}}": site_config["homepage"]["topicSelectorLabel"],
+        "{{TOPIC_SELECTOR_PLACEHOLDER}}": site_config["homepage"]["topicSelectorPlaceholder"],
+        "{{TOPIC_MODAL_TITLE}}": site_config["uiLabels"]["topicModalTitle"],
+        "{{TOPIC_MODAL_CLOSE_ARIA}}": site_config["uiLabels"]["topicModalCloseAriaLabel"],
         "{{UI_BACK_BUTTON_TEXT}}": site_config["uiLabels"]["backButtonText"],
         "{{TOPIC_NAME_HE}}": topic["label"],
         "{{TOPIC_NODES_HTML}}": nodes_html,
@@ -1380,8 +1399,6 @@ def build_all_topics_page(active_topics: list[dict], site_config: dict) -> Path:
         "{{SOCIAL_INSTAGRAM_URL}}": social["Instagram"],
         "{{SOCIAL_FACEBOOK_URL}}": social["Facebook"],
         "{{SOCIAL_TIKTOK_URL}}": social["TikTok"],
-        "{{HOME_NAV_TEXT}}": site_config["homeNavBar"]["text"],
-        "{{HOME_NAV_URL}}": site_config["homeNavBar"]["url"],
         "{{ALL_TOPICS_BUTTON_URL}}": site_config["allTopicsButton"]["url"],
         "{{UI_BACK_BUTTON_TEXT}}": site_config["uiLabels"]["backButtonText"],
         "{{TOPICS_INDEX_HEADING}}": topics_cfg["heading"],
@@ -1454,9 +1471,9 @@ def build_all_published():
 
     built_paths = [build_node(n, nodes_by_id, active_topics, published_only=True) for n in buildable]
     build_homepage(buildable, active_topics)
-    build_disclaimer_page()
+    build_disclaimer_page(active_topics)
     for topic in active_topics:
-        build_topic_page(topic, site_config)
+        build_topic_page(topic, site_config, active_topics)
     build_all_topics_page(active_topics, site_config)
 
     (DIST_DIR / "robots.txt").write_text(render_robots_txt(site_config), encoding="utf-8")
@@ -1525,7 +1542,7 @@ def build_single_for_dev(slug: str):
     active_topics = derive_active_topics(published, registry)
     out_path = build_node(matches[0], nodes_by_id, active_topics, published_only=True)
     build_homepage(published, active_topics)
-    build_disclaimer_page()
+    build_disclaimer_page(active_topics)
 
     print(f"Built dev preview: {out_path}")
     print("Also refreshed dist/index.html and dist/medical-disclaimer/index.html")

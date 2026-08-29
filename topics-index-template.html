@@ -29,7 +29,7 @@
     color:var(--ink);
     font-family:'Inter', sans-serif;
     -webkit-font-smoothing:antialiased;
-    padding-top: 110px; /* PROTOTYPE (All Topics page only): shorter 72px header + slimmer ~37px nav bar — see below. Not shared with other pages. */
+    padding-top: 74px; /* All Topics page exception: header only, no nav bar underneath */
   }
   h1,h2,h3, .display{
     font-family:'Rubik', sans-serif;
@@ -51,20 +51,9 @@
     top:0; left:0; right:0;
     z-index:200;
   }
-  .home-nav-bar{
-    display:flex;
-    align-items:center;
-    justify-content:flex-start; /* right-aligned: main-start = right in this RTL page */
-    gap:8px;
-    padding:10px 16px; /* vertical trimmed further; horizontal 16px unchanged — keeps icon/text position untouched */
-    background: rgba(242,90,166,0.10);
-    border-bottom: 1px solid rgba(242,90,166,0.25);
-    font-size:12px;
-    font-weight:700;
-    color: rgba(216,64,142,0.95);
-    text-decoration:none;
-  }
-  .home-nav-bar svg{ width:16px; height:16px; flex:none; margin-right:8px; } /* shifts icon left so its center lines up under the 48px hamburger's center */
+  /* No .home-nav-bar on this page — All Topics page exception: the
+     translucent "לכל הנושאים באתר" bar would just link to the page the
+     visitor is already on, so it's omitted here only. */
 
   header.node-header{
     position:relative;
@@ -307,11 +296,9 @@
   <div class="header-title-line secondary">רופאת נשים</div>
   <img class="header-logo" src="data:image/png;base64,{{SITE_LOGO_BASE64}}" alt="Gila MD logo">
 </header>
-<a class="home-nav-bar" href="{{HOME_NAV_URL}}">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-  {{HOME_NAV_TEXT}}
-</a>
 </div>
+<!-- All Topics page exception: no translucent "לכל הנושאים באתר" bar here —
+     the user is already on that page, so a link to it would be redundant. -->
 
 <div id="topicModalOverlay" class="topic-modal-overlay" hidden>
   <div id="topicModalDialog" class="topic-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="topicModalTitle">

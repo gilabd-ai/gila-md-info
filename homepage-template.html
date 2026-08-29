@@ -29,7 +29,7 @@
     color:var(--ink);
     font-family:'Inter', sans-serif;
     -webkit-font-smoothing:antialiased;
-    padding-top: 94px; /* space for sticky header only — no home-nav bar on the homepage itself */
+    padding-top: 110px; /* matches the approved shared header: 72px header + ~37px nav bar */
   }
   h1,h2,h3, .display{
     font-family:'Rubik', sans-serif;
@@ -38,29 +38,81 @@
   }
   a{ color:inherit; }
 
-  /* ---------- Sticky Header (identical to the Knowledge Node header) ---------- */
-  header.node-header{
+  /* =========================================================================
+     Approved shared header/nav component — ported from template.html
+     (Node pages) / topics-index-template.html (All Topics page). Same
+     values, same class names, on purpose. The homepage already defines
+     its own .topic-modal-* shell CSS further down (for its existing
+     mid-page Topic Selector) — those rules are IDENTICAL to the ones
+     the header's modals reuse, so they are not duplicated here; both
+     the header's hamburger/search modals and the existing mid-page
+     modal share that one CSS block. Still isolated per-file (no shared
+     CSS file exists yet); this branch only, not main.
+     ========================================================================= */
+  .site-header-fixed{
     position:fixed;
     top:0; left:0; right:0;
-    min-height:90px;
+    z-index:200;
+  }
+  .home-nav-bar{
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    gap:8px;
+    padding:10px 16px;
+    background: rgba(242,90,166,0.10);
+    border-bottom: 1px solid rgba(242,90,166,0.25);
+    font-size:12px;
+    font-weight:700;
+    color: rgba(216,64,142,0.95);
+    text-decoration:none;
+  }
+  .home-nav-bar svg{ width:16px; height:16px; flex:none; margin-right:8px; }
+
+  header.node-header{
+    position:relative;
+    min-height:72px;
     background: linear-gradient(135deg, rgba(242,90,166,0.90), rgba(216,64,142,0.90));
     color:#ffffff;
     display:flex;
     flex-direction:column;
     align-items:center;
     justify-content:center;
-    padding:12px 16px;
-    z-index:200;
+    padding:8px 16px;
     box-shadow: 0 4px 14px rgba(0,0,0,0.2);
   }
   .header-logo{
-    position:absolute; top:50%; right:16px; transform:translateY(-50%);
-    width:56px; height:56px; border-radius:50%; object-fit:cover;
+    position:absolute; top:50%; left:16px; transform:translateY(-50%);
+    width:48px; height:48px; border-radius:50%; object-fit:cover;
     background:#fff; box-shadow: 0 2px 6px rgba(0,0,0,0.15);
   }
   .header-title-line{
-    font-family:'Rubik', sans-serif; font-size:26px; font-weight:700; line-height:1.3;
+    font-family:'Rubik', sans-serif; line-height:1.22;
     text-align:center; width:100%;
+  }
+  .header-title-line.primary{ font-size:23px; font-weight:700; }
+  .header-title-line.secondary{ font-size:14px; font-weight:500; margin-top:2px; }
+  .proto-hamburger{
+    position:absolute; top:50%; right:8px; transform:translateY(-50%);
+    width:48px; height:48px;
+    display:flex; align-items:center; justify-content:center;
+    background:none; border:none; padding:0; margin:0;
+    color:#ffffff; cursor:pointer;
+  }
+  .proto-hamburger svg{ width:26px; height:26px; }
+  .proto-hamburger:focus-visible{
+    outline:2px solid #ffffff; outline-offset:-3px; border-radius:8px;
+  }
+  .proto-search{
+    position:absolute; top:50%; right:57px; transform:translateY(-50%);
+    width:44px; height:44px;
+    display:flex; align-items:center; justify-content:flex-start;
+    background:none; border:none; padding:0; margin:0;
+    color:#ffffff; cursor:pointer;
+  }
+  .proto-search svg{ width:26px; height:26px; }
+  .proto-search:focus-visible{
+    outline:2px solid #ffffff; outline-offset:-3px; border-radius:8px;
   }
 
   /* ---------- Layout ---------- */
@@ -301,11 +353,123 @@
 </head>
 <body>
 
+<!-- Approved shared header/nav, ported from the other page templates.
+     IMPORTANT — id note: the homepage already has its own mid-page Topic
+     Selector further down (untouched, see "Homepage Topic Selector"
+     below) using ids topicSelector/topicSelectorTrigger/topicModal*.
+     To avoid duplicate ids, the HAMBURGER's own menu here uses distinct
+     headerMenu* ids instead of the topicSelectorTrigger/topicModal* ids
+     used on every other page. The SEARCH icon reuses the existing
+     #topicSelector <select> already on this page as its data source
+     (same data, no duplicate element) — its own script therefore runs
+     at the bottom of the page, after that <select> exists in the DOM. -->
+<div class="site-header-fixed">
 <header class="node-header">
+  <button type="button" id="headerMenuTrigger" class="proto-hamburger" aria-haspopup="dialog" aria-label="{{TOPIC_SELECTOR_LABEL}}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+  </button>
+  <button type="button" id="topicSearchTrigger" class="proto-search" aria-haspopup="dialog" aria-label="{{TOPIC_SELECTOR_LABEL}}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+  </button>
+  <div class="header-title-line primary">ד״ר גילה בן-דוד</div>
+  <div class="header-title-line secondary">רופאת נשים</div>
   <img class="header-logo" src="data:image/png;base64,{{SITE_LOGO_BASE64}}" alt="Gila MD logo">
-  <div class="header-title-line">{{SITE_HEADER_TITLE_LINE1}}</div>
-  <div class="header-title-line">{{SITE_HEADER_TITLE_LINE2}}</div>
 </header>
+<a class="home-nav-bar" href="{{HOME_NAV_URL}}">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+  {{HOME_NAV_TEXT}}
+</a>
+</div>
+
+<div id="headerMenuModalOverlay" class="topic-modal-overlay" hidden>
+  <div id="headerMenuModalDialog" class="topic-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="headerMenuModalTitle">
+    <div class="topic-modal-header">
+      <h2 id="headerMenuModalTitle" class="topic-modal-title">{{TOPIC_MODAL_TITLE}}</h2>
+      <button type="button" id="headerMenuModalClose" class="topic-modal-close" aria-label="{{TOPIC_MODAL_CLOSE_ARIA}}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <ul id="headerMenuModalList" class="topic-modal-list" aria-label="{{TOPIC_SELECTOR_LABEL}}">
+      <li><a class="topic-modal-row" href="/">דף הבית</a></li>
+      <li><a class="topic-modal-row" href="{{ALL_TOPICS_BUTTON_URL}}">כל הנושאים</a></li>
+      <li><a class="topic-modal-row" href="{{DISCLAIMER_LINK_URL}}">דיסקליימר רפואי</a></li>
+    </ul>
+  </div>
+</div>
+<script>
+  // ---- Main site navigation menu (hamburger) — distinct ids from the
+  // homepage's own mid-page Topic Selector, see note above. ----
+  (function(){
+    const trigger = document.getElementById('headerMenuTrigger');
+    const overlay = document.getElementById('headerMenuModalOverlay');
+    const dialog = document.getElementById('headerMenuModalDialog');
+    const closeBtn = document.getElementById('headerMenuModalClose');
+    const listEl = document.getElementById('headerMenuModalList');
+    if (!trigger || !overlay || !dialog || !closeBtn || !listEl) return;
+
+    let lastFocused = null;
+    let previousBodyOverflow = '';
+
+    function getFocusable(){
+      return Array.from(dialog.querySelectorAll('a[href], button:not([disabled])'));
+    }
+
+    function onKeydown(e){
+      if (e.key === 'Escape'){
+        e.preventDefault();
+        closeModal();
+        return;
+      }
+      if (e.key === 'Tab'){
+        const focusable = getFocusable();
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first){
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last){
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+
+    function openModal(){
+      lastFocused = document.activeElement;
+      overlay.hidden = false;
+      previousBodyOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      document.addEventListener('keydown', onKeydown);
+      closeBtn.focus();
+    }
+
+    function closeModal(){
+      overlay.hidden = true;
+      document.body.style.overflow = previousBodyOverflow;
+      document.removeEventListener('keydown', onKeydown);
+      if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+    }
+
+    trigger.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+  })();
+</script>
+
+<div id="topicSearchModalOverlay" class="topic-modal-overlay" hidden>
+  <div id="topicSearchModalDialog" class="topic-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="topicSearchModalTitle">
+    <div class="topic-modal-header">
+      <h2 id="topicSearchModalTitle" class="topic-modal-title">{{TOPIC_MODAL_TITLE}}</h2>
+      <button type="button" id="topicSearchModalClose" class="topic-modal-close" aria-label="{{TOPIC_MODAL_CLOSE_ARIA}}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <ul id="topicSearchModalList" class="topic-modal-list" aria-label="{{TOPIC_SELECTOR_LABEL}}"></ul>
+  </div>
+</div>
+<!-- Search icon's own script is deferred to the bottom of the page (after
+     the existing #topicSelector <select>, which it reuses as its data
+     source, appears in the DOM) — see end of page. -->
 
 <main>
   <div class="homepage-photo-wrap">
@@ -469,6 +633,83 @@
     nativeSelect.setAttribute('aria-hidden', 'true');
     nativeSelect.tabIndex = -1;
     trigger.style.display = 'block';
+  })();
+</script>
+
+<script>
+  // ---- Header search icon's modal — placed here, after the
+  // #topicSelector <select> above, so getElementById finds it. Reuses
+  // that same <select> as its data source (same data, no duplicate
+  // element); its display:none (set by the script above) doesn't
+  // affect reading its .options here. ----
+  (function(){
+    const nativeSelect = document.getElementById('topicSelector');
+    const trigger = document.getElementById('topicSearchTrigger');
+    const overlay = document.getElementById('topicSearchModalOverlay');
+    const dialog = document.getElementById('topicSearchModalDialog');
+    const closeBtn = document.getElementById('topicSearchModalClose');
+    const listEl = document.getElementById('topicSearchModalList');
+    if (!nativeSelect || !trigger || !overlay || !dialog || !closeBtn || !listEl) return;
+
+    const options = Array.from(nativeSelect.options).filter(function(o){ return o.value; });
+    if (options.length === 0) return;
+
+    options.forEach(function(opt){
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.className = 'topic-modal-row';
+      a.href = opt.value;
+      a.textContent = opt.textContent;
+      li.appendChild(a);
+      listEl.appendChild(li);
+    });
+
+    let lastFocused = null;
+    let previousBodyOverflow = '';
+
+    function getFocusable(){
+      return Array.from(dialog.querySelectorAll('a[href], button:not([disabled])'));
+    }
+
+    function onKeydown(e){
+      if (e.key === 'Escape'){
+        e.preventDefault();
+        closeModal();
+        return;
+      }
+      if (e.key === 'Tab'){
+        const focusable = getFocusable();
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first){
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last){
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+
+    function openModal(){
+      lastFocused = document.activeElement;
+      overlay.hidden = false;
+      previousBodyOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      document.addEventListener('keydown', onKeydown);
+      closeBtn.focus();
+    }
+
+    function closeModal(){
+      overlay.hidden = true;
+      document.body.style.overflow = previousBodyOverflow;
+      document.removeEventListener('keydown', onKeydown);
+      if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+    }
+
+    trigger.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
   })();
 </script>
 </body>
