@@ -137,45 +137,17 @@
   }
   .welcome-section p:last-child{ margin-bottom:0; }
 
-  /* ---------- Homepage Topic Selector ---------- */
-  .topic-selector-wrap{ margin-bottom:16px; }
-  .topic-selector-wrap .section-label{
-    font-size:12px; text-transform:uppercase; letter-spacing:0.1em;
-    color:rgba(242,90,166,0.90); font-weight:600; margin:0 0 10px; text-align:center;
-  }
-  .topic-selector{
-    display:block;
-    width:100%;
-    padding:14px 16px;
-    border-radius:12px;
-    border:1px solid var(--line);
-    background:var(--paper-raised);
-    color:var(--ink);
-    font-family:'Inter', sans-serif;
-    font-size:15px;
-    appearance:none;
-    -webkit-appearance:none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c65f48' stroke-width='2.4'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat:no-repeat;
-    background-position: left 14px center;
-    background-size:16px;
-    cursor:pointer;
-  }
-  .topic-selector:focus-visible{
-    outline:2px solid var(--blush-deep);
-    outline-offset:2px;
-  }
-
-  /* ---------- Topic Selector modal (progressive enhancement over the
-     native <select> above — see script at the bottom of the page) ---------- */
-  .topic-selector-trigger{
-    display:none; /* shown by JS only once the modal has initialized successfully */
-    text-align:right;
-    font-family:'Inter', sans-serif;
-  }
-  .topic-selector-trigger:focus-visible{
-    outline:2px solid var(--blush-deep);
-    outline-offset:2px;
+  /* ---------- Header search icon's data source. The old visible mid-page
+     Topic Selector widget was removed (redundant now that the shared
+     header's search icon covers the same "browse by topic" need) — this
+     <select> is all that's left of it, kept only as a hidden data
+     source, same pattern as every other page template. ---------- */
+  .topic-selector-native{
+    position:absolute;
+    width:1px; height:1px;
+    overflow:hidden;
+    clip:rect(0,0,0,0);
+    white-space:nowrap;
   }
 
   .topic-modal-overlay{
@@ -354,15 +326,19 @@
 <body>
 
 <!-- Approved shared header/nav, ported from the other page templates.
-     IMPORTANT — id note: the homepage already has its own mid-page Topic
-     Selector further down (untouched, see "Homepage Topic Selector"
-     below) using ids topicSelector/topicSelectorTrigger/topicModal*.
-     To avoid duplicate ids, the HAMBURGER's own menu here uses distinct
-     headerMenu* ids instead of the topicSelectorTrigger/topicModal* ids
-     used on every other page. The SEARCH icon reuses the existing
-     #topicSelector <select> already on this page as its data source
-     (same data, no duplicate element) — its own script therefore runs
-     at the bottom of the page, after that <select> exists in the DOM. -->
+     IMPORTANT — id note: this page's HAMBURGER menu uses distinct
+     headerMenu* ids (not the usual topicSelectorTrigger/topicModal*
+     ids other pages use) — kept from when the homepage still had its
+     own separate mid-page Topic Selector using those ids. That widget
+     is gone now (redundant with the header's own search icon), but the
+     headerMenu* naming stayed rather than being renamed back, since
+     renaming carries no functional benefit and this is called out here
+     for anyone maintaining this file. -->
+<select id="topicSelector" class="topic-selector-native" aria-hidden="true" tabindex="-1">
+  <option value="" disabled selected>{{TOPIC_SELECTOR_PLACEHOLDER}}</option>
+{{TOPIC_SELECTOR_OPTIONS_HTML}}
+</select>
+
 <div class="site-header-fixed">
 <header class="node-header">
   <button type="button" id="headerMenuTrigger" class="proto-hamburger" aria-haspopup="dialog" aria-label="{{TOPIC_SELECTOR_LABEL}}">
@@ -467,181 +443,10 @@
     <ul id="topicSearchModalList" class="topic-modal-list" aria-label="{{TOPIC_SELECTOR_LABEL}}"></ul>
   </div>
 </div>
-<!-- Search icon's own script is deferred to the bottom of the page (after
-     the existing #topicSelector <select>, which it reuses as its data
-     source, appears in the DOM) — see end of page. -->
-
-<main>
-  <div class="homepage-photo-wrap">
-    <img class="homepage-photo" src="data:image/png;base64,{{HOMEPAGE_PHOTO_BASE64}}" alt="{{HOMEPAGE_PHOTO_ALT}}">
-  </div>
-
-  <section class="welcome-section">
-{{HOMEPAGE_WELCOME_HTML}}
-  </section>
-
-  <!-- Homepage Topic Selector. The real <select> below is the no-JavaScript
-       fallback and is always fully functional on its own — no free text
-       input, no framework, browser-native keyboard/mobile/screen-reader
-       support. The trigger button + modal are a progressive enhancement:
-       script at the bottom of the page hides this <select> and shows the
-       button ONLY once the modal has initialized successfully. If the
-       script fails or JS is disabled, this <select> is all a visitor
-       ever sees, and it still navigates correctly on change. -->
-  <div class="topic-selector-wrap">
-    <p class="section-label">{{TOPIC_SELECTOR_LABEL}}</p>
-    <select id="topicSelector" class="topic-selector" aria-label="{{TOPIC_SELECTOR_LABEL}}"
-            onchange="if(this.value){ location.href = this.value; }">
-      <option value="" disabled selected>{{TOPIC_SELECTOR_PLACEHOLDER}}</option>
-{{TOPIC_SELECTOR_OPTIONS_HTML}}
-    </select>
-    <button type="button" id="topicSelectorTrigger" class="topic-selector topic-selector-trigger" aria-haspopup="dialog">
-      {{TOPIC_SELECTOR_PLACEHOLDER}}
-    </button>
-  </div>
-
-  <div id="topicModalOverlay" class="topic-modal-overlay" hidden>
-    <div id="topicModalDialog" class="topic-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="topicModalTitle">
-      <div class="topic-modal-header">
-        <h2 id="topicModalTitle" class="topic-modal-title">{{TOPIC_MODAL_TITLE}}</h2>
-        <button type="button" id="topicModalClose" class="topic-modal-close" aria-label="{{TOPIC_MODAL_CLOSE_ARIA}}">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-        </button>
-      </div>
-      <ul id="topicModalList" class="topic-modal-list" aria-label="{{TOPIC_SELECTOR_LABEL}}"></ul>
-    </div>
-  </div>
-
-  <div class="nav-buttons-stack">
-    <a class="more-link" href="{{ALL_TOPICS_BUTTON_URL}}">{{ALL_TOPICS_BUTTON_TEXT}}</a>
-    <button type="button" id="backLinkBtn" class="back-link" onclick="history.back()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-      {{UI_BACK_BUTTON_TEXT}}
-    </button>
-  </div>
-  <script>
-    try {
-      if (document.referrer && document.referrer.indexOf(location.origin) === 0 && window.history.length > 1){
-        document.getElementById('backLinkBtn').classList.add('show');
-      }
-    } catch (e) {}
-  </script>
-
-  <div class="homepage-social-links">
-    <a class="social-btn-lg" href="{{SOCIAL_YOUTUBE_URL}}" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2s-.23-1.64-.94-2.36c-.9-.94-1.9-.95-2.36-1C16.9 2.5 12 2.5 12 2.5h-.01s-4.89 0-8.19.34c-.46.05-1.46.06-2.36 1-.71.72-.94 2.36-.94 2.36S0 8.13 0 10.06v1.87c0 1.93.23 3.86.23 3.86s.23 1.64.94 2.36c.9.94 2.08.91 2.6 1.01 1.89.18 8.02.34 8.23.34 0 0 4.9-.01 8.2-.35.46-.06 1.46-.07 2.36-1.01.71-.72.94-2.36.94-2.36s.23-1.93.23-3.86v-1.87c0-1.93-.23-3.86-.23-3.86zM9.55 14.6V7.3l6.27 3.66-6.27 3.64z"/></svg>
-    </a>
-    <a class="social-btn-lg" href="{{SOCIAL_INSTAGRAM_URL}}" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.97.24 2.43.4a4.9 4.9 0 0 1 1.77 1.15 4.9 4.9 0 0 1 1.15 1.77c.16.46.35 1.26.4 2.43.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.24 1.97-.4 2.43a4.9 4.9 0 0 1-1.15 1.77 4.9 4.9 0 0 1-1.77 1.15c-.46.16-1.26.35-2.43.4-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.97-.24-2.43-.4a4.9 4.9 0 0 1-1.77-1.15 4.9 4.9 0 0 1-1.15-1.77c-.16-.46-.35-1.26-.4-2.43C2.21 15.58 2.2 15.2 2.2 12s.01-3.58.07-4.85c.05-1.17.24-1.97.4-2.43a4.9 4.9 0 0 1 1.15-1.77A4.9 4.9 0 0 1 5.59 1.8c.46-.16 1.26-.35 2.43-.4C9.29 1.34 9.67 1.33 12 1.33Zm0 1.98c-3.15 0-3.5.01-4.74.07-1.02.05-1.58.21-1.94.35-.49.19-.84.42-1.21.79-.37.37-.6.72-.79 1.21-.14.36-.3.92-.35 1.94-.06 1.24-.07 1.59-.07 4.74s.01 3.5.07 4.74c.05 1.02.21 1.58.35 1.94.19.49.42.84.79 1.21.37.37.72.6 1.21.79.36.14.92.3 1.94.35 1.24.06 1.59.07 4.74.07s3.5-.01 4.74-.07c1.02-.05 1.58-.21 1.94-.35.49-.19.84-.42 1.21-.79.37-.37.6-.72.79-1.21.14-.36.3-.92.35-1.94.06-1.24.07-1.59.07-4.74s-.01-3.5-.07-4.74c-.05-1.02-.21-1.58-.35-1.94a3.26 3.26 0 0 0-.79-1.21 3.26 3.26 0 0 0-1.21-.79c-.36-.14-.92-.3-1.94-.35-1.24-.06-1.59-.07-4.74-.07Zm0 3.37a4.45 4.45 0 1 1 0 8.9 4.45 4.45 0 0 1 0-8.9Zm0 1.98a2.47 2.47 0 1 0 0 4.94 2.47 2.47 0 0 0 0-4.94Zm4.63-2.2a1.04 1.04 0 1 1 0 2.08 1.04 1.04 0 0 1 0-2.08Z"/></svg>
-    </a>
-    <a class="social-btn-lg" href="{{SOCIAL_FACEBOOK_URL}}" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.4 22v-8.4h2.8l.4-3.3h-3.2V8.1c0-.95.26-1.6 1.63-1.6h1.74V3.55C16.4 3.5 15.4 3.4 14.24 3.4c-2.42 0-4.08 1.48-4.08 4.2v2.7H7.35v3.3h2.8V22h3.24Z"/></svg>
-    </a>
-    <a class="social-btn-lg" href="{{SOCIAL_TIKTOK_URL}}" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.7 2h-3.1v13.7c0 1.5-1.2 2.75-2.75 2.75a2.75 2.75 0 0 1 0-5.5c.28 0 .55.04.8.11V9.9a5.86 5.86 0 0 0-.8-.05A5.85 5.85 0 1 0 16.7 15.7V9.1a7.4 7.4 0 0 0 4.3 1.37V7.4a4.3 4.3 0 0 1-4.3-4.3V2Z"/></svg>
-    </a>
-  </div>
-
-  <a class="site-disclaimer" href="{{DISCLAIMER_LINK_URL}}">{{DISCLAIMER_ICON}} {{DISCLAIMER_SHORT_TEXT}} <span class="disclaimer-underline">{{DISCLAIMER_LINK_PREFIX}} {{DISCLAIMER_LINK_TEXT}}</span>.</a>
-</main>
-
 <script>
-  // ---- Topic Selector modal (progressive enhancement over the real
-  // <select> above) ----
-  // The <select> is the complete, working fallback — it's never removed
-  // from the page, only visually hidden, and only after everything below
-  // has set up successfully. Any failure here (missing element, JS
-  // disabled, an error) simply leaves the native <select> as the only
-  // thing visitors see, exactly as it always worked before this change.
-  // No Topic data is invented or duplicated: the modal's rows are built
-  // directly from this page's own already-rendered <option> elements.
-  (function(){
-    const nativeSelect = document.getElementById('topicSelector');
-    const trigger = document.getElementById('topicSelectorTrigger');
-    const overlay = document.getElementById('topicModalOverlay');
-    const dialog = document.getElementById('topicModalDialog');
-    const closeBtn = document.getElementById('topicModalClose');
-    const listEl = document.getElementById('topicModalList');
-    if (!nativeSelect || !trigger || !overlay || !dialog || !closeBtn || !listEl) return;
-
-    const options = Array.from(nativeSelect.options).filter(function(o){ return o.value; });
-    if (options.length === 0) return; // no active Topics — nothing to enhance
-
-    options.forEach(function(opt){
-      const li = document.createElement('li');
-      const a = document.createElement('a');
-      a.className = 'topic-modal-row';
-      a.href = opt.value;
-      a.textContent = opt.textContent;
-      li.appendChild(a);
-      listEl.appendChild(li);
-    });
-
-    let lastFocused = null;
-    let previousBodyOverflow = '';
-
-    function getFocusable(){
-      return Array.from(dialog.querySelectorAll('a[href], button:not([disabled])'));
-    }
-
-    function onKeydown(e){
-      if (e.key === 'Escape'){
-        e.preventDefault();
-        closeModal();
-        return;
-      }
-      if (e.key === 'Tab'){
-        const focusable = getFocusable();
-        if (focusable.length === 0) return;
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
-        if (e.shiftKey && document.activeElement === first){
-          e.preventDefault();
-          last.focus();
-        } else if (!e.shiftKey && document.activeElement === last){
-          e.preventDefault();
-          first.focus();
-        }
-      }
-    }
-
-    function openModal(){
-      lastFocused = document.activeElement;
-      overlay.hidden = false;
-      previousBodyOverflow = document.body.style.overflow;
-      document.body.style.overflow = 'hidden';
-      document.addEventListener('keydown', onKeydown);
-      closeBtn.focus();
-    }
-
-    function closeModal(){
-      overlay.hidden = true;
-      document.body.style.overflow = previousBodyOverflow;
-      document.removeEventListener('keydown', onKeydown);
-      if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
-    }
-
-    trigger.addEventListener('click', openModal);
-    closeBtn.addEventListener('click', closeModal);
-    // Selecting a Topic is a real <a href> navigation — no extra JS needed,
-    // the browser just follows the link and leaves the page.
-    // Deliberately no click-outside-to-close and no backdrop click handler.
-
-    // Everything above worked — now, and only now, swap the native
-    // <select> for the nicer trigger + modal.
-    nativeSelect.style.display = 'none';
-    nativeSelect.setAttribute('aria-hidden', 'true');
-    nativeSelect.tabIndex = -1;
-    trigger.style.display = 'block';
-  })();
-</script>
-
-<script>
-  // ---- Header search icon's modal — placed here, after the
-  // #topicSelector <select> above, so getElementById finds it. Reuses
-  // that same <select> as its data source (same data, no duplicate
-  // element); its display:none (set by the script above) doesn't
-  // affect reading its .options here. ----
+  // ---- Search-by-topic modal (magnifying glass). Rows are built from
+  // the hidden <select> options above — same data source/links used
+  // site-wide, no new navigation system. ----
   (function(){
     const nativeSelect = document.getElementById('topicSelector');
     const trigger = document.getElementById('topicSearchTrigger');
@@ -712,5 +517,48 @@
     closeBtn.addEventListener('click', closeModal);
   })();
 </script>
+
+<main>
+  <div class="homepage-photo-wrap">
+    <img class="homepage-photo" src="data:image/png;base64,{{HOMEPAGE_PHOTO_BASE64}}" alt="{{HOMEPAGE_PHOTO_ALT}}">
+  </div>
+
+  <section class="welcome-section">
+{{HOMEPAGE_WELCOME_HTML}}
+  </section>
+
+  <div class="nav-buttons-stack">
+    <a class="more-link" href="{{ALL_TOPICS_BUTTON_URL}}">{{ALL_TOPICS_BUTTON_TEXT}}</a>
+    <button type="button" id="backLinkBtn" class="back-link" onclick="history.back()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      {{UI_BACK_BUTTON_TEXT}}
+    </button>
+  </div>
+  <script>
+    try {
+      if (document.referrer && document.referrer.indexOf(location.origin) === 0 && window.history.length > 1){
+        document.getElementById('backLinkBtn').classList.add('show');
+      }
+    } catch (e) {}
+  </script>
+
+  <div class="homepage-social-links">
+    <a class="social-btn-lg" href="{{SOCIAL_YOUTUBE_URL}}" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2s-.23-1.64-.94-2.36c-.9-.94-1.9-.95-2.36-1C16.9 2.5 12 2.5 12 2.5h-.01s-4.89 0-8.19.34c-.46.05-1.46.06-2.36 1-.71.72-.94 2.36-.94 2.36S0 8.13 0 10.06v1.87c0 1.93.23 3.86.23 3.86s.23 1.64.94 2.36c.9.94 2.08.91 2.6 1.01 1.89.18 8.02.34 8.23.34 0 0 4.9-.01 8.2-.35.46-.06 1.46-.07 2.36-1.01.71-.72.94-2.36.94-2.36s.23-1.93.23-3.86v-1.87c0-1.93-.23-3.86-.23-3.86zM9.55 14.6V7.3l6.27 3.66-6.27 3.64z"/></svg>
+    </a>
+    <a class="social-btn-lg" href="{{SOCIAL_INSTAGRAM_URL}}" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.97.24 2.43.4a4.9 4.9 0 0 1 1.77 1.15 4.9 4.9 0 0 1 1.15 1.77c.16.46.35 1.26.4 2.43.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.24 1.97-.4 2.43a4.9 4.9 0 0 1-1.15 1.77 4.9 4.9 0 0 1-1.77 1.15c-.46.16-1.26.35-2.43.4-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.97-.24-2.43-.4a4.9 4.9 0 0 1-1.77-1.15 4.9 4.9 0 0 1-1.15-1.77c-.16-.46-.35-1.26-.4-2.43C2.21 15.58 2.2 15.2 2.2 12s.01-3.58.07-4.85c.05-1.17.24-1.97.4-2.43a4.9 4.9 0 0 1 1.15-1.77A4.9 4.9 0 0 1 5.59 1.8c.46-.16 1.26-.35 2.43-.4C9.29 1.34 9.67 1.33 12 1.33Zm0 1.98c-3.15 0-3.5.01-4.74.07-1.02.05-1.58.21-1.94.35-.49.19-.84.42-1.21.79-.37.37-.6.72-.79 1.21-.14.36-.3.92-.35 1.94-.06 1.24-.07 1.59-.07 4.74s.01 3.5.07 4.74c.05 1.02.21 1.58.35 1.94.19.49.42.84.79 1.21.37.37.72.6 1.21.79.36.14.92.3 1.94.35 1.24.06 1.59.07 4.74.07s3.5-.01 4.74-.07c1.02-.05 1.58-.21 1.94-.35.49-.19.84-.42 1.21-.79.37-.37.6-.72.79-1.21.14-.36.3-.92.35-1.94.06-1.24.07-1.59.07-4.74s-.01-3.5-.07-4.74c-.05-1.02-.21-1.58-.35-1.94a3.26 3.26 0 0 0-.79-1.21 3.26 3.26 0 0 0-1.21-.79c-.36-.14-.92-.3-1.94-.35-1.24-.06-1.59-.07-4.74-.07Zm0 3.37a4.45 4.45 0 1 1 0 8.9 4.45 4.45 0 0 1 0-8.9Zm0 1.98a2.47 2.47 0 1 0 0 4.94 2.47 2.47 0 0 0 0-4.94Zm4.63-2.2a1.04 1.04 0 1 1 0 2.08 1.04 1.04 0 0 1 0-2.08Z"/></svg>
+    </a>
+    <a class="social-btn-lg" href="{{SOCIAL_FACEBOOK_URL}}" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.4 22v-8.4h2.8l.4-3.3h-3.2V8.1c0-.95.26-1.6 1.63-1.6h1.74V3.55C16.4 3.5 15.4 3.4 14.24 3.4c-2.42 0-4.08 1.48-4.08 4.2v2.7H7.35v3.3h2.8V22h3.24Z"/></svg>
+    </a>
+    <a class="social-btn-lg" href="{{SOCIAL_TIKTOK_URL}}" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.7 2h-3.1v13.7c0 1.5-1.2 2.75-2.75 2.75a2.75 2.75 0 0 1 0-5.5c.28 0 .55.04.8.11V9.9a5.86 5.86 0 0 0-.8-.05A5.85 5.85 0 1 0 16.7 15.7V9.1a7.4 7.4 0 0 0 4.3 1.37V7.4a4.3 4.3 0 0 1-4.3-4.3V2Z"/></svg>
+    </a>
+  </div>
+
+  <a class="site-disclaimer" href="{{DISCLAIMER_LINK_URL}}">{{DISCLAIMER_ICON}} {{DISCLAIMER_SHORT_TEXT}} <span class="disclaimer-underline">{{DISCLAIMER_LINK_PREFIX}} {{DISCLAIMER_LINK_TEXT}}</span>.</a>
+</main>
+
 </body>
 </html>
