@@ -187,7 +187,10 @@
   main{ max-width:640px; margin:0 auto; padding: 20px 16px 56px; }
 
   .page-title{
-    font-size:22px; font-weight:700; line-height:1.3; margin:0 0 20px; color:var(--teal-deep);
+    font-size:22px; font-weight:700; line-height:1.3; margin:0 0 4px; color:var(--teal-deep);
+  }
+  .page-subtitle{
+    font-size:13.5px; font-weight:400; line-height:1.4; margin:0 0 20px; color:#5c6b64;
   }
 
   /* ---------- Topic tiles ---------- */
@@ -219,6 +222,13 @@
   }
   .topic-tile-count{
     font-size:12.5px; color:#5c6b64; margin:0;
+  }
+  /* Click-affordance arrow — same line as the count, same site-wide dark
+     green accent used on the Node cards' "לצפייה בעמוד" arrow. Decorative
+     only (::after), never affects the card's own clickable area. */
+  .topic-tile-count::after{
+    content:" ←";
+    color:var(--teal-deep);
   }
 
   .empty-state{
@@ -469,6 +479,7 @@
 
 <main>
   <h1 class="page-title">{{TOPICS_INDEX_HEADING}}</h1>
+  <p class="page-subtitle">בחרו נושא לצפייה בתכנים</p>
 
 {{TOPICS_LIST_HTML}}
 

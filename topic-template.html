@@ -207,6 +207,14 @@
   .node-card-readmore{
     font-size:13px; font-weight:600; color:var(--ink); margin:6px 0 0;
   }
+  /* Click-affordance arrow — same line as the CTA text, same site-wide
+     dark green accent used on the All Topics page's tile-count arrow.
+     Decorative only (::after), never affects the card's own clickable
+     area. */
+  .node-card-readmore::after{
+    content:" ←";
+    color:var(--teal-deep);
+  }
 
   .empty-state{
     background:var(--paper-raised);
