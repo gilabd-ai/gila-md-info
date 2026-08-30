@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0037",
+  "slug": "leaking-after-embryo-transfer",
+  "youtube": {
+    "videoId": "Ehate-EZOrI",
+    "orientation": "short",
+    "title": "אחרי החזרת עוברים מרגישה נזילה? העוברים לא נופלים החוצה",
+    "description": "אחד החששות הנפוצים אחרי החזרת עוברים הוא שמה שמרגישים שנוזל החוצה הוא העובר.\nכדאי לדעת שתחושת הרטיבות נובעת מהפרשה נרתיקית ומשאריות נוזלים מהפעולה ואינה קשורה לעוברים 💗",
+    "publishedAt": "2026-06-30T14:14:51Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/Ehate-EZOrI/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-08-30T00:00:00Z",
+    "durationSeconds": 10
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "fertility",
+      "common-myths"
+    ],
+    "primaryTagIds": [
+      "ivf",
+      "embryo-transfer",
+      "fertility-treatment",
+      "misconceptions"
+    ],
+    "secondaryTagIds": []
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-08-30"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-30"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
