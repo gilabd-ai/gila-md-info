@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0039",
+  "slug": "crispr-treatment-for-hereditary-angioedema",
+  "youtube": {
+    "videoId": "OX2Ijmfc4bs",
+    "orientation": "short",
+    "title": "עריכת גנים במקום תרופות? טיפול CRISPR חד־פעמי באנגיואדמה תורשתית",
+    "description": "עריכה גנטית כבר לא שייכת רק למדע בדיוני 🧬\n\nבמחקר שפורסם ב־New England Journal of Medicine נבדק טיפול חדשני באנגיואדמה תורשתית — מחלה גנטית שעלולה לגרום להתקפים חוזרים של נפיחות.\n\nבמקום טיפול תרופתי קבוע, החוקרים השתמשו בעריכה גנטית כדי להשבית גן שמעורב במנגנון המחלה — באמצעות טיפול חד־פעמי.\n\nאבל הסיפור הגדול יותר הוא מה שקורה לעולם הרפואה:\nCRISPR ועריכה גנטית כבר משמשים או נחקרים במחלות נוספות, ובהן מחלות דם תורשתיות, מחלות כבד ומחלות נוספות שמקורן גנטי.\n\nהאפשרות לטפל בגורם למחלה באמצעות שינוי גנטי — ולא רק לשלוט בה שוב ושוב באמצעות תרופות — עשויה לשנות בעתיד את הדרך שבה אנחנו מטפלים במחלות.\n\nאנחנו עדיין בתחילת הדרך, וחלק מהטיפולים האלה עדיין מחקריים. אבל מה שהיה עד לא מזמן מדע בדיוני, מתחיל להפוך לרפואה אמיתית. 🧬\n\nhttps://www.nejm.org/doi/full/10.1056/NEJMoa2600931",
+    "publishedAt": "2026-07-03T10:58:15Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/OX2Ijmfc4bs/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-08-30T00:00:00Z",
+    "durationSeconds": 32
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "medical-innovation"
+    ],
+    "primaryTagIds": [
+      "research",
+      "innovation"
+    ],
+    "secondaryTagIds": [
+      "preventive-care"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-08-30"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-30"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
