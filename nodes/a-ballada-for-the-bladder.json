@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0038",
+  "slug": "a-ballada-for-the-bladder",
+  "youtube": {
+    "videoId": "jqnyYhXdClE",
+    "orientation": "short",
+    "title": "בלדה לשלפוחית השתן | דחיפות, תכיפות וקימה בלילה",
+    "description": "מאחורי ההומור יש תופעה מוכרת מאוד.\n\nדחיפות ותכיפות במתן שתן, קימה בלילה, צריבה או דליפת שתן יכולות להופיע מסיבות שונות — מזיהום בדרכי השתן ועד שינויים בתפקוד שלפוחית השתן ורצפת האגן.\n\nהטיפול תלוי בסיבה ויכול לכלול שינויים בהרגלים, פיזיותרפיה של רצפת האגן, טיפול תרופתי, ובהתאם לבעיה גם טיפולים ניתוחיים.",
+    "publishedAt": "2026-07-01T16:03:37Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/jqnyYhXdClE/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-08-30T00:00:00Z",
+    "durationSeconds": 26
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "urogynaecology"
+    ],
+    "primaryTagIds": [
+      "urinary-incontinence",
+      "overactive-bladder",
+      "bladder",
+      "pelvic-floor"
+    ],
+    "secondaryTagIds": [
+      "menopause"
+    ]
+  },
+  "priority": 2,
+  "clinical": {
+    "lastReviewedAt": "2026-08-30"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-30"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
