@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0040",
+  "slug": "beauty-does-not-define-you",
+  "youtube": {
+    "videoId": "q4btpWvrPPs",
+    "orientation": "short",
+    "title": "מודל היופי משתנה כל הזמן – אל תתני לו להגדיר אותך",
+    "description": "מה שנחשב יפה היום, לא בהכרח נחשב יפה פעם — וכנראה גם לא ייחשב כך בעתיד.\n\nמודל היופי משתנה מתקופה לתקופה, מתרבות לתרבות ומטרנד לטרנד.\nהגוף שלך לא צריך להשתנות יחד איתו.\n\nאל תתני למודל היופי של הרגע להגדיר אותך💗",
+    "publishedAt": "2026-07-03T11:00:06Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/q4btpWvrPPs/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-08-30T00:00:00Z",
+    "durationSeconds": 10
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "body-and-mind"
+    ],
+    "primaryTagIds": [
+      "wellbeing",
+      "mental-health"
+    ],
+    "secondaryTagIds": [
+      "womens-health"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-08-30"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-30"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
