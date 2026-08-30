@@ -259,6 +259,13 @@
     display:block;
     -webkit-line-clamp:unset;
   }
+  /* Conventional blue for any auto-linked URL inside the description
+     (see build.py's linkify_description()) — scoped to just this block
+     so it doesn't touch the global a{color:inherit} rule other
+     components (buttons, cards, nav) rely on. */
+  .summary-text a{
+    color:#1155cc;
+  }
   .read-more-btn{
     background:none;
     border:none;
