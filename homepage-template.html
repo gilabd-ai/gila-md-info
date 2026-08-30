@@ -443,6 +443,14 @@
 
     trigger.addEventListener('click', openModal);
     closeBtn.addEventListener('click', closeModal);
+    // Click anywhere on the darkened backdrop (not the dialog itself)
+    // closes the modal. e.target === overlay only when the click landed
+    // directly on the overlay — any click inside .topic-modal-dialog or
+    // its children has e.target set to that descendant instead, so this
+    // never fires for clicks inside the modal.
+    overlay.addEventListener('click', function(e){
+      if (e.target === overlay) closeModal();
+    });
   })();
 </script>
 
@@ -542,6 +550,14 @@
 
     trigger.addEventListener('click', openModal);
     closeBtn.addEventListener('click', closeModal);
+    // Click anywhere on the darkened backdrop (not the dialog itself)
+    // closes the modal. e.target === overlay only when the click landed
+    // directly on the overlay — any click inside .topic-modal-dialog or
+    // its children has e.target set to that descendant instead, so this
+    // never fires for clicks inside the modal.
+    overlay.addEventListener('click', function(e){
+      if (e.target === overlay) closeModal();
+    });
     listEl.addEventListener('scroll', updateScrollHint);
     window.addEventListener('resize', updateScrollHint);
   })();
