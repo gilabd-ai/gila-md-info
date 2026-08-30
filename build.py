@@ -462,6 +462,39 @@ def select_related_nodes(node: dict, nodes_by_id: dict[str, dict],
 # Rendering
 # ──────────────────────────────────────────────────────────────────
 
+URL_PATTERN = re.compile(r'https?://[^\s<>"]+')
+
+
+def linkify_description(text: str) -> str:
+    """
+    Escapes a Node's real youtube.description for safe HTML display, same
+    as the plain html.escape() this replaces, but any bare http(s) URL
+    already present in that human-written text becomes a real, clickable
+    <a target="_blank" rel="noopener noreferrer"> link — the visible text
+    is still exactly the original URL, just wrapped. A description with
+    no URL in it renders byte-for-byte identical to before (this is a
+    strict superset of plain escaping, not a different behavior).
+    Trailing punctuation like a period or closing paren right after a URL
+    is kept outside the link, since it's normally sentence punctuation,
+    not part of the address.
+    """
+    parts = []
+    last_end = 0
+    for m in URL_PATTERN.finditer(text):
+        parts.append(html.escape(text[last_end:m.start()], quote=True))
+        url = m.group(0)
+        trailing = ""
+        while url and url[-1] in ".,;:!?)]}":
+            trailing = url[-1] + trailing
+            url = url[:-1]
+        escaped_url = html.escape(url, quote=True)
+        parts.append(f'<a href="{escaped_url}" target="_blank" rel="noopener noreferrer">{escaped_url}</a>')
+        parts.append(html.escape(trailing, quote=True))
+        last_end = m.end()
+    parts.append(html.escape(text[last_end:], quote=True))
+    return "".join(parts)
+
+
 def make_snippet(text: str, max_chars: int = 160) -> str:
     """
     Shared helper for producing a short preview snippet from a longer
@@ -954,7 +987,7 @@ def render_node_html(node: dict, template: str, site_config: dict,
         "{{SOCIAL_TIKTOK_URL}}": social["TikTok"],
         "{{NODE_ID}}": node["id"],
         "{{NODE_TITLE}}": html.escape(node["youtube"]["title"], quote=True),
-        "{{NODE_DESCRIPTION}}": html.escape(node["youtube"]["description"], quote=True),
+        "{{NODE_DESCRIPTION}}": linkify_description(node["youtube"]["description"]),
         "{{VIDEO_DURATION_TEXT}}": format_duration_he(node["youtube"]["durationSeconds"]),
         "{{VIDEO_ID}}": video_id,
         "{{VIDEO_ORIENTATION_CLASS}}": video_orientation_class,
