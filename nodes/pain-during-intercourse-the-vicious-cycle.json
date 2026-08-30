@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0036",
+  "slug": "pain-during-intercourse-the-vicious-cycle",
+  "youtube": {
+    "videoId": "f2DK9QUuUJ4",
+    "orientation": "short",
+    "title": "כאבים בקיום יחסים: מהו מעגל הכאב ולמה הוא עלול להחמיר?",
+    "description": "כאב בקיום יחסים שכיח יותר ממה שרוב הנשים חושבות,\nואצל חלק מהנשים עלול להיווצר מעגל כאב: הגוף מתחיל לצפות לכאב, שרירי רצפת האגן מתכווצים כמנגנון הגנה, והדבר עלול לגרום לכך שהכאב ילך ויחמיר עם הזמן.\n\nככל שפונים מוקדם יותר לבירור ולטיפול, כך גדל הסיכוי לעצור את מעגל הכאב לפני שהוא מזין את עצמו 💗",
+    "publishedAt": "2026-06-29T17:09:21Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/f2DK9QUuUJ4/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-08-30T00:00:00Z",
+    "durationSeconds": 12
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "vulva-and-vagina"
+    ],
+    "primaryTagIds": [
+      "painful-intercourse",
+      "pain-during-sex",
+      "vaginal-dryness",
+      "lubricants",
+      "pelvic-floor",
+      "menopause"
+    ],
+    "secondaryTagIds": [
+      "sexual-function",
+      "vaginal-lubrication",
+      "estrogen",
+      "treatment",
+      "diagnosis",
+      "womens-health",
+      "vagina",
+      "pelvic-pain",
+      "pelvic-organ-prolapse"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-08-30"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-30"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
