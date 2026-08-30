@@ -149,7 +149,25 @@
     border-radius:var(--radius);
     box-shadow: 0 20px 50px rgba(18,50,48,0.30);
     overflow:hidden;
+    position:relative; /* anchors the scroll-hint chevron below */
   }
+  /* Scroll-hint chevron — purely a visual cue that more Topics exist
+     below the visible area. position:absolute takes it out of the
+     dialog's flex flow entirely, so it can never affect the dialog's
+     size or the list's own spacing; JS toggles .show based on real
+     scroll position (see the search-modal script). */
+  .topic-modal-scroll-hint{
+    position:absolute;
+    bottom:8px;
+    left:50%;
+    transform:translateX(-50%);
+    color:var(--teal-deep);
+    opacity:0;
+    transition:opacity 0.15s ease;
+    pointer-events:none;
+  }
+  .topic-modal-scroll-hint.show{ opacity:1; }
+  .topic-modal-scroll-hint svg{ width:20px; height:20px; display:block; }
   .topic-modal-header{
     flex:none;
     display:flex;
@@ -400,6 +418,9 @@
       </button>
     </div>
     <ul id="topicSearchModalList" class="topic-modal-list" aria-label="{{TOPIC_SELECTOR_LABEL}}"></ul>
+    <span id="topicSearchScrollHint" class="topic-modal-scroll-hint" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+    </span>
   </div>
 </div>
 <script>
@@ -413,7 +434,8 @@
     const dialog = document.getElementById('topicSearchModalDialog');
     const closeBtn = document.getElementById('topicSearchModalClose');
     const listEl = document.getElementById('topicSearchModalList');
-    if (!nativeSelect || !trigger || !overlay || !dialog || !closeBtn || !listEl) return;
+    const scrollHint = document.getElementById('topicSearchScrollHint');
+    if (!nativeSelect || !trigger || !overlay || !dialog || !closeBtn || !listEl || !scrollHint) return;
 
     const options = Array.from(nativeSelect.options).filter(function(o){ return o.value; });
     if (options.length === 0) return;
@@ -456,6 +478,14 @@
       }
     }
 
+    // Scroll-hint chevron: shown only while there's real content below
+    // the visible part of the list. A small threshold absorbs sub-pixel
+    // rounding so it doesn't flicker at the exact bottom.
+    function updateScrollHint(){
+      const hasMoreBelow = listEl.scrollHeight - listEl.scrollTop - listEl.clientHeight > 2;
+      scrollHint.classList.toggle('show', hasMoreBelow);
+    }
+
     function openModal(){
       lastFocused = document.activeElement;
       overlay.hidden = false;
@@ -463,6 +493,7 @@
       document.body.style.overflow = 'hidden';
       document.addEventListener('keydown', onKeydown);
       closeBtn.focus();
+      updateScrollHint();
     }
 
     function closeModal(){
@@ -474,6 +505,8 @@
 
     trigger.addEventListener('click', openModal);
     closeBtn.addEventListener('click', closeModal);
+    listEl.addEventListener('scroll', updateScrollHint);
+    window.addEventListener('resize', updateScrollHint);
   })();
 </script>
 
