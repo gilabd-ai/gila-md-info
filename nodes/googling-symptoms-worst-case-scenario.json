@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0043",
+  "slug": "googling-symptoms-worst-case-scenario",
+  "youtube": {
+    "videoId": "vLb--XCHwGc",
+    "orientation": "short",
+    "title": "חיפוש תסמינים בגוגל: למה אנחנו תמיד מגיעים לתרחיש הכי גרוע?",
+    "description": "האינטרנט שינה את הדרך שבה אנחנו לומדים על הבריאות שלנו, וזה נפלא💗 \nהיום יש לנו גישה למידע רפואי איכותי, למחקרים ולכלי AI שיכולים לעזור לנו להבין טוב יותר את הגוף שלנו. \nעם זאת, כדאי לזכור שגם מידע נכון צריך לדעת לפרש. לא כל מה שקראנו רלוונטי אלינו, ולא כל תסמין מוביל לתרחיש הגרוע ביותר. \nכדאי לקרוא בצורה ביקורתית, להפעיל היגיון בריא, וכשצריך – להתייעץ עם גורם רפואי מוסמך.",
+    "publishedAt": "2026-07-07T15:32:48Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/vLb--XCHwGc/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-08-31T09:52:59Z",
+    "durationSeconds": 20
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "general-womens-health"
+    ],
+    "primaryTagIds": [
+      "evidence-based-medicine",
+      "misconceptions",
+      "anxiety"
+    ],
+    "secondaryTagIds": [
+      "mental-health",
+      "wellbeing",
+      "social-media"
+    ]
+  },
+  "priority": 0,
+  "clinical": {
+    "lastReviewedAt": "2026-08-31"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-31"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
