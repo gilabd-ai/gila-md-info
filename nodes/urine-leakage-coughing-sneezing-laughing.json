@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0042",
+  "slug": "urine-leakage-coughing-sneezing-laughing",
+  "youtube": {
+    "videoId": "Nx7R--IJyKo",
+    "orientation": "short",
+    "title": "דליפת שתן בשיעול, עיטוש או צחוק – תופעה שכיחה",
+    "description": "בורח לך שתן כשאת צוחקת, משתעלת, מתעטשת או מתאמנת? את ממש לא היחידה.\n\nדליפת שתן במאמץ היא תופעה שכיחה,  ויש טיפולים שיכולים לעזור — מפיזיותרפיה של רצפת האגן, דרך אמצעים נרתיקיים תומכים, ועד אפשרויות ניתוחיות במקרים המתאימים, בהתאם לסיבה ולחומרה.\n\nכדאי לדבר על זה, להיבדק ולדעת שיש מה לעשות.",
+    "publishedAt": "2026-07-06T15:39:21Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/Nx7R--IJyKo/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-08-31T09:19:35Z",
+    "durationSeconds": 16
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "urogynaecology"
+    ],
+    "primaryTagIds": [
+      "urinary-incontinence",
+      "overactive-bladder",
+      "bladder",
+      "pelvic-floor"
+    ],
+    "secondaryTagIds": [
+      "menopause"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-08-31"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-31"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
