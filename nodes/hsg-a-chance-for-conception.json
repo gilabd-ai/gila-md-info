@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0044",
+  "slug": "hsg-a-chance-for-conception",
+  "youtube": {
+    "videoId": "GRxkRP1-Guw",
+    "orientation": "short",
+    "title": "צילום רחם (HSG) והיריון – האם הסיכוי להיכנס להיריון עולה אחרי הבדיקה?",
+    "description": "צילום רחם הוא אחת הבדיקות השכיחות במסגרת בירור פוריות.\nזו אינה בדיקה אהובה, אבל היא יכולה לספק מידע חשוב כחלק מהבירור.\nמעניין לדעת שישנם מחקרים שהראו עלייה בסיכוי להיריון לאחר הבדיקה, ואנחנו בהחלט פוגשים הריונות כאלה גם במרפאה. 💗",
+    "publishedAt": "2026-07-08T16:22:51Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/GRxkRP1-Guw/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-08-31T10:11:41Z",
+    "durationSeconds": 8
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "fertility"
+    ],
+    "primaryTagIds": [
+      "fertility-treatment",
+      "ivf",
+      "trying-to-conceive"
+    ],
+    "secondaryTagIds": [
+      "ovulation",
+      "fertility-evaluation",
+      "fertile-window",
+      "embryo-transfer",
+      "fertility",
+      "conception"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-08-31"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-08-31"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
