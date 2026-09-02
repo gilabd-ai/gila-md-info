@@ -1249,6 +1249,82 @@ def build_disclaimer_page(active_topics: list[dict]) -> Path:
     return out_path
 
 
+def build_about_page(active_topics: list[dict]) -> Path:
+    """
+    Build the permanent About page at dist/about/index.html — shared
+    header/branding, the doctor's photo, and a paragraphs section
+    (currently provisional content — see site-config.json's "aboutPage"
+    comment), plus the standard Back/All-Topics nav stack and disclaimer
+    strip. Modeled directly on build_disclaimer_page().
+    """
+    template = (BASE_DIR / "about-template.html").read_text(encoding="utf-8")
+    site_config = json.loads((BASE_DIR / "site-config.json").read_text(encoding="utf-8"))
+    social = {s["platform"]: s["url"] for s in site_config["socialLinks"]}
+    about_cfg = site_config["aboutPage"]
+    logo_base64 = (BASE_DIR / site_config["header"]["logoImagePath"]).read_text(encoding="utf-8").strip()
+    photo_base64 = (BASE_DIR / about_cfg["photoImagePath"]).read_text(encoding="utf-8").strip()
+    # Shared header's search icon reuses the same Topic Selector data as
+    # every other page.
+    topic_selector_options_html = render_topic_selector_options_html(active_topics)
+
+    paragraphs_html = "\n".join(f"    <p>{p}</p>" for p in about_cfg["paragraphs"])
+
+    seo_description = generate_meta_description(about_cfg["paragraphs"][0])
+    seo_meta_tags = render_seo_meta_tags(
+        page_title=about_cfg["pageTitle"],
+        description=seo_description,
+        path="/about/",
+        image_url="",
+        site_config=site_config,
+    )
+
+    tokens = {
+        "{{PAGE_TITLE}}": about_cfg["pageTitle"],
+        "{{SEO_META_TAGS}}": seo_meta_tags,
+        "{{JSONLD_SCRIPT}}": "",
+        "{{SITE_LOGO_BASE64}}": logo_base64,
+        "{{SITE_HEADER_TITLE_LINE1}}": site_config["header"]["titleLine1"],
+        "{{SITE_HEADER_TITLE_LINE2}}": site_config["header"]["titleLine2"],
+        "{{SOCIAL_YOUTUBE_URL}}": social["YouTube"],
+        "{{SOCIAL_INSTAGRAM_URL}}": social["Instagram"],
+        "{{SOCIAL_FACEBOOK_URL}}": social["Facebook"],
+        "{{SOCIAL_TIKTOK_URL}}": social["TikTok"],
+        "{{HOME_NAV_TEXT}}": site_config["homeNavBar"]["text"],
+        "{{HOME_NAV_URL}}": site_config["homeNavBar"]["url"],
+        "{{TOPIC_SELECTOR_OPTIONS_HTML}}": topic_selector_options_html,
+        "{{TOPIC_SELECTOR_LABEL}}": site_config["homepage"]["topicSelectorLabel"],
+        "{{TOPIC_SELECTOR_PLACEHOLDER}}": site_config["homepage"]["topicSelectorPlaceholder"],
+        "{{TOPIC_MODAL_TITLE}}": site_config["uiLabels"]["topicModalTitle"],
+        "{{TOPIC_MODAL_CLOSE_ARIA}}": site_config["uiLabels"]["topicModalCloseAriaLabel"],
+        "{{UI_BACK_BUTTON_TEXT}}": site_config["uiLabels"]["backButtonText"],
+        "{{ABOUT_HEADING}}": about_cfg["heading"],
+        "{{ABOUT_PHOTO_BASE64}}": photo_base64,
+        "{{ABOUT_PHOTO_ALT}}": about_cfg["photoAlt"],
+        "{{ABOUT_PARAGRAPHS_HTML}}": paragraphs_html,
+        "{{DISCLAIMER_ICON}}": site_config["disclaimer"]["icon"],
+        "{{DISCLAIMER_SHORT_TEXT}}": site_config["disclaimer"]["shortText"],
+        "{{DISCLAIMER_LINK_PREFIX}}": site_config["disclaimer"]["linkPrefix"],
+        "{{DISCLAIMER_LINK_TEXT}}": site_config["disclaimer"]["linkText"],
+        "{{DISCLAIMER_LINK_URL}}": site_config["disclaimer"]["linkUrl"],
+        "{{ALL_TOPICS_BUTTON_TEXT}}": site_config["allTopicsButton"]["text"],
+        "{{ALL_TOPICS_BUTTON_URL}}": site_config["allTopicsButton"]["url"],
+    }
+
+    html = template
+    for token, value in tokens.items():
+        html = html.replace(token, value)
+
+    remaining = re.findall(r"\{\{[A-Z_]+\}\}", html)
+    if remaining:
+        raise SystemExit(f"BUILD FAILED — unresolved tokens on About page: {set(remaining)}")
+
+    out_dir = DIST_DIR / "about"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_path = out_dir / "index.html"
+    out_path.write_text(html, encoding="utf-8")
+    return out_path
+
+
 # ──────────────────────────────────────────────────────────────────
 # Topic navigation (Homepage Topic Selector, Topic pages, All Topics)
 # ──────────────────────────────────────────────────────────────────
@@ -1505,6 +1581,7 @@ def build_all_published():
     built_paths = [build_node(n, nodes_by_id, active_topics, published_only=True) for n in buildable]
     build_homepage(buildable, active_topics)
     build_disclaimer_page(active_topics)
+    build_about_page(active_topics)
     for topic in active_topics:
         build_topic_page(topic, site_config, active_topics)
     build_all_topics_page(active_topics, site_config)
@@ -1514,7 +1591,7 @@ def build_all_published():
 
     sitemap_eligible = [n for n in buildable if not _is_internal_only(n, registry)]
     built_page_paths = (
-        ["/", "/medical-disclaimer/", "/topics/"]
+        ["/", "/medical-disclaimer/", "/about/", "/topics/"]
         + [f"/nodes/{n['slug']}/" for n in sitemap_eligible]
         + [f"/topics/{t['id']}/" for t in active_topics]
     )
@@ -1532,6 +1609,7 @@ def build_all_published():
             print(f"  - {n['slug']} (status: {n['publishing']['status']})")
     print("Built homepage: dist/index.html")
     print("Built Medical Disclaimer page: dist/medical-disclaimer/index.html")
+    print("Built About page: dist/about/index.html")
     print(f"Built {len(active_topics)} active Topic page(s) + dist/topics/index.html:")
     for t in active_topics:
         print(f"  - {t['id']} ({t['label']}): {len(t['nodes'])} Node(s)")

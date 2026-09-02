@@ -379,9 +379,10 @@
       </button>
     </div>
     <ul id="topicModalList" class="topic-modal-list" aria-label="{{TOPIC_SELECTOR_LABEL}}">
-      <li><a class="topic-modal-row" href="{{ALL_TOPICS_BUTTON_URL}}">כל הנושאים באתר</a></li>
-      <li><a class="topic-modal-row" href="/">אודות האתר</a></li>
-      <li><a class="topic-modal-row" href="{{DISCLAIMER_LINK_URL}}">הבהרה משפטית</a></li>
+      <li><a class="topic-modal-row" href="/">דף הבית</a></li>
+      <li><a class="topic-modal-row" href="{{ALL_TOPICS_BUTTON_URL}}">לכל הנושאים</a></li>
+      <li><a class="topic-modal-row" href="/about/">אודות</a></li>
+      <li><a class="topic-modal-row" href="{{DISCLAIMER_LINK_URL}}">דיסקליימר רפואי</a></li>
     </ul>
   </div>
 </div>
@@ -568,10 +569,6 @@
     <img class="homepage-photo" src="data:image/png;base64,{{HOMEPAGE_PHOTO_BASE64}}" alt="{{HOMEPAGE_PHOTO_ALT}}">
   </div>
 
-  <section class="welcome-section">
-{{HOMEPAGE_WELCOME_HTML}}
-  </section>
-
   <div class="nav-buttons-stack">
     <a class="more-link" href="{{ALL_TOPICS_BUTTON_URL}}">{{ALL_TOPICS_BUTTON_TEXT}}</a>
     <button type="button" id="backLinkBtn" class="back-link" onclick="history.back()">
@@ -586,6 +583,10 @@
       }
     } catch (e) {}
   </script>
+
+  <section class="welcome-section">
+{{HOMEPAGE_WELCOME_HTML}}
+  </section>
 
   <div class="homepage-social-links">
     <a class="social-btn-lg" href="{{SOCIAL_YOUTUBE_URL}}" target="_blank" rel="noopener noreferrer" aria-label="YouTube">

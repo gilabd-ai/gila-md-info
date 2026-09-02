@@ -29,7 +29,7 @@
     color:var(--ink);
     font-family:'Inter', sans-serif;
     -webkit-font-smoothing:antialiased;
-    padding-top: 74px; /* All Topics page exception: header only, no nav bar underneath */
+    padding-top: 110px; /* matches the approved shared header: 72px header + ~37px nav bar */
   }
   h1,h2,h3, .display{
     font-family:'Rubik', sans-serif;
@@ -39,21 +39,30 @@
   a{ color:inherit; }
 
   /* =========================================================================
-     PROTOTYPE — All Topics page ONLY. This header/nav block is a temporary,
-     isolated experiment (shorter header + hamburger menu) and is NOT shared
-     with any other page. Nothing here has been promoted to template.html,
-     homepage-template.html, topic-template.html, or disclaimer-template.html.
-     Easy to delete wholesale if the experiment is rejected; easy to promote
-     into the shared header later if approved.
+     Approved shared header/nav component — ported verbatim from
+     template.html (Node pages) / topics-index-template.html (All Topics
+     page). Same values, same class names, on purpose. Still isolated
+     per-file (no shared CSS file exists yet).
      ========================================================================= */
   .site-header-fixed{
     position:fixed;
     top:0; left:0; right:0;
     z-index:200;
   }
-  /* No .home-nav-bar on this page — All Topics page exception: the
-     translucent "לכל הנושאים באתר" bar would just link to the page the
-     visitor is already on, so it's omitted here only. */
+  .home-nav-bar{
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    gap:8px;
+    padding:10px 16px;
+    background: rgba(242,90,166,0.10);
+    border-bottom: 1px solid rgba(242,90,166,0.25);
+    font-size:12px;
+    font-weight:700;
+    color: rgba(216,64,142,0.95);
+    text-decoration:none;
+  }
+  .home-nav-bar svg{ width:16px; height:16px; flex:none; margin-right:8px; }
 
   header.node-header{
     position:relative;
@@ -89,21 +98,6 @@
   .proto-hamburger:focus-visible{
     outline:2px solid #ffffff; outline-offset:-3px; border-radius:8px;
   }
-  /* Search icon: the VISIBLE icon and its 44x44 touch target are
-     deliberately decoupled, per explicit direction — the touch target's
-     own footprint must not dictate how close the two icon GRAPHICS look.
-     justify-content:flex-start (= physical right in this inherited-RTL
-     button, same mechanism already used by .home-nav-bar) pushes the
-     icon glyph flush against the box's hamburger-facing edge, so the
-     44px-wide box extends its slack entirely toward the text side
-     instead. right:57px puts the box's hamburger-facing edge 1px clear
-     of the hamburger's own box (no overlap) — and since the icon sits
-     flush there too, the real icon-to-icon gap (measured via Range,
-     not guessed) lands at 12px, the top of the requested 8-12px window,
-     while the icon-to-text gap is ~27.5px, clearly larger. Same
-     top:50%/translateY(-50%) formula as the hamburger, so both sit on
-     exactly the same horizontal axis regardless of the two boxes'
-     different heights. */
   .proto-search{
     position:absolute; top:50%; right:57px; transform:translateY(-50%);
     width:44px; height:44px;
@@ -123,9 +117,8 @@
     white-space:nowrap;
   }
 
-  /* ---------- Hamburger menu modal — 3 fixed site destinations. Same
-     modal shell/CSS as the Homepage's Topic Selector (see
-     homepage-template.html), reused here for the main site nav. ---------- */
+  /* ---------- Topic Selector / site-menu modal shell — shared by both
+     the hamburger's menu and the search icon's Topics list. ---------- */
   .topic-modal-overlay{
     position:fixed;
     inset:0;
@@ -151,11 +144,6 @@
     overflow:hidden;
     position:relative; /* anchors the scroll-hint chevron below */
   }
-  /* Scroll-hint chevron — purely a visual cue that more Topics exist
-     below the visible area. position:absolute takes it out of the
-     dialog's flex flow entirely, so it can never affect the dialog's
-     size or the list's own spacing; JS toggles .show based on real
-     scroll position (see the search-modal script). */
   .topic-modal-scroll-hint{
     position:absolute;
     bottom:8px;
@@ -199,66 +187,59 @@
     outline:2px solid var(--blush-deep); outline-offset:-2px; background:rgba(242,90,166,0.10);
   }
   .topic-modal-row:active{ background:rgba(242,90,166,0.18); }
-  /* ---------- end ported Topic Selector modal ---------- */
+  /* ---------- end shared header/nav component ---------- */
 
   /* ---------- Layout ---------- */
   main{ max-width:640px; margin:0 auto; padding: 20px 16px 56px; }
 
-  .page-title{
-    font-size:22px; font-weight:700; line-height:1.3; margin:0 0 4px; color:var(--teal-deep);
+  .about-photo-wrap{
+    display:flex;
+    justify-content:center;
+    margin:0 0 24px;
   }
-  .page-subtitle{
-    font-size:13.5px; font-weight:400; line-height:1.4; margin:0 0 20px; color:#5c6b64;
+  .about-photo{
+    width:120px; height:120px;
+    border-radius:50%;
+    object-fit:cover;
+    box-shadow: var(--shadow);
+    border:3px solid var(--paper-raised);
   }
 
-  /* ---------- Topic tiles ---------- */
-  .topics-grid{
-    display:grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap:12px;
-    margin-bottom:30px;
+  .page-title{
+    font-size:22px; font-weight:700; line-height:1.3; margin:0 0 20px; color:var(--teal-deep); text-align:center;
   }
-  .topic-tile{
-    background:var(--paper-raised);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:18px 16px;
-    text-decoration:none;
-    color:inherit;
+
+  .about-section{ margin-bottom:28px; }
+  .about-section p{
+    font-size:15px; line-height:1.65; margin:0 0 14px; color:var(--ink); text-align:center;
+  }
+  .about-section p:last-child{ margin-bottom:0; }
+
+  /* ---------- Nav-button group spacing ---------- */
+  .nav-buttons-stack{
     display:flex;
     flex-direction:column;
     align-items:center;
-    justify-content:center;
-    text-align:center;
-    gap:6px;
-    box-shadow: none;
-    transition: box-shadow 0.15s ease;
-  }
-  .topic-tile:hover{ box-shadow: var(--shadow); }
-  .topic-tile-name{
-    font-size:15px; font-weight:700; color:var(--teal-deep); margin:0; line-height:1.35;
-  }
-  .topic-tile-count{
-    font-size:12.5px; color:#5c6b64; margin:0;
-  }
-  /* Click-affordance arrow — same line as the count, same site-wide dark
-     green accent used on the Node cards' "לצפייה בעמוד" arrow. Decorative
-     only (::after), never affects the card's own clickable area. */
-  .topic-tile-count::after{
-    content:" ←";
-    color:var(--teal-deep);
-  }
-
-  .empty-state{
-    background:var(--paper-raised);
-    border:1px dashed var(--line);
-    border-radius:var(--radius);
-    padding:24px 18px;
-    text-align:center;
-    color:#5c6b64;
-    font-size:14px;
+    gap:14px;
     margin-bottom:30px;
   }
+  .more-link{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:fit-content;
+    min-width:225px;
+    margin:0 auto;
+    padding:14px 32px;
+    border-radius:12px;
+    background: linear-gradient(135deg, rgba(242,90,166,0.90), rgba(216,64,142,0.90));
+    color:#fff;
+    font-size:15px;
+    font-weight:600;
+    text-decoration:none;
+    transition:box-shadow 0.15s ease;
+  }
+  .more-link:hover{ box-shadow: 0 4px 14px rgba(0,0,0,0.2); }
 
   /* ---------- Back-to-previous-page button (see template.html for the
      full rationale — identical treatment on every page type) ---------- */
@@ -270,7 +251,7 @@
     width:fit-content;
     min-width:225px;
     line-height:1;
-    margin:0 auto 30px;
+    margin:0 auto;
     padding:14px 32px;
     border-radius:12px;
     background: rgba(242,90,166,0.10);
@@ -301,10 +282,6 @@
 </head>
 <body>
 
-<!-- PROTOTYPE (All Topics page only): 72px header. Hamburger opens the
-     main site navigation menu (3 fixed destinations) — see modal below.
-     The search icon is new: opens the full Topics list (same data/links
-     as the Homepage's Topic Selector), reusing this hidden <select>. -->
 <select id="topicSelector" class="topic-selector-native" aria-hidden="true" tabindex="-1">
   <option value="" disabled selected>{{TOPIC_SELECTOR_PLACEHOLDER}}</option>
 {{TOPIC_SELECTOR_OPTIONS_HTML}}
@@ -318,15 +295,15 @@
   <button type="button" id="topicSearchTrigger" class="proto-search" aria-haspopup="dialog" aria-label="{{TOPIC_SELECTOR_LABEL}}">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
   </button>
-  <!-- PROTOTYPE: hardcoded here (not from site-config's shared header.titleLine1/2)
-       so this text experiment stays isolated to this one page. -->
   <div class="header-title-line primary">ד״ר גילה בן-דוד</div>
   <div class="header-title-line secondary">רופאת נשים</div>
   <img class="header-logo" src="data:image/png;base64,{{SITE_LOGO_BASE64}}" alt="Gila MD logo">
 </header>
+<a class="home-nav-bar" href="{{HOME_NAV_URL}}">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+  {{HOME_NAV_TEXT}}
+</a>
 </div>
-<!-- All Topics page exception: no translucent "לכל הנושאים באתר" bar here —
-     the user is already on that page, so a link to it would be redundant. -->
 
 <div id="topicModalOverlay" class="topic-modal-overlay" hidden>
   <div id="topicModalDialog" class="topic-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="topicModalTitle">
@@ -345,10 +322,6 @@
   </div>
 </div>
 <script>
-  // ---- Main site navigation menu (hamburger). Same modal shell as the
-  // Homepage's Topic Selector (see homepage-template.html), but this one
-  // is a fixed 3-item site menu, not a topic list — rows are static HTML
-  // above, not built from data. ----
   (function(){
     const trigger = document.getElementById('topicSelectorTrigger');
     const overlay = document.getElementById('topicModalOverlay');
@@ -414,10 +387,6 @@
   })();
 </script>
 
-<!-- Search-by-topic modal — separate instance from the hamburger's menu
-     above (own ids, own overlay/dialog), so the hamburger's existing
-     behavior is completely untouched. Rows are built from the hidden
-     <select> above, same data/links as the Homepage's Topic Selector. -->
 <div id="topicSearchModalOverlay" class="topic-modal-overlay" hidden>
   <div id="topicSearchModalDialog" class="topic-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="topicSearchModalTitle">
     <div class="topic-modal-header">
@@ -433,9 +402,6 @@
   </div>
 </div>
 <script>
-  // ---- Search-by-topic modal (magnifying glass). Rows are built from
-  // the hidden <select> options — same data source/links as the
-  // Homepage's Topic Selector, no new navigation system. ----
   (function(){
     const nativeSelect = document.getElementById('topicSelector');
     const trigger = document.getElementById('topicSearchTrigger');
@@ -528,15 +494,23 @@
 </script>
 
 <main>
-  <h1 class="page-title">{{TOPICS_INDEX_HEADING}}</h1>
-  <p class="page-subtitle">בחרו נושא לצפייה בתכנים</p>
+  <div class="about-photo-wrap">
+    <img class="about-photo" src="data:image/png;base64,{{ABOUT_PHOTO_BASE64}}" alt="{{ABOUT_PHOTO_ALT}}">
+  </div>
 
-{{TOPICS_LIST_HTML}}
+  <h1 class="page-title">{{ABOUT_HEADING}}</h1>
 
-  <button type="button" id="backLinkBtn" class="back-link" onclick="history.back()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-    {{UI_BACK_BUTTON_TEXT}}
-  </button>
+  <section class="about-section">
+{{ABOUT_PARAGRAPHS_HTML}}
+  </section>
+
+  <div class="nav-buttons-stack">
+    <button type="button" id="backLinkBtn" class="back-link" onclick="history.back()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      {{UI_BACK_BUTTON_TEXT}}
+    </button>
+    <a class="more-link" href="{{ALL_TOPICS_BUTTON_URL}}">{{ALL_TOPICS_BUTTON_TEXT}}</a>
+  </div>
   <script>
     try {
       if (document.referrer && document.referrer.indexOf(location.origin) === 0 && window.history.length > 1){
