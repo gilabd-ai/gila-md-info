@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0046",
+  "slug": "hrt-breast-cancer-risk-by-the-numbers",
+  "youtube": {
+    "videoId": "Q5ncnOVhkFA",
+    "orientation": "short",
+    "title": "טיפול הורמונלי משולב בגיל המעבר והסיכון לסרטן השד – הנתונים במספרים",
+    "description": "בשנת 2002 פורסמו התוצאות הראשונות של זרוע הטיפול ההורמונלי המשולב במחקר WHI. המחקר זכה לתהודה עולמית, ובעקבותיו המוני נשים הפסיקו ליטול הורמונים לגיל המעבר.\n\nבמחקר נמצא כי בקרב נשים שקיבלו את הטיפול המשולב המסוים שנבדק היו 38 מקרי סרטן שד פולשני לכל 10,000 שנות־אישה, לעומת 30 בקבוצת הפלצבו \n\nוכאן חשוב להבדיל בין שני מושגים: סיכון יחסי וסיכון מוחלט.\nסיכון יחסי משווה בין שתי קבוצות. ומכאן הגיעה הכותרת של \"עלייה של כ-20% בסיכון לסרטן השד\", וזה נשמע גדול ומפחיד.\nאבל הסיכון המוחלט שואל שאלה אחרת: כמה מקרים?  והתשובה היא: תוספת של כ־8 מקרי סרטן שד לכל 10,000 שנות־אישה.\n\nהסיכון קיים, וחשוב להכיר אותו. אבל חשוב לא פחות להבין את גודל הסיכון האמיתי, ולהחליט על טיפול לאחר שקלול היתרונות, הסיכונים והמאפיינים האישיים של כל אישה.\n*הנתונים בסרטון מבוססים על מחקר WHI. לצורך המחשה הם מוצגים בפורמט פשוט וברור יותר, כדי להקל על ההבנה.\n\nהמחקר המקורי ב־ JAMA\n  https://jamanetwork.com/journals/jama/fullarticle/195120",
+    "publishedAt": "2026-09-03T21:19:01Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/Q5ncnOVhkFA/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-09-03T21:21:33Z",
+    "durationSeconds": 15
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "menopause-and-hrt"
+    ],
+    "primaryTagIds": [
+      "hrt-risks",
+      "breast-cancer-risk",
+      "whi-study"
+    ],
+    "secondaryTagIds": [
+      "hrt-benefits",
+      "evidence-based-medicine",
+      "preventive-care",
+      "womens-health",
+      "prevention"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-09-04"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-09-04"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
