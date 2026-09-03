@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0048",
+  "slug": "hrt-benefits-vs-risks-should-you-take-it",
+  "youtube": {
+    "videoId": "_JYyzY8ZxKo",
+    "orientation": "short",
+    "title": "האם כדאי לקחת הורמונים לגיל המעבר? יתרונות מול סיכונים",
+    "description": "האם כדאי לקחת הורמונים לגיל המעבר?\n\nמצד אחד, טיפול הורמונלי הוא הטיפול היעיל ביותר בגלי חום ובהזעות לילה. הוא עשוי לשפר משמעותית את איכות החיים וגם מסייע במניעת אובדן עצם ושברים.\n\nמצד שני, לטיפול יש גם סיכונים אפשריים. טיפול הורמונלי פומי עשוי להעלות את הסיכון לאירועים תרומבואמבוליים, וטיפול משולב באסטרוגן ובפרוגסטוגן עשוי להעלות את הסיכון לסרטן השד, בעיקר ככל שמשך הטיפול מתארך.\n\nלכן התשובה אינה פשוטה של כן או לא. צריך להתאים את סוג הטיפול, המינון ודרך המתן לכל אישה, בהתאם לתסמינים, לגיל ולגורמי הסיכון האישיים.",
+    "publishedAt": "2026-07-20T07:52:41Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/_JYyzY8ZxKo/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-09-03T21:40:39Z",
+    "durationSeconds": 12
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "menopause-and-hrt"
+    ],
+    "primaryTagIds": [
+      "hrt-benefits",
+      "hrt-risks",
+      "hot-flashes"
+    ],
+    "secondaryTagIds": [
+      "bone-health",
+      "breast-cancer-risk",
+      "hrt-types",
+      "preventive-care",
+      "womens-health",
+      "prevention"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-09-04"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-09-04"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
