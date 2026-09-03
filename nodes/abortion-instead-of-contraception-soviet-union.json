@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0045",
+  "slug": "abortion-instead-of-contraception-soviet-union",
+  "youtube": {
+    "videoId": "FMtoDnF0sO8",
+    "orientation": "short",
+    "title": "הפלות במקום אמצעי מניעה – תכנון המשפחה בברית המועצות",
+    "description": "במשך עשרות שנים, עד להתפרקות ברית המועצות ב־1991, אמצעי מניעה מודרניים כמעט שלא היו זמינים לרבות מהנשים. כתוצאה מכך, הפלה הפכה בפועל לאמצעי המרכזי לתכנון המשפחה, ויש תיעוד של נשים שעברו הפלות רבות לאורך חייהן – לעיתים אפילו יותר מעשר.\n\nזו לא הייתה בחירה בין שיטות שונות למניעת היריון. עבור נשים רבות, פשוט כמעט שלא היו חלופות יעילות ונגישות.\n\nהסיפור הזה מזכיר עד כמה הנגישות לאמצעי מניעה שינתה את בריאות האישה ואת החופש לתכנן את המשפחה מתוך בחירה.",
+    "publishedAt": "2026-07-09T15:22:10Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/FMtoDnF0sO8/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-09-03T20:15:37Z",
+    "durationSeconds": 8
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "contraception"
+    ],
+    "primaryTagIds": [
+      "birth-control-pills",
+      "iud"
+    ],
+    "secondaryTagIds": [
+      "missed-period",
+      "period-delay"
+    ]
+  },
+  "priority": 2,
+  "clinical": {
+    "lastReviewedAt": "2026-09-03"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-09-03"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
