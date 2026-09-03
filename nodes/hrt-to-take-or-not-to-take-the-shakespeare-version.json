@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0047",
+  "slug": "hrt-to-take-or-not-to-take-the-shakespeare-version",
+  "youtube": {
+    "videoId": "6CPx3h7uC5E",
+    "orientation": "short",
+    "title": "לקחת או לא לקחת הורמונים לגיל המעבר? הגרסה השייקספירית",
+    "description": "לקחת או לא לקחת הורמונים לגיל המעבר? זאת נשמעת כמו שאלה שייקספירית, אבל אין עליה תשובה אחת שמתאימה לכולן.\n\nיש נשים שהטיפול יכול לשפר אצלן משמעותית את איכות החיים, ויש נשים שעבורן הוא אינו מתאים. ההחלטה תלויה בתסמינים, בגיל, בזמן שחלף מתחילת גיל המעבר וברקע הרפואי האישי.\n\nלא מחליטים מתוך פחד וגם לא באופן אוטומטי — אלא לאחר בחינה אישית של היתרונות והסיכונים.",
+    "publishedAt": "2026-07-17T11:15:42Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/6CPx3h7uC5E/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-09-03T21:32:47Z",
+    "durationSeconds": 17
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "menopause-and-hrt"
+    ],
+    "primaryTagIds": [
+      "hrt-benefits",
+      "hrt-risks",
+      "hormone-therapy"
+    ],
+    "secondaryTagIds": [
+      "menopause",
+      "evidence-based-medicine",
+      "facts-vs-myths",
+      "womens-health",
+      "prevention"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-09-04"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-09-04"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
