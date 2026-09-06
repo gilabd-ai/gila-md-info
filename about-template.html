@@ -18,6 +18,7 @@
     --teal-deep:#123230;
     --blush:#e0785f;
     --blush-deep:#c65f48;
+    --icon-strong:#96352a; /* darker, higher-contrast red for the close-X and page-level scroll-arrow icons specifically — not a general-purpose color, see their rules below */
     --line: rgba(32,48,44,0.12);
     --shadow: 0 8px 24px rgba(18,50,48,0.12);
     --radius: 14px;
@@ -184,13 +185,13 @@
   .topic-modal-title{ margin:0; font-size:18px; color:var(--teal-deep); text-align:right; }
   .topic-modal-close{
     flex:none; width:36px; height:36px; border-radius:50%; border:none;
-    background:rgba(242,90,166,0.12); color:var(--blush-deep);
+    background:rgba(242,90,166,0.12); color:var(--icon-strong);
     display:flex; align-items:center; justify-content:center;
     cursor:pointer; transition:background 0.15s ease;
   }
   .topic-modal-close:hover{ background:rgba(242,90,166,0.22); }
   .topic-modal-close:focus-visible{ outline:2px solid var(--blush-deep); outline-offset:2px; }
-  .topic-modal-close svg{ width:16px; height:16px; }
+  .topic-modal-close svg{ width:20px; height:20px; }
   .topic-modal-list{ list-style:none; margin:0; padding:10px 12px 18px; overflow-y:auto; }
   .topic-modal-row{
     display:block; width:100%; padding:14px 12px; border-radius:10px;

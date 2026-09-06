@@ -18,6 +18,7 @@
     --teal-deep:#123230;
     --blush:#e0785f;
     --blush-deep:#c65f48;
+    --icon-strong:#96352a; /* darker, higher-contrast red for the close-X and page-level scroll-arrow icons specifically — not a general-purpose color, see their rules below */
     --line: rgba(32,48,44,0.12);
     --shadow: 0 8px 24px rgba(18,50,48,0.12);
     --radius: 14px;
@@ -215,7 +216,7 @@
     height:36px;
     border-radius:50%;
     background:rgba(242,90,166,0.12);
-    color:var(--blush-deep);
+    color:var(--icon-strong);
     display:flex;
     align-items:center;
     justify-content:center;
@@ -224,7 +225,49 @@
     pointer-events:none;
   }
   .topic-modal-scroll-hint.show{ opacity:1; }
-  .topic-modal-scroll-hint svg{ width:16px; height:16px; display:block; }
+  .topic-modal-scroll-hint svg{ width:20px; height:20px; display:block; }
+
+  /* ---------- Page-level scroll-down indicator (PROTOTYPE — Topic
+     pages only for now, one page reviewed before any wider rollout) ----------
+     A separate element from .topic-modal-scroll-hint above — that one
+     lives inside the "בחירת נושא" modal and tracks its own internal
+     list's scroll position; this one tracks the whole Topic page's own
+     scroll position and floats fixed to the viewport instead of a
+     dialog. Same exact visual language on purpose (same circle size,
+     background/color, arrow, opacity transition, non-interactive
+     pointer-events:none) — just position:fixed instead of
+     position:absolute, and its own position/z-index suited to sitting
+     over real page content rather than inside a small dialog.
+     top:80vh centers the circle at ~80% of the viewport height from the
+     top (~4/5 of the screen above it, ~1/5 below), regardless of
+     viewport size — translate(-50%,-50%) centers the circle itself on
+     that exact point, both axes, the same way translateX(-50%) alone
+     centered it horizontally before. JS toggles .show based on the
+     page's own scroll position (see the script near the end of
+     <body>) — that logic is unchanged; it already treats the nav
+     buttons and disclaimer as ordinary page content. */
+  .page-scroll-hint{
+    position:fixed;
+    top:80vh;
+    left:50%;
+    transform:translate(-50%, -50%);
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    background:rgba(242,90,166,0.12);
+    color:var(--icon-strong);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    transition:opacity 0.15s ease;
+    pointer-events:none;
+    z-index:150;
+  }
+  .page-scroll-hint.show{ opacity:1; }
+  .page-scroll-hint svg{ width:20px; height:20px; display:block; }
+  /* ---------- end page-level scroll-down indicator ---------- */
+
   .topic-modal-header{
     flex:none;
     display:flex;
@@ -238,13 +281,13 @@
   .topic-modal-title{ margin:0; font-size:18px; color:var(--teal-deep); text-align:right; }
   .topic-modal-close{
     flex:none; width:36px; height:36px; border-radius:50%; border:none;
-    background:rgba(242,90,166,0.12); color:var(--blush-deep);
+    background:rgba(242,90,166,0.12); color:var(--icon-strong);
     display:flex; align-items:center; justify-content:center;
     cursor:pointer; transition:background 0.15s ease;
   }
   .topic-modal-close:hover{ background:rgba(242,90,166,0.22); }
   .topic-modal-close:focus-visible{ outline:2px solid var(--blush-deep); outline-offset:2px; }
-  .topic-modal-close svg{ width:16px; height:16px; }
+  .topic-modal-close svg{ width:20px; height:20px; }
   .topic-modal-list{ list-style:none; margin:0; padding:10px 12px 18px; overflow-y:auto; }
   .topic-modal-row{
     display:block; width:100%; padding:14px 12px; border-radius:10px;
@@ -617,6 +660,33 @@
 
   <a class="site-disclaimer" href="{{DISCLAIMER_LINK_URL}}">{{DISCLAIMER_ICON}} {{DISCLAIMER_SHORT_TEXT}} <span class="disclaimer-underline">{{DISCLAIMER_LINK_PREFIX}} {{DISCLAIMER_LINK_TEXT}}</span>.</a>
 </main>
+
+<span id="pageScrollHint" class="page-scroll-hint" aria-hidden="true">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v13m-6-6l6 6 6-6"/></svg>
+</span>
+<script>
+  // ---- Page-level scroll-down indicator. Separate from the "בחירת
+  // נושא" modal's own scroll-hint (which tracks its internal list) —
+  // this tracks the whole page's own scroll position, so users landing
+  // on a Topic page notice there's more content below the fold. ----
+  (function(){
+    const hint = document.getElementById('pageScrollHint');
+    if (!hint) return;
+
+    // Same small threshold as the modal's own scroll-hint, to absorb
+    // sub-pixel rounding at the exact bottom.
+    function updatePageScrollHint(){
+      const hasMoreBelow = document.documentElement.scrollHeight - window.scrollY - window.innerHeight > 2;
+      hint.classList.toggle('show', hasMoreBelow);
+    }
+
+    updatePageScrollHint();
+    window.addEventListener('scroll', updatePageScrollHint, { passive: true });
+    window.addEventListener('resize', updatePageScrollHint);
+    // Fonts/images can still reflow the page height after first paint.
+    window.addEventListener('load', updatePageScrollHint);
+  })();
+</script>
 
 </body>
 </html>
