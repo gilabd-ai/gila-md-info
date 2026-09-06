@@ -463,6 +463,19 @@
     overlay.addEventListener('click', function(e){
       if (e.target === overlay) closeModal();
     });
+    // Opening this modal never touches the history API (no pushState/
+    // replaceState anywhere) — so pressing Back never "returns" to a
+    // modal-open state via history. The actual cause is the browser's
+    // back-forward cache (bfcache): openModal() mutates the live DOM
+    // (overlay.hidden = false), and a bfcache restore brings back that
+    // exact in-memory DOM state, not the page's original static HTML.
+    // event.persisted is true only on a bfcache restore (never on a
+    // normal load), so this can't affect regular open/close behavior —
+    // it only forces the modal closed on the one path that could
+    // otherwise silently restore it open.
+    window.addEventListener('pageshow', function(e){
+      if (e.persisted && !overlay.hidden) closeModal();
+    });
   })();
 </script>
 
@@ -569,6 +582,19 @@
     });
     listEl.addEventListener('scroll', updateScrollHint);
     window.addEventListener('resize', updateScrollHint);
+    // Opening this modal never touches the history API (no pushState/
+    // replaceState anywhere) — so pressing Back never "returns" to a
+    // modal-open state via history. The actual cause is the browser's
+    // back-forward cache (bfcache): openModal() mutates the live DOM
+    // (overlay.hidden = false), and a bfcache restore brings back that
+    // exact in-memory DOM state, not the page's original static HTML.
+    // event.persisted is true only on a bfcache restore (never on a
+    // normal load), so this can't affect regular open/close behavior —
+    // it only forces the modal closed on the one path that could
+    // otherwise silently restore it open.
+    window.addEventListener('pageshow', function(e){
+      if (e.persisted && !overlay.hidden) closeModal();
+    });
   })();
 </script>
 
