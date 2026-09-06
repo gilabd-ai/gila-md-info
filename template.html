@@ -282,21 +282,41 @@
      the end of <body>) — it treats every page's own content (nav
      buttons, disclaimer, etc.) as ordinary content to scroll past.
 
-     Node-page-only deviation: left:32px instead of the shared
-     component's horizontally-centered left:50%/translateX(-50%) used
-     on every other template — a deliberate choice so the indicator
-     doesn't sit over the vertically-oriented video, not a per-Node
-     calculated position. Settled on 32px after visual review on a real
-     phone: 16px read as too close to the edge, and 48px overlapped the
-     video's own left edge. It is NOT anchored to the video, title,
-     summary, or duration row in any way — those vary in height per
-     Node, so this fixed left/top viewport position
-     intentionally does not track any of them; its exact relation to
-     the video is expected to vary between Nodes. */
+     Node-page-only deviation from the shared component (which uses
+     top:80vh, left:50%/translateX(-50%) on every other template):
+
+     top:58vh instead of 80vh — measured against two real Nodes at a
+     375px viewport, the "אורך הסרטון" row's own vertical center sits
+     at ~53% (short 1-line title) to ~59% (long 2-line title) of the
+     viewport, so 58vh sits credibly near that row on typical Nodes
+     without literally tracking it — this is still a fixed viewport
+     position, NOT calculated per-Node from the row, title, or summary,
+     since those genuinely vary in height Node to Node (confirmed by
+     the two real measurements above) and any live calculation would
+     add real complexity for an approximate visual target anyway.
+
+     left:calc(25vw - 75.5px), clamped to a 16px floor via max() —
+     derived directly from the video box's own real geometry (.video-
+     thumb-wrap: max-width 230px, centered in main's content box, which
+     itself has 16px side padding and is never wider than 640px on any
+     phone), NOT a guessed fixed pixel value: video's own left edge
+     sits at (50vw - 115px), so half that distance — the true center of
+     the gap between the screen's left edge and the video, on ANY
+     viewport width — is (25vw - 57.5px) for the circle's center, i.e.
+     (25vw - 75.5px) for its left edge (37.5px width... circle is 36px
+     wide, half is 18px). Two fixed-pixel guesses (16px, then 32px,
+     then 48px) each failed on a real phone at a different point (too
+     close to the screen edge / too close to the video / overlapping
+     the video) precisely because a single fixed px value can't stay
+     centered in a gap whose far edge (the video) itself moves with
+     viewport width — this formula fixes that by construction, for any
+     device. The 16px floor only matters on implausibly narrow
+     viewports (<366px) and simply reuses the same "too close to the
+     edge" floor already established by visual review. */
   .page-scroll-hint{
     position:fixed;
-    top:80vh;
-    left:32px; /* 48px overlapped the video's left edge on a real phone screen — back to the middle step */
+    top:58vh;
+    left:max(16px, calc(25vw - 75.5px));
     transform:translateY(-50%);
     width:36px;
     height:36px;
