@@ -110,14 +110,36 @@
   }
   .topic-nav-cell.other .topic-nav-cell-label{ color: rgba(216,64,142,0.95); }
   .topic-nav-cell.other:hover{ background: rgba(242,90,166,0.14); }
+  /* "כל הנושאים" — a row layout (icon beside text, not above it) so
+     this one cell reads as a distinct ACTION rather than another Topic
+     tile, while keeping the exact same outer box model as the other 5
+     cells (base .topic-nav-cell height/border/padding untouched). The
+     icon zone claims ~44% of the cell's own content width; the actual
+     glyph (.topic-nav-cell-icon, 26px) is centered inside that zone,
+     not stretched — the zone is what reserves the visual proportion,
+     not the SVG's own box. Label renders as one word per line ("כל" /
+     "הנושאים", via <br> in the markup — see render_topic_nav_grid_html()
+     in build.py) rather than centered running text. */
   .topic-nav-cell.all-topics{
     background:transparent;
     border-style:dashed;
     border-color: rgba(216,64,142,0.55);
+    flex-direction:row;
+    gap:4px;
   }
-  .topic-nav-cell.all-topics .topic-nav-cell-label{ color: rgba(216,64,142,0.95); }
+  .topic-nav-cell.all-topics .topic-nav-cell-label{
+    color: rgba(216,64,142,0.95);
+    width:auto;
+    flex:1 1 auto;
+  }
   .topic-nav-cell.all-topics:hover{ background: rgba(242,90,166,0.14); }
-  .topic-nav-cell-icon{ width:14px; height:14px; flex:none; color: rgba(216,64,142,0.95); }
+  .topic-nav-cell-icon-zone{
+    flex:0 0 52%; /* renders as ~44-45% of the cell's full outer width once padding/gap are accounted for — verified via getBoundingClientRect */
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .topic-nav-cell-icon{ width:26px; height:26px; flex:none; color: rgba(216,64,142,0.95); }
   /* ---------- end Topic navigation grid ---------- */
 
   header.node-header{

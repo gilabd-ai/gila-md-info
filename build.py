@@ -1042,12 +1042,20 @@ def render_topic_nav_grid_html(primary_id: str | None, primary_label: str | None
         for topic_id in other_ids:
             cells.append(topic_cell("other", topic_id, topics_by_id[topic_id]["label"]))
 
-    all_topics_label = html.escape(site_config["uiLabels"]["topicNavAllTopicsLabel"], quote=True)
+    all_topics_label_raw = site_config["uiLabels"]["topicNavAllTopicsLabel"]
+    all_topics_label = html.escape(all_topics_label_raw, quote=True)
+    # Displayed as one word per line (e.g. "כל" / "הנושאים") so this cell
+    # reads as a distinct action, not another Topic tile — derived from
+    # the real config string's own words, not a hardcoded two-line label,
+    # so it still adapts correctly if that string is ever edited.
+    all_topics_label_lines_html = "<br>".join(
+        html.escape(word, quote=True) for word in all_topics_label_raw.split()
+    )
     cells.append(
         '    <button type="button" id="topicNavAllBtn" class="topic-nav-cell all-topics" '
         f'aria-haspopup="dialog" aria-label="{all_topics_label}">'
-        f'{_TOPIC_NAV_GRID_ICON_SVG}'
-        f'<span class="topic-nav-cell-label">{all_topics_label}</span></button>\n'
+        f'<span class="topic-nav-cell-icon-zone">{_TOPIC_NAV_GRID_ICON_SVG}</span>'
+        f'<span class="topic-nav-cell-label">{all_topics_label_lines_html}</span></button>\n'
     )
 
     nav_label = html.escape(site_config["homepage"]["topicSelectorLabel"], quote=True)
