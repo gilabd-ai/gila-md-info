@@ -1055,7 +1055,8 @@ def render_topic_nav_grid_html(primary_id: str | None, primary_label: str | None
         '    <button type="button" id="topicNavAllBtn" class="topic-nav-cell all-topics" '
         f'aria-haspopup="dialog" aria-label="{all_topics_label}">'
         f'<span class="topic-nav-cell-icon-zone">{_TOPIC_NAV_GRID_ICON_SVG}</span>'
-        f'<span class="topic-nav-cell-label">{all_topics_label_lines_html}</span></button>\n'
+        f'<span class="topic-nav-cell-label"><span class="topic-nav-cell-label-inner">'
+        f'{all_topics_label_lines_html}</span></span></button>\n'
     )
 
     nav_label = html.escape(site_config["homepage"]["topicSelectorLabel"], quote=True)

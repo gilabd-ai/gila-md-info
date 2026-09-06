@@ -131,9 +131,14 @@
     color: rgba(216,64,142,0.95);
     width:auto;
     flex:1 1 auto;
-    font-size:10.5px; /* smaller than the base 12.5px — on a real phone the base size let "הנושאים" wrap mid-word onto a hidden 3rd line (line-clamp:2 silently dropped it), clipping the final ם */
     white-space:nowrap; /* the <br> between the two words still forces the 2-line split regardless of this — nowrap only stops either single word from *itself* breaking onto an extra line, which was the actual bug */
-    text-align:right; /* was center — the label's own box still spans the full remaining width (icon zone is untouched, unmoved), but right-aligning the text within it pulls the text against the box's own right edge, which is where the icon zone sits in this RTL row, instead of centering it in the middle of empty space */
+    text-align:right; /* positions the shrink-wrapped .topic-nav-cell-label-inner block against this box's own right edge — next to the icon in this RTL row — unrelated to how the two lines align to EACH OTHER, which the inner span below controls */
+    display:block; /* overrides the base -webkit-box (used elsewhere for line-clamp truncation on data-driven Topic labels) — this cell's content is fixed literal text via <br>, never truncated, and -webkit-box would fight the nested inline-block's own centering below */
+  }
+  .topic-nav-cell.all-topics .topic-nav-cell-label-inner{
+    display:inline-block; /* shrinks to the width of its widest line ("הנושאים") instead of the outer box's full width */
+    text-align:center; /* centers the shorter "כל" directly above "הנושאים" within that shrink-wrapped width — independent of the outer box's own right-alignment near the icon */
+    font-size:10.5px; /* smaller than the base 12.5px — on a real phone the base size let "הנושאים" wrap mid-word onto a hidden 3rd line (line-clamp:2 silently dropped it), clipping the final ם */
   }
   .topic-nav-cell.all-topics:hover{ background: rgba(242,90,166,0.14); }
   .topic-nav-cell-icon-zone{
