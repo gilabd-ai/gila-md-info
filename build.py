@@ -933,6 +933,106 @@ def render_more_link_button_html(node: dict, site_config: dict, registry: dict) 
     return f'  <a class="more-link" data-topic-nav="primary" href="{url}">{text}</a>\n'
 
 
+def _truncate_topic_label_for_nav_grid(label: str) -> str:
+    """
+    Compact display rule for the Node-page Topic navigation grid ONLY
+    (render_topic_nav_grid_html) — never used for the real Topic name
+    anywhere else on the site (Topic pages, the Topic Selector, JSON-LD,
+    etc. all keep the full categoryLabelsHe text unchanged). A label of
+    1-2 words is shown as-is; anything longer is cut to its first 2
+    words plus "…", e.g. "גיל המעבר וטיפול הורמונלי" -> "גיל המעבר…".
+    """
+    words = label.split()
+    if len(words) <= 2:
+        return label
+    return " ".join(words[:2]) + "…"
+
+
+_TOPIC_NAV_GRID_ICON_SVG = (
+    '<svg class="topic-nav-cell-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+    'stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+    '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>'
+    '<rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>'
+)
+
+
+def render_topic_nav_grid_html(node: dict, site_config: dict, registry: dict,
+                                active_topics: list[dict]) -> str:
+    """
+    PROTOTYPE — Node-page-only symmetrical 3x2 Topic navigation grid,
+    replacing the old single-line "לכל הנושאים באתר" translucent bar.
+    Purpose: most visitors land directly on a Node page from search, not
+    the homepage, so this grid needs to signal at a glance — without
+    opening the hamburger or search modal — that the page belongs to a
+    larger site with many Topics.
+
+    Slot 1 is always the Node's own primary Topic (_first_public_topic_id,
+    the same id the existing "more content on this Topic" button already
+    uses — see render_more_link_button_html above), rendered "current"
+    (solid pink). Slots 2-5 are the next 4 Topics after it in the site's
+    real active-Topics order (derive_active_topics(), registry order),
+    wrapping around and skipping the primary and any repeats, rendered
+    "other" (transparent, solid pink border) — this only ever surfaces
+    Topics that genuinely have published content. Slot 6 is a static
+    "כל הנושאים" action (transparent, dashed pink border) that opens the
+    existing "בחירת נושא" modal via #topicNavAllBtn (see the click-
+    listener addition in template.html) rather than navigating away.
+
+    All 6 cells render as the exact same markup shape (one class per
+    visual state) so their fixed-size CSS box model in template.html
+    stays identical regardless of label length — a label that needs 2
+    lines wraps inside its own cell rather than resizing it.
+
+    Returns "" — no grid at all — only for a Node with no public Topic
+    (e.g. the Template Node), since there's no primary Topic to anchor
+    slot 1 on; the header above still renders fine on its own.
+    """
+    primary_id = _first_public_topic_id(node, registry)
+    if primary_id is None:
+        return ""
+
+    topics_by_id = {t["id"]: t for t in active_topics}
+    primary_label = (
+        topics_by_id[primary_id]["label"] if primary_id in topics_by_id
+        else registry["categoryLabelsHe"][primary_id]
+    )
+
+    ordered_ids = [t["id"] for t in active_topics]
+    other_ids: list[str] = []
+    if primary_id in ordered_ids:
+        start = ordered_ids.index(primary_id) + 1
+        for offset in range(len(ordered_ids) - 1):
+            candidate = ordered_ids[(start + offset) % len(ordered_ids)]
+            if candidate == primary_id or candidate in other_ids:
+                continue
+            other_ids.append(candidate)
+            if len(other_ids) == 4:
+                break
+
+    def topic_cell(css_class: str, topic_id: str, label: str) -> str:
+        href = html.escape(f"/topics/{topic_id}/", quote=True)
+        text = html.escape(_truncate_topic_label_for_nav_grid(label), quote=True)
+        return (
+            f'    <a class="topic-nav-cell {css_class}" href="{href}">'
+            f'<span class="topic-nav-cell-label">{text}</span></a>\n'
+        )
+
+    cells = [topic_cell("current", primary_id, primary_label)]
+    for topic_id in other_ids:
+        cells.append(topic_cell("other", topic_id, topics_by_id[topic_id]["label"]))
+
+    all_topics_label = html.escape(site_config["uiLabels"]["topicNavAllTopicsLabel"], quote=True)
+    cells.append(
+        '    <button type="button" id="topicNavAllBtn" class="topic-nav-cell all-topics" '
+        f'aria-haspopup="dialog" aria-label="{all_topics_label}">'
+        f'{_TOPIC_NAV_GRID_ICON_SVG}'
+        f'<span class="topic-nav-cell-label">{all_topics_label}</span></button>\n'
+    )
+
+    nav_label = html.escape(site_config["homepage"]["topicSelectorLabel"], quote=True)
+    return f'<nav class="topic-nav-grid" aria-label="{nav_label}">\n' + "".join(cells) + "</nav>\n"
+
+
 def render_node_html(node: dict, template: str, site_config: dict,
                       nodes_by_id: dict[str, dict], published_only: bool,
                       registry: dict, active_topics: list[dict]) -> str:
@@ -999,8 +1099,7 @@ def render_node_html(node: dict, template: str, site_config: dict,
         "{{UI_VIDEO_ENDED}}": site_config["uiLabels"]["videoEnded"],
         "{{UI_CLOSE_ARIA}}": site_config["uiLabels"]["closeVideoAriaLabel"],
         "{{UI_BACK_BUTTON_TEXT}}": site_config["uiLabels"]["backButtonText"],
-        "{{HOME_NAV_TEXT}}": site_config["homeNavBar"]["text"],
-        "{{HOME_NAV_URL}}": site_config["homeNavBar"]["url"],
+        "{{TOPIC_NAV_GRID_HTML}}": render_topic_nav_grid_html(node, site_config, registry, active_topics),
         "{{TOPIC_SELECTOR_OPTIONS_HTML}}": topic_selector_options_html,
         "{{TOPIC_SELECTOR_LABEL}}": site_config["homepage"]["topicSelectorLabel"],
         "{{TOPIC_SELECTOR_PLACEHOLDER}}": site_config["homepage"]["topicSelectorPlaceholder"],

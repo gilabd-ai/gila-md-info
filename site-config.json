@@ -111,6 +111,7 @@
     "closeVideoAriaLabel": "סגירת סרטון",
     "topicModalTitle": "בחירת נושא",
     "topicModalCloseAriaLabel": "סגירת בחירת נושא",
-    "backButtonText": "בחזרה לעמוד הקודם"
+    "backButtonText": "בחזרה לעמוד הקודם",
+    "topicNavAllTopicsLabel": "כל הנושאים"
   }
 }
