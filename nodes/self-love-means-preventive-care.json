@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0051",
+  "slug": "self-love-means-preventive-care",
+  "youtube": {
+    "videoId": "AUnNDk-lsZ4",
+    "orientation": "short",
+    "title": "לדאוג לעצמך זו אהבה עצמית – וגם שמירה על הבריאות",
+    "description": "ט\"ו באב מזכיר לנו בדרך כלל אהבה בין אנשים. אבל יש עוד סוג של אהבה, שלפעמים הכי קל לשכוח – האהבה לעצמנו.\n\nאהבה עצמית היא גם לקבוע את בדיקת הסקר שדחית כבר חודשים, להגיע לביקורת התקופתית, לבצע ממוגרפיה או בדיקת צוואר הרחם כשמגיע הזמן, ולא לדחות שוב בגלל שהכול דחוף יותר.\n\nשמירה על הבריאות היא לא מותרות, והיא לא אנוכיות. היא מאפשרת לנו להיות שם עבור האנשים שאנחנו אוהבות – לאורך זמן ובאיכות חיים טובה יותר.\n\nוכשאנחנו דואגות גם לגוף וגם לנפש, ממלאות את עצמנו בכוחות, במנוחה ובאיזון, יש לנו הרבה יותר מה לתת לאחרים.\n\nט\"ו באב שמח. אל תשכחי שגם את ראויה לאותה אהבה ודאגה שאת מעניקה לכולם",
+    "publishedAt": "2026-07-28T08:13:51Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/AUnNDk-lsZ4/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-09-06T20:16:17Z",
+    "durationSeconds": 24
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "body-and-mind",
+      "preventive-medicine",
+      "general-womens-health"
+    ],
+    "primaryTagIds": [
+      "routine-checkup",
+      "screening",
+      "mammography",
+      "pap-smear",
+      "preventive-care",
+      "healthy-lifestyle",
+      "mental-health",
+      "wellbeing"
+    ],
+    "secondaryTagIds": []
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-09-06"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-09-06"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
