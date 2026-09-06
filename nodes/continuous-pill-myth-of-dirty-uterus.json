@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0052",
+  "slug": "continuous-pill-myth-of-dirty-uterus",
+  "youtube": {
+    "videoId": "DPMs4MioOAo",
+    "orientation": "short",
+    "title": "גלולות ברצף בלי מחזור - זה מסוכן?",
+    "description": "נשים רבות חוששות לקחת גלולות ברצף, כי הן חושבות שאם לא יופיע דימום מדי חודש, הרחם \"יתלכלך\" או שיצטבר בו דם.\nאבל זה לא מה שקורה.\n\nהדימום שמופיע בהפסקת הגלולות הוא בדרך כלל דימום נסיגה, שנגרם בעקבות הירידה ברמות ההורמונים בזמן ההפסקה. כשנוטלים גלולות ברצף, אין את הירידה הזאת, ולכן בדרך כלל גם לא מופיע דימום.\n\nבנוסף, הגלולות שומרות בדרך כלל על רירית רחם דקה יותר, כך שאין הצטברות של דם בתוך הרחם ואין צורך שהרחם \"יתנקה\".\n\nחשוב לדעת שלקיחת גלולות ברצף אינה פוגעת בפוריות. לאחר הפסקת הגלולות, הביוץ ורירית הרחם חוזרים לתפקוד תקין. אצל חלק מהנשים זה קורה כבר בשבועות הראשונים או במחזור הראשון, ואצל אחרות זה עשוי להימשך מעט יותר זמן.\n\nבמצבים רפואיים רבים, כמו אנדומטריוזיס, כאבי מחזור קשים או דימומים מרובים, נטילה רציפה של גלולות היא אפילו אפשרות טיפול מקובלת ומומלצת.\n\nאם את משתמשת בגלולות ברצף בהתאם להנחיית הרופא או הרופאה שלך, היעדר דימום הוא בדרך כלל מצב צפוי ותקין.",
+    "publishedAt": "2026-08-02T14:39:08Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/DPMs4MioOAo/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-09-06T21:02:12Z",
+    "durationSeconds": 19
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "contraception",
+      "common-myths"
+    ],
+    "primaryTagIds": [
+      "continuous-pill-use",
+      "birth-control-pills",
+      "contraception-myths",
+      "menstrual-cycle",
+      "medical-myths",
+      "endometriosis",
+      "painful-periods",
+      "heavy-bleeding"
+    ],
+    "secondaryTagIds": [
+      "fertility",
+      "exam-during-period",
+      "irregular-periods",
+      "teen-contraception",
+      "menstrual-education"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-09-07"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-09-07"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
