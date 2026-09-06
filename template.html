@@ -276,17 +276,28 @@
      position/z-index suited to sitting over real page content rather
      than inside a small dialog. top:80vh centers the circle at ~80% of
      the viewport height from the top (~4/5 of the screen above it,
-     ~1/5 below), regardless of viewport size — translate(-50%,-50%)
-     centers the circle itself on that exact point, both axes. JS
-     toggles .show based on the page's own scroll position (see the
-     script near the end of <body>) — it treats every page's own
-     content (nav buttons, disclaimer, etc.) as ordinary content to
-     scroll past. */
+     ~1/5 below), regardless of viewport size — translateY(-50%)
+     centers the circle vertically on that exact point. JS toggles
+     .show based on the page's own scroll position (see the script near
+     the end of <body>) — it treats every page's own content (nav
+     buttons, disclaimer, etc.) as ordinary content to scroll past.
+
+     Node-page-only deviation: left:48px instead of the shared
+     component's horizontally-centered left:50%/translateX(-50%) used
+     on every other template — a deliberate choice so the indicator
+     doesn't sit over the vertically-oriented video, not a per-Node
+     calculated position. 48px (rather than main's own 16px side
+     padding) was chosen after visual review — smaller values (16px,
+     32px) read as sitting too close to the edge. It is NOT anchored to
+     the video, title, summary, or duration row in any way — those vary
+     in height per Node, so this fixed left/top viewport position
+     intentionally does not track any of them; its exact relation to
+     the video is expected to vary between Nodes. */
   .page-scroll-hint{
     position:fixed;
     top:80vh;
-    left:50%;
-    transform:translate(-50%, -50%);
+    left:48px;
+    transform:translateY(-50%);
     width:36px;
     height:36px;
     border-radius:50%;
