@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0050",
+  "slug": "rest-after-embryo-transfer",
+  "youtube": {
+    "videoId": "fiFXhmO-7WY",
+    "orientation": "short",
+    "title": "כמה זמן צריך לנוח אחרי החזרת עוברים?",
+    "description": "במשך שנים רבות היה מקובל להמליץ על שכיבה ממושכת אחרי החזרת עוברים.\nנשים היו נשארות בשכיבה במשך שעות לאחר ההחזרה, מתוך היגיון שנשמע פשוט: אם נשכב ולא נזוז, אולי נגדיל את סיכויי ההשרשה.\n\nאבל בהמשך ההנחה הזאת נבדקה במחקרים, והתוצאות הפתיעו.\nהמחקרים הראו שאין יתרון לשכיבה ממושכת אחרי החזרת עוברים. אחד המחקרים האקראיים אף מצא תוצאות טובות יותר אצל נשים שקמו מיד לאחר ההחזרה.\n\nלכן כיום, ברוב יחידות ה-IVF, המטופלות משתחררות מיד לאחר ההחזרה או לאחר מנוחה קצרה, בהתאם לנוהל היחידה.\n\nאין צורך להישאר במיטה בבית, ואין צורך לחשוש שכל תנועה תפגע בסיכויי ההצלחה. אפשר לקום, ללכת ולהמשיך בשגרה רגועה.",
+    "publishedAt": "2026-07-24T15:14:00Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/fiFXhmO-7WY/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-09-06T19:50:07Z",
+    "durationSeconds": 19
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "fertility"
+    ],
+    "primaryTagIds": [
+      "embryo-transfer",
+      "ivf",
+      "fertility",
+      "conception"
+    ],
+    "secondaryTagIds": [
+      "medical-myths",
+      "evidence-based-medicine",
+      "pelvic-exam",
+      "menstruation"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-09-06"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-09-06"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
