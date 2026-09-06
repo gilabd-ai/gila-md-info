@@ -285,15 +285,24 @@
      Node-page-only deviation from the shared component (which uses
      top:80vh, left:50%/translateX(-50%) on every other template):
 
-     top:58vh instead of 80vh — measured against two real Nodes at a
-     375px viewport, the "אורך הסרטון" row's own vertical center sits
-     at ~53% (short 1-line title) to ~59% (long 2-line title) of the
-     viewport, so 58vh sits credibly near that row on typical Nodes
-     without literally tracking it — this is still a fixed viewport
-     position, NOT calculated per-Node from the row, title, or summary,
-     since those genuinely vary in height Node to Node (confirmed by
-     the two real measurements above) and any live calculation would
-     add real complexity for an approximate visual target anyway.
+     top:460px instead of 80vh — a fixed PIXEL value, not vh. The fixed
+     header/grid area (175px) plus the title and summary block above
+     the video are all fixed-pixel heights; they do not scale with
+     viewport HEIGHT the way vh does. A vh-based value is therefore
+     fundamentally the wrong unit here — it lines up with the video on
+     whatever screen happens to be as tall as the original test device,
+     and drifts badly on any other screen's aspect ratio (confirmed:
+     58vh landed inside the summary card on a real phone, nowhere near
+     the video). A fixed px value tracks viewport WIDTH changes (via
+     the values below) but is immune to viewport HEIGHT/aspect-ratio
+     differences, matching how the content above the video actually
+     behaves. 460px is the midpoint of two real measurements at a 375px
+     viewport: the "אורך הסרטון" row's own vertical center sits at
+     432px (short 1-line title) to 481px (long 2-line title) from the
+     top of the page — still a fixed target, NOT calculated per-Node
+     from the row, title, or summary, since those genuinely vary Node
+     to Node and any live calculation would add real complexity for an
+     approximate visual target anyway.
 
      left:calc(25vw - 75.5px), clamped to a 16px floor via max() —
      derived directly from the video box's own real geometry (.video-
@@ -315,7 +324,7 @@
      edge" floor already established by visual review. */
   .page-scroll-hint{
     position:fixed;
-    top:58vh;
+    top:460px;
     left:max(16px, calc(25vw - 75.5px));
     transform:translateY(-50%);
     width:36px;
