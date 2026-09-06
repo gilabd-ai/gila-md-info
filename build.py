@@ -972,16 +972,17 @@ def _resolve_topic_label(topic_id: str, active_topics: list[dict], registry: dic
     return registry["categoryLabelsHe"][topic_id]
 
 
-def render_topic_nav_grid_html(primary_id: str, primary_label: str, site_config: dict,
+def render_topic_nav_grid_html(primary_id: str | None, primary_label: str | None, site_config: dict,
                                 active_topics: list[dict]) -> str:
     """
-    PROTOTYPE — symmetrical 3x2 Topic navigation grid shown on both Node
-    pages and Topic pages, replacing the old single-line "לכל הנושאים
-    באתר" translucent bar on each. Purpose: most visitors land directly
-    on a Node (or, from search/social, sometimes a Topic) page rather
-    than the homepage, so this grid needs to signal at a glance —
-    without opening the hamburger or search modal — that the page
-    belongs to a larger site with many Topics.
+    Symmetrical 3x2 Topic navigation grid shown on Node pages, Topic
+    pages, and the Homepage/About/Medical-Disclaimer pages, replacing
+    the old single-line "לכל הנושאים באתר" translucent bar on each.
+    Purpose: most visitors land directly on a Node (or, from
+    search/social, sometimes a Topic) page rather than the homepage, so
+    this grid needs to signal at a glance — without opening the
+    hamburger or search modal — that the page belongs to a larger site
+    with many Topics.
 
     `primary_id`/`primary_label` are the caller's own notion of "the
     Topic this page is about": on a Node page that's its
@@ -993,10 +994,20 @@ def render_topic_nav_grid_html(primary_id: str, primary_label: str, site_config:
     (derive_active_topics(), registry order), wrapping around and
     skipping the primary and any repeats, rendered "other" (transparent,
     solid pink border) — this only ever surfaces Topics that genuinely
-    have published content. Slot 6 is a static "כל הנושאים" action
-    (transparent, dashed pink border) that opens the existing "בחירת
-    נושא" modal via #topicNavAllBtn (see the click-listener addition in
-    template.html/topic-template.html) rather than navigating away.
+    have published content.
+
+    Pass primary_id=None (and primary_label=None) for a page that isn't
+    "about" any one Topic — Homepage, About, Medical Disclaimer. There's
+    no "current" cell in that case: all 5 Topic slots render "other",
+    filled with simply the first 5 Topics in the site's real
+    active-Topics order (the same registry order the site owner already
+    controls everywhere else) — deterministic, no new per-page data, and
+    honest about there being no page-specific Topic to highlight.
+
+    Slot 6 is always a static "כל הנושאים" action (transparent, dashed
+    pink border) that opens the existing "בחירת נושא" modal via
+    #topicNavAllBtn (see the click-listener addition in each template)
+    rather than navigating away.
 
     All 6 cells render as the exact same markup shape (one class per
     visual state) so their fixed-size CSS box model stays identical
@@ -1005,16 +1016,6 @@ def render_topic_nav_grid_html(primary_id: str, primary_label: str, site_config:
     """
     topics_by_id = {t["id"]: t for t in active_topics}
     ordered_ids = [t["id"] for t in active_topics]
-    other_ids: list[str] = []
-    if primary_id in ordered_ids:
-        start = ordered_ids.index(primary_id) + 1
-        for offset in range(len(ordered_ids) - 1):
-            candidate = ordered_ids[(start + offset) % len(ordered_ids)]
-            if candidate == primary_id or candidate in other_ids:
-                continue
-            other_ids.append(candidate)
-            if len(other_ids) == 4:
-                break
 
     def topic_cell(css_class: str, topic_id: str, label: str) -> str:
         href = html.escape(f"/topics/{topic_id}/", quote=True)
@@ -1024,9 +1025,22 @@ def render_topic_nav_grid_html(primary_id: str, primary_label: str, site_config:
             f'<span class="topic-nav-cell-label">{text}</span></a>\n'
         )
 
-    cells = [topic_cell("current", primary_id, primary_label)]
-    for topic_id in other_ids:
-        cells.append(topic_cell("other", topic_id, topics_by_id[topic_id]["label"]))
+    if primary_id is None:
+        cells = [topic_cell("other", tid, topics_by_id[tid]["label"]) for tid in ordered_ids[:5]]
+    else:
+        other_ids: list[str] = []
+        if primary_id in ordered_ids:
+            start = ordered_ids.index(primary_id) + 1
+            for offset in range(len(ordered_ids) - 1):
+                candidate = ordered_ids[(start + offset) % len(ordered_ids)]
+                if candidate == primary_id or candidate in other_ids:
+                    continue
+                other_ids.append(candidate)
+                if len(other_ids) == 4:
+                    break
+        cells = [topic_cell("current", primary_id, primary_label)]
+        for topic_id in other_ids:
+            cells.append(topic_cell("other", topic_id, topics_by_id[topic_id]["label"]))
 
     all_topics_label = html.escape(site_config["uiLabels"]["topicNavAllTopicsLabel"], quote=True)
     cells.append(
@@ -1236,6 +1250,9 @@ def build_homepage(published_nodes: list[dict], active_topics: list[dict]) -> Pa
 
     welcome_html = "\n".join(f"    <p>{p}</p>" for p in homepage_cfg["welcomeParagraphs"])
     topic_selector_options_html = render_topic_selector_options_html(active_topics)
+    # The homepage isn't "about" any one Topic, so there's no "current"
+    # cell — see render_topic_nav_grid_html() for what None/None means.
+    topic_nav_grid_html = render_topic_nav_grid_html(None, None, site_config, active_topics)
 
     seo_description = generate_meta_description(homepage_cfg["welcomeParagraphs"][0])
     seo_meta_tags = render_seo_meta_tags(
@@ -1261,8 +1278,7 @@ def build_homepage(published_nodes: list[dict], active_topics: list[dict]) -> Pa
         "{{HOMEPAGE_PHOTO_BASE64}}": photo_base64,
         "{{HOMEPAGE_PHOTO_ALT}}": homepage_cfg["photoAlt"],
         "{{HOMEPAGE_WELCOME_HTML}}": welcome_html,
-        "{{HOME_NAV_TEXT}}": site_config["homeNavBar"]["text"],
-        "{{HOME_NAV_URL}}": site_config["homeNavBar"]["url"],
+        "{{TOPIC_NAV_GRID_HTML}}": topic_nav_grid_html,
         "{{TOPIC_SELECTOR_LABEL}}": homepage_cfg["topicSelectorLabel"],
         "{{TOPIC_SELECTOR_PLACEHOLDER}}": homepage_cfg["topicSelectorPlaceholder"],
         "{{TOPIC_SELECTOR_OPTIONS_HTML}}": topic_selector_options_html,
@@ -1311,6 +1327,9 @@ def build_disclaimer_page(active_topics: list[dict]) -> Path:
     # Shared header's search icon reuses the same Topic Selector data as
     # every other page.
     topic_selector_options_html = render_topic_selector_options_html(active_topics)
+    # This page isn't "about" any one Topic, so there's no "current"
+    # cell — see render_topic_nav_grid_html() for what None/None means.
+    topic_nav_grid_html = render_topic_nav_grid_html(None, None, site_config, active_topics)
 
     paragraphs_html = "\n".join(f"    <p>{p}</p>" for p in disclaimer_cfg["paragraphs"])
 
@@ -1339,8 +1358,7 @@ def build_disclaimer_page(active_topics: list[dict]) -> Path:
         "{{SOCIAL_INSTAGRAM_URL}}": social["Instagram"],
         "{{SOCIAL_FACEBOOK_URL}}": social["Facebook"],
         "{{SOCIAL_TIKTOK_URL}}": social["TikTok"],
-        "{{HOME_NAV_TEXT}}": site_config["homeNavBar"]["text"],
-        "{{HOME_NAV_URL}}": site_config["homeNavBar"]["url"],
+        "{{TOPIC_NAV_GRID_HTML}}": topic_nav_grid_html,
         "{{TOPIC_SELECTOR_OPTIONS_HTML}}": topic_selector_options_html,
         "{{TOPIC_SELECTOR_LABEL}}": site_config["homepage"]["topicSelectorLabel"],
         "{{TOPIC_SELECTOR_PLACEHOLDER}}": site_config["homepage"]["topicSelectorPlaceholder"],
@@ -1387,6 +1405,9 @@ def build_about_page(active_topics: list[dict]) -> Path:
     # Shared header's search icon reuses the same Topic Selector data as
     # every other page.
     topic_selector_options_html = render_topic_selector_options_html(active_topics)
+    # This page isn't "about" any one Topic, so there's no "current"
+    # cell — see render_topic_nav_grid_html() for what None/None means.
+    topic_nav_grid_html = render_topic_nav_grid_html(None, None, site_config, active_topics)
 
     paragraphs_html = "\n".join(f"    <p>{p}</p>" for p in about_cfg["paragraphs"])
 
@@ -1410,8 +1431,7 @@ def build_about_page(active_topics: list[dict]) -> Path:
         "{{SOCIAL_INSTAGRAM_URL}}": social["Instagram"],
         "{{SOCIAL_FACEBOOK_URL}}": social["Facebook"],
         "{{SOCIAL_TIKTOK_URL}}": social["TikTok"],
-        "{{HOME_NAV_TEXT}}": site_config["homeNavBar"]["text"],
-        "{{HOME_NAV_URL}}": site_config["homeNavBar"]["url"],
+        "{{TOPIC_NAV_GRID_HTML}}": topic_nav_grid_html,
         "{{TOPIC_SELECTOR_OPTIONS_HTML}}": topic_selector_options_html,
         "{{TOPIC_SELECTOR_LABEL}}": site_config["homepage"]["topicSelectorLabel"],
         "{{TOPIC_SELECTOR_PLACEHOLDER}}": site_config["homepage"]["topicSelectorPlaceholder"],
