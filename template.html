@@ -53,14 +53,17 @@
     z-index:200;
   }
   /* ---------- Topic navigation grid (PROTOTYPE) ----------
-     Replaces the old single-line "לכל הנושאים באתר" translucent bar on
-     Node pages only (other templates keep .home-nav-bar unchanged).
-     Purpose: most visitors land directly on a Node page from search,
-     not the homepage — this grid is a discoverability signal that the
-     page belongs to a larger site with many Topics, visible without
-     opening the hamburger or search modal.
+     Replaces the old single-line "לכל הנושאים באתר" translucent bar.
+     Same shared component on Topic pages (topic-template.html) —
+     identical CSS/markup shape and the same render_topic_nav_grid_html()
+     in build.py; the homepage, All-Topics, and Disclaimer/About pages
+     still use the old .home-nav-bar. Purpose: most visitors land
+     directly on a Node (or, from search/social, sometimes a Topic) page
+     rather than the homepage — this grid is a discoverability signal
+     that the page belongs to a larger site with many Topics, visible
+     without opening the hamburger or search modal.
 
-     A symmetrical 3x2 grid: slot 1 is always the Node's own primary
+     A symmetrical 3x2 grid: slot 1 is always this page's own primary
      Topic (solid pink, "current"); slots 2-5 are 4 more Topics rotated
      from the site's real active-Topics order (transparent, solid pink
      border); slot 6 is a static "כל הנושאים" action (transparent,

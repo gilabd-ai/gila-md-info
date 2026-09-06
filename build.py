@@ -956,47 +956,54 @@ _TOPIC_NAV_GRID_ICON_SVG = (
 )
 
 
-def render_topic_nav_grid_html(node: dict, site_config: dict, registry: dict,
+def _resolve_topic_label(topic_id: str, active_topics: list[dict], registry: dict) -> str:
+    """
+    Best-effort Hebrew label for a Topic id: prefers the real active-Topic
+    entry (already carries the correct registry label), falling back to
+    the registry directly for the rare case a Node's primary category
+    isn't itself currently active — e.g. previewing a draft Node via
+    `build_single_for_dev()`/`--node` whose only Node with that category
+    is the draft itself, so derive_active_topics() (built from published
+    Nodes only) never included it.
+    """
+    for topic in active_topics:
+        if topic["id"] == topic_id:
+            return topic["label"]
+    return registry["categoryLabelsHe"][topic_id]
+
+
+def render_topic_nav_grid_html(primary_id: str, primary_label: str, site_config: dict,
                                 active_topics: list[dict]) -> str:
     """
-    PROTOTYPE — Node-page-only symmetrical 3x2 Topic navigation grid,
-    replacing the old single-line "לכל הנושאים באתר" translucent bar.
-    Purpose: most visitors land directly on a Node page from search, not
-    the homepage, so this grid needs to signal at a glance — without
-    opening the hamburger or search modal — that the page belongs to a
-    larger site with many Topics.
+    PROTOTYPE — symmetrical 3x2 Topic navigation grid shown on both Node
+    pages and Topic pages, replacing the old single-line "לכל הנושאים
+    באתר" translucent bar on each. Purpose: most visitors land directly
+    on a Node (or, from search/social, sometimes a Topic) page rather
+    than the homepage, so this grid needs to signal at a glance —
+    without opening the hamburger or search modal — that the page
+    belongs to a larger site with many Topics.
 
-    Slot 1 is always the Node's own primary Topic (_first_public_topic_id,
-    the same id the existing "more content on this Topic" button already
-    uses — see render_more_link_button_html above), rendered "current"
-    (solid pink). Slots 2-5 are the next 4 Topics after it in the site's
-    real active-Topics order (derive_active_topics(), registry order),
-    wrapping around and skipping the primary and any repeats, rendered
-    "other" (transparent, solid pink border) — this only ever surfaces
-    Topics that genuinely have published content. Slot 6 is a static
-    "כל הנושאים" action (transparent, dashed pink border) that opens the
-    existing "בחירת נושא" modal via #topicNavAllBtn (see the click-
-    listener addition in template.html) rather than navigating away.
+    `primary_id`/`primary_label` are the caller's own notion of "the
+    Topic this page is about": on a Node page that's its
+    _first_public_topic_id() (the same id the existing "more content on
+    this Topic" button already uses — see render_more_link_button_html
+    above); on a Topic page it's simply that page's own topic. Slot 1 is
+    always this Topic, rendered "current" (solid pink). Slots 2-5 are
+    the next 4 Topics after it in the site's real active-Topics order
+    (derive_active_topics(), registry order), wrapping around and
+    skipping the primary and any repeats, rendered "other" (transparent,
+    solid pink border) — this only ever surfaces Topics that genuinely
+    have published content. Slot 6 is a static "כל הנושאים" action
+    (transparent, dashed pink border) that opens the existing "בחירת
+    נושא" modal via #topicNavAllBtn (see the click-listener addition in
+    template.html/topic-template.html) rather than navigating away.
 
     All 6 cells render as the exact same markup shape (one class per
-    visual state) so their fixed-size CSS box model in template.html
-    stays identical regardless of label length — a label that needs 2
-    lines wraps inside its own cell rather than resizing it.
-
-    Returns "" — no grid at all — only for a Node with no public Topic
-    (e.g. the Template Node), since there's no primary Topic to anchor
-    slot 1 on; the header above still renders fine on its own.
+    visual state) so their fixed-size CSS box model stays identical
+    regardless of label length — a label that needs 2 lines wraps inside
+    its own cell rather than resizing it.
     """
-    primary_id = _first_public_topic_id(node, registry)
-    if primary_id is None:
-        return ""
-
     topics_by_id = {t["id"]: t for t in active_topics}
-    primary_label = (
-        topics_by_id[primary_id]["label"] if primary_id in topics_by_id
-        else registry["categoryLabelsHe"][primary_id]
-    )
-
     ordered_ids = [t["id"] for t in active_topics]
     other_ids: list[str] = []
     if primary_id in ordered_ids:
@@ -1051,6 +1058,21 @@ def render_node_html(node: dict, template: str, site_config: dict,
     page_title = f'{node["youtube"]["title"]} | {site_config["header"]["name"]}'
     logo_base64 = (BASE_DIR / site_config["header"]["logoImagePath"]).read_text(encoding="utf-8").strip()
 
+    # The Node's own primary Topic (see render_more_link_button_html above)
+    # doubles as the Topic navigation grid's "current" slot. Omitted
+    # entirely (empty string) for a Node with no public Topic at all,
+    # e.g. the Template Node — same rule the "more content" button uses.
+    primary_topic_id = _first_public_topic_id(node, registry)
+    topic_nav_grid_html = (
+        render_topic_nav_grid_html(
+            primary_topic_id,
+            _resolve_topic_label(primary_topic_id, active_topics, registry),
+            site_config,
+            active_topics,
+        )
+        if primary_topic_id is not None else ""
+    )
+
     related_candidates = select_related_nodes(node, nodes_by_id, published_only=published_only)
     default_related_cards = related_candidates[:MAX_RELATED_CARDS]
     related_candidates_payload = [
@@ -1099,7 +1121,7 @@ def render_node_html(node: dict, template: str, site_config: dict,
         "{{UI_VIDEO_ENDED}}": site_config["uiLabels"]["videoEnded"],
         "{{UI_CLOSE_ARIA}}": site_config["uiLabels"]["closeVideoAriaLabel"],
         "{{UI_BACK_BUTTON_TEXT}}": site_config["uiLabels"]["backButtonText"],
-        "{{TOPIC_NAV_GRID_HTML}}": render_topic_nav_grid_html(node, site_config, registry, active_topics),
+        "{{TOPIC_NAV_GRID_HTML}}": topic_nav_grid_html,
         "{{TOPIC_SELECTOR_OPTIONS_HTML}}": topic_selector_options_html,
         "{{TOPIC_SELECTOR_LABEL}}": site_config["homepage"]["topicSelectorLabel"],
         "{{TOPIC_SELECTOR_PLACEHOLDER}}": site_config["homepage"]["topicSelectorPlaceholder"],
@@ -1494,6 +1516,11 @@ def build_topic_page(topic: dict, site_config: dict, active_topics: list[dict]) 
         for n in topic["nodes"]
     ) + "\n  </div>"
 
+    # This Topic page's own topic is always the grid's "current" slot —
+    # see render_topic_nav_grid_html() for the shared rotation/rendering
+    # logic also used by Node pages.
+    topic_nav_grid_html = render_topic_nav_grid_html(topic["id"], topic["label"], site_config, active_topics)
+
     page_title = f'{topic["label"]} | {site_config["header"]["name"]}'
     seo_description = generate_meta_description(
         f'{topic["label"]} — סרטונים והסברים מאת {site_config["header"]["name"]}'
@@ -1517,8 +1544,7 @@ def build_topic_page(topic: dict, site_config: dict, active_topics: list[dict]) 
         "{{SOCIAL_INSTAGRAM_URL}}": social["Instagram"],
         "{{SOCIAL_FACEBOOK_URL}}": social["Facebook"],
         "{{SOCIAL_TIKTOK_URL}}": social["TikTok"],
-        "{{HOME_NAV_TEXT}}": site_config["homeNavBar"]["text"],
-        "{{HOME_NAV_URL}}": site_config["homeNavBar"]["url"],
+        "{{TOPIC_NAV_GRID_HTML}}": topic_nav_grid_html,
         "{{TOPIC_SELECTOR_OPTIONS_HTML}}": topic_selector_options_html,
         "{{TOPIC_SELECTOR_LABEL}}": site_config["homepage"]["topicSelectorLabel"],
         "{{TOPIC_SELECTOR_PLACEHOLDER}}": site_config["homepage"]["topicSelectorPlaceholder"],
