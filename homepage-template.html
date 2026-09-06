@@ -194,7 +194,7 @@
     height:36px;
     border-radius:50%;
     background:rgba(242,90,166,0.12);
-    color:var(--blush-deep);
+    color:var(--icon-strong);
     display:flex;
     align-items:center;
     justify-content:center;
@@ -203,7 +203,50 @@
     pointer-events:none;
   }
   .topic-modal-scroll-hint.show{ opacity:1; }
-  .topic-modal-scroll-hint svg{ width:16px; height:16px; display:block; }
+  .topic-modal-scroll-hint svg{ width:20px; height:20px; display:block; }
+
+  /* ---------- Page-level scroll-down indicator ----------
+     Site-wide — same component, same CSS, on every page template
+     (approved after a one-page prototype on a Topic page). A
+     general "there is more content below" cue, not specific to Topic
+     cards or any one page's own content. A separate element from
+     .topic-modal-scroll-hint above — that one lives inside the "בחירת
+     נושא" modal and tracks its own internal list's scroll position;
+     this one tracks the whole page's own scroll position and floats
+     fixed to the viewport instead of a dialog. Same exact visual
+     language on purpose (same circle size, background/color, arrow,
+     opacity transition, non-interactive pointer-events:none) — just
+     position:fixed instead of position:absolute, and its own
+     position/z-index suited to sitting over real page content rather
+     than inside a small dialog. top:80vh centers the circle at ~80% of
+     the viewport height from the top (~4/5 of the screen above it,
+     ~1/5 below), regardless of viewport size — translate(-50%,-50%)
+     centers the circle itself on that exact point, both axes. JS
+     toggles .show based on the page's own scroll position (see the
+     script near the end of <body>) — it treats every page's own
+     content (nav buttons, disclaimer, etc.) as ordinary content to
+     scroll past. */
+  .page-scroll-hint{
+    position:fixed;
+    top:80vh;
+    left:50%;
+    transform:translate(-50%, -50%);
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    background:rgba(242,90,166,0.12);
+    color:var(--icon-strong);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    transition:opacity 0.15s ease;
+    pointer-events:none;
+    z-index:150;
+  }
+  .page-scroll-hint.show{ opacity:1; }
+  .page-scroll-hint svg{ width:20px; height:20px; display:block; }
+  /* ---------- end page-level scroll-down indicator ---------- */
 
   .topic-modal-header{
     flex:none;
@@ -616,6 +659,34 @@
 
   <a class="site-disclaimer" href="{{DISCLAIMER_LINK_URL}}">{{DISCLAIMER_ICON}} {{DISCLAIMER_SHORT_TEXT}} <span class="disclaimer-underline">{{DISCLAIMER_LINK_PREFIX}} {{DISCLAIMER_LINK_TEXT}}</span>.</a>
 </main>
+
+<span id="pageScrollHint" class="page-scroll-hint" aria-hidden="true">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v13m-6-6l6 6 6-6"/></svg>
+</span>
+<script>
+  // ---- Page-level scroll-down indicator, site-wide. Separate from the
+  // "בחירת נושא" modal's own scroll-hint (which tracks its internal
+  // list) — this tracks the whole page's own scroll position, so users
+  // landing anywhere on the site notice there's more content below the
+  // fold, regardless of which page type they land on. ----
+  (function(){
+    const hint = document.getElementById('pageScrollHint');
+    if (!hint) return;
+
+    // Same small threshold as the modal's own scroll-hint, to absorb
+    // sub-pixel rounding at the exact bottom.
+    function updatePageScrollHint(){
+      const hasMoreBelow = document.documentElement.scrollHeight - window.scrollY - window.innerHeight > 2;
+      hint.classList.toggle('show', hasMoreBelow);
+    }
+
+    updatePageScrollHint();
+    window.addEventListener('scroll', updatePageScrollHint, { passive: true });
+    window.addEventListener('resize', updatePageScrollHint);
+    // Fonts/images can still reflow the page height after first paint.
+    window.addEventListener('load', updatePageScrollHint);
+  })();
+</script>
 
 </body>
 </html>
