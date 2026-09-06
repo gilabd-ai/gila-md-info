@@ -289,7 +289,7 @@
     pointer-events:none;
   }
   .topic-modal-scroll-hint.show{ opacity:1; }
-  .topic-modal-scroll-hint svg{ width:20px; height:20px; display:block; }
+  .topic-modal-scroll-hint svg{ width:14px; height:14px; display:block; } /* ~39% of the 36px circle — a solid triangle needs less box than the old stroked arrow did to read as visually substantial */
 
   /* ---------- Page-level scroll-down indicator ----------
      Site-wide — same component, same CSS, on every page template
@@ -371,7 +371,7 @@
     z-index:150;
   }
   .page-scroll-hint.show{ opacity:1; }
-  .page-scroll-hint svg{ width:20px; height:20px; display:block; }
+  .page-scroll-hint svg{ width:14px; height:14px; display:block; } /* ~39% of the 36px circle — a solid triangle needs less box than the old stroked arrow did to read as visually substantial */
   /* ---------- end page-level scroll-down indicator ---------- */
 
   .topic-modal-header{
@@ -907,7 +907,7 @@
     </div>
     <ul id="topicSearchModalList" class="topic-modal-list" aria-label="{{TOPIC_SELECTOR_LABEL}}"></ul>
     <span id="topicSearchScrollHint" class="topic-modal-scroll-hint" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v13m-6-6l6 6 6-6"/></svg>
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 8h14l-7 10z"/></svg>
     </span>
   </div>
 </div>
@@ -1314,7 +1314,7 @@
 </script>
 
 <span id="pageScrollHint" class="page-scroll-hint" aria-hidden="true">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v13m-6-6l6 6 6-6"/></svg>
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 8h14l-7 10z"/></svg>
 </span>
 <script>
   // ---- Page-level scroll-down indicator, site-wide. Separate from the
