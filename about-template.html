@@ -131,10 +131,12 @@
     color: rgba(216,64,142,0.95);
     width:auto;
     flex:1 1 auto;
+    font-size:10.5px; /* smaller than the base 12.5px — on a real phone the base size let "הנושאים" wrap mid-word onto a hidden 3rd line (line-clamp:2 silently dropped it), clipping the final ם */
+    white-space:nowrap; /* the <br> between the two words still forces the 2-line split regardless of this — nowrap only stops either single word from *itself* breaking onto an extra line, which was the actual bug */
   }
   .topic-nav-cell.all-topics:hover{ background: rgba(242,90,166,0.14); }
   .topic-nav-cell-icon-zone{
-    flex:0 0 52%; /* renders as ~44-45% of the cell's full outer width once padding/gap are accounted for — verified via getBoundingClientRect */
+    flex:0 0 40%; /* reduced from 52% (~45% of the tile) to ~38% so the label has more real room — see the label rule above for why the previous width was too tight */
     display:flex;
     align-items:center;
     justify-content:center;
