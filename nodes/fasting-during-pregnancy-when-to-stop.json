@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0049",
+  "slug": "fasting-during-pregnancy-when-to-stop",
+  "youtube": {
+    "videoId": "zRtGgX7U-tA",
+    "orientation": "short",
+    "title": "צום בהריון – האם מותר לצום ומתי צריך להפסיק?",
+    "description": "בהיריון תקין, אצל אישה בריאה, צום חד־פעמי מותר ואפשרי.\nעם זאת, הגוף בהיריון מגיב לצום בצורה מעט שונה: רמת הסוכר עלולה לרדת מהר יותר, הגוף עובר מוקדם יותר לשימוש במאגרי שומן והצורך בנוזלים עולה. לכן חשוב להיות קשובה לגוף ולא להתעקש להמשיך לצום בכל מחיר.\n\nצום עלול לגרום לחולשה משמעותית, לסחרחורת ולהתייבשות, ולעיתים מופיעות גם התכווצויות של הרחם. אם אחד מהדברים האלה קורה, זו בהחלט סיבה טובה להפסיק את הצום, לשתות ולהקשיב לגוף.אם ההתכווצויות אינן חולפות לאחר שתייה ומנוחה, או שמופיעה תחושה חדשה שאינה מוכרת לך מההיריון — כדאי לפנות לבדיקה.\n\nאם ההיריון מוגדר בסיכון, אם יש סוכרת או בעיה רפואית אחרת במהלך ההיריון — חשוב להתייעץ מראש עם הרופא או הרופאה שמכירים את ההיריון.\n\nלקראת הצום כדאי להקפיד על שתייה מספקת. במהלך הצום מומלץ להימנע ממאמץ ומחום ולנוח ככל האפשר.\nהמידע כללי ואינו מחליף ייעוץ רפואי אישי.",
+    "publishedAt": "2026-07-22T16:05:47Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/zRtGgX7U-tA/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-09-06T19:37:50Z",
+    "durationSeconds": 17
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "pregnancy"
+    ],
+    "primaryTagIds": [
+      "nutrition-in-pregnancy",
+      "warning-signs"
+    ],
+    "secondaryTagIds": [
+      "pregnancy-care",
+      "pregnancy-symptoms",
+      "healthy-lifestyle",
+      "nutrition",
+      "preventive-care",
+      "wellbeing",
+      "myths",
+      "prevention"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-09-06"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-09-06"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
