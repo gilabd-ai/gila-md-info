@@ -178,7 +178,7 @@
     pointer-events:none;
   }
   .topic-modal-scroll-hint.show{ opacity:1; }
-  .topic-modal-scroll-hint svg{ width:14px; height:14px; display:block; } /* ~39% of the 36px circle — a solid triangle needs less box than the old stroked arrow did to read as visually substantial */
+  .topic-modal-scroll-hint svg{ width:25px; height:25px; display:block; } /* ~70% of the 36px circle, per explicit request — 14px (~39%) read as too small/incremental; this is a deliberately large, dominant triangle within the circle */
 
   /* ---------- Page-level scroll-down indicator ----------
      Site-wide — same component, same CSS, on every page template
@@ -220,7 +220,7 @@
     z-index:150;
   }
   .page-scroll-hint.show{ opacity:1; }
-  .page-scroll-hint svg{ width:14px; height:14px; display:block; } /* ~39% of the 36px circle — a solid triangle needs less box than the old stroked arrow did to read as visually substantial */
+  .page-scroll-hint svg{ width:25px; height:25px; display:block; } /* ~70% of the 36px circle, per explicit request — 14px (~39%) read as too small/incremental; this is a deliberately large, dominant triangle within the circle */
   /* ---------- end page-level scroll-down indicator ---------- */
 
   .topic-modal-header{
