@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0053",
+  "slug": "breastfeeding-is-much-more-than-food",
+  "youtube": {
+    "videoId": "abklKbsm5vk",
+    "orientation": "short",
+    "title": "יתרונות ההנקה: למה חלב אם חשוב לתינוק ולאם",
+    "description": "ההחלטה אם להניק, וכמה זמן להניק, היא החלטה אישית שמושפעת מגורמים רבים. \n\nהנקה יכולה להיות חוויה נפלאה, אבל היא גם דורשת זמן, סבלנות ולעיתים תקופת הסתגלות, ולכן כדאי להגיע אליה עם ציפיות מציאותיות ולבקש עזרה אם מתעוררים קשיים.\n\nגם אם את חוזרת לעבודה אחרי כמה חודשים, במקרים רבים אפשר להמשיך לתת לתינוק חלב אם באמצעות חלב שאוב, אם זה מתאים לך ולמשפחה שלך.\n\nהיתרונות החיסוניים של חלב האם משמעותיים במיוחד בחודשים הראשונים לחיים, אך גם הנקה שאינה בלעדית או שנמשכת תקופה קצרה יותר יכולה להעניק יתרונות.\nומצד שני, חשוב לזכור שהקשר בין הורה לתינוק נבנה בדרכים רבות – דרך מגע, חיבוק, מבט, דיבור ונוכחות. \n\nההנקה יכולה להיות אחת מהן, אבל היא בהחלט לא היחידה.",
+    "publishedAt": "2026-08-04T11:33:14Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/abklKbsm5vk/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-09-15T12:42:56Z",
+    "durationSeconds": 17
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "postpartum"
+    ],
+    "primaryTagIds": [
+      "breastfeeding"
+    ],
+    "secondaryTagIds": [
+      "pregnancy",
+      "pregnancy-care",
+      "third-trimester",
+      "pregnancy-myths"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-09-15"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-09-15"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
