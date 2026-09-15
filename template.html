@@ -82,8 +82,17 @@
     grid-template-columns: repeat(3, 1fr);
     gap:6px;
     padding:8px 10px 10px;
-    background: rgba(242,90,166,0.10);
-    border-bottom: 1px solid rgba(242,90,166,0.25);
+    /* Fully opaque flattened equivalent of the previous rgba(242,90,166,0.10)
+       over the page's own --paper (#f6f3ec) background, so this looks
+       pixel-identical at the top of the page while no longer letting any
+       scrolled content show through once the strip is sitting over it
+       (this container is position:fixed inside .site-header-fixed, so
+       page content passes underneath it while scrolling). Cells with
+       background:transparent (.other/.all-topics) sit directly on this
+       opaque background with nothing between, so they're covered too —
+       no other rule needs to change. */
+    background: rgb(246,228,229);
+    border-bottom: 1px solid rgb(245,205,218);
   }
   .topic-nav-cell{
     display:flex;
