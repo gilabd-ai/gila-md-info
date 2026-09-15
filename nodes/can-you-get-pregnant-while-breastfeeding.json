@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0054",
+  "slug": "can-you-get-pregnant-while-breastfeeding",
+  "youtube": {
+    "videoId": "1gBj62zcN_8",
+    "orientation": "short",
+    "title": "אפשר להיכנס להריון בזמן הנקה?",
+    "description": "נשים רבות מניחות שכל עוד הן מניקות ולא קיבלו את הווסת הראשונה אחרי הלידה, הן אינן יכולות להיכנס להיריון. בפועל, המצב מורכב יותר.\n\nהנקה אכן יכולה לדחות את חזרת הביוץ, בעיקר כאשר מדובר בהנקה מלאה ותכופה, אך ההשפעה משתנה מאוד מאישה לאישה. אצל חלק מהנשים הביוץ חוזר כבר לאחר מספר שבועות, ואצל אחרות רק חודשים רבים לאחר הלידה.\n\nמאחר שהביוץ הראשון מתרחש לפני הווסת הראשונה, אי אפשר להסתמך על הופעת הדימום כסימן לכך שהפוריות חזרה. לכן, אם אינך מתכננת היריון נוסף, מומלץ להתייעץ עם רופא או רופאת הנשים לגבי אמצעי מניעה המתאים לתקופת ההנקה.\n\nהנקה מעניקה יתרונות רבים לאם ולתינוק, אך אינה נחשבת לאמצעי מניעה בטוח.",
+    "publishedAt": "2026-08-06T09:16:53Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/1gBj62zcN_8/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-09-15T21:51:13Z",
+    "durationSeconds": 24
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "postpartum",
+      "contraception",
+      "common-myths"
+    ],
+    "primaryTagIds": [
+      "breastfeeding",
+      "ovulation"
+    ],
+    "secondaryTagIds": [
+      "contraception-myths",
+      "medical-myths"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-09-16"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-09-16"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
