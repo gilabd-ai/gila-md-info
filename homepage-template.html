@@ -69,8 +69,14 @@
     grid-template-columns: repeat(3, 1fr);
     gap:6px;
     padding:8px 10px 10px;
-    background: rgba(242,90,166,0.10);
-    border-bottom: 1px solid rgba(242,90,166,0.25);
+    /* Fully opaque flattened equivalent of the previous rgba(242,90,166,0.10)
+       over the page's own --paper (#f6f3ec) background — see template.html
+       (Node pages) for the exact same fix and the color-blend math behind
+       it. Looks pixel-identical at the top of the page while no longer
+       letting scrolled content show through once the strip is sitting
+       over it. */
+    background: rgb(246,228,229);
+    border-bottom: 1px solid rgb(245,205,218);
   }
   .topic-nav-cell{
     display:flex;
