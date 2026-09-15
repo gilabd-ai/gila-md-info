@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0055",
+  "slug": "calculating-ovulation-day-by-cycle",
+  "youtube": {
+    "videoId": "NzQ2T2Qkud8",
+    "orientation": "short",
+    "title": "איך מחשבים את יום הביוץ? חישוב מועד הביוץ לפי המחזור החודשי",
+    "description": "השיטה שבסרטון מתאימה בעיקר לנשים עם מחזורים סדירים, והיא נותנת הערכה בלבד.\n\nאפשר להיעזר גם בסימנים נוספים של הגוף: • הפרשות צוואר הרחם הופכות לרוב שקופות, חלקלקות ונמתחות, בדומה לחלבון ביצה, בימים שלפני הביוץ. • חום השחר עולה מעט לאחר הביוץ. לכן הוא יכול לעזור לזהות שהביוץ כבר התרחש, אבל פחות מתאים לניבוי שלו מראש.\n\nחשוב לדעת: גם אם המחזורים שלך סדירים, יום הביוץ יכול להשתנות מעט בין מחזור למחזור.\n\nאם המחזורים שלך אינם סדירים, חישוב לפי לוח השנה בלבד יהיה פחות מדויק. \nבמידת הצורך כדאי להיעזר גם בבדיקות ביוץ או בייעוץ רפואי",
+    "publishedAt": "2026-08-10T14:04:48Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/NzQ2T2Qkud8/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-09-15T22:01:55Z",
+    "durationSeconds": 18
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "fertility",
+      "menstruation"
+    ],
+    "primaryTagIds": [
+      "ovulation",
+      "fertile-window",
+      "trying-to-conceive"
+    ],
+    "secondaryTagIds": [
+      "menstrual-cycle",
+      "menstrual-education"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-09-16"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-09-16"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
