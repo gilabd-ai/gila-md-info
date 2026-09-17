@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0056",
+  "slug": "surgery-recovery-takes-time-and-patience",
+  "youtube": {
+    "videoId": "nBqwCDz2Doc",
+    "orientation": "short",
+    "title": "התאוששות מניתוח – כמה זמן לוקח לגוף להחלים ומה עוזר להחלמה",
+    "description": "גם אם לפעמים נדמה שהגוף \"רק נח\" אחרי ניתוח – בפועל הוא עובד שעות נוספות.\nכבר מהרגע הראשון מתחיל תהליך מורכב של ריפוי: הגוף מפעיל את מערכת החיסון, בונה רקמות חדשות ומחזק בהדרגה את אזור הניתוח. זהו תהליך טבעי ומרשים, אבל הוא דורש זמן.\n\nחשוב לזכור שגם אם כבר מרגישים טוב יותר אחרי כמה ימים או שבועות, הריפוי הפנימי עדיין נמשך. לכן חשוב להמשיך להקפיד על ההנחיות שקיבלתם, גם כשההרגשה משתפרת.\n\nמה יכול לעזור לגוף להחלים? שינה טובה, תזונה בריאה  עשירה בחלבון, שתייה מספקת, תנועה בהתאם להנחיות הרפואיות, והימנעות מעישון – כל אלה מסייעים לגוף לבצע את עבודת ההחלמה בצורה הטובה ביותר.\n\nוגם חשוב לזכור: כל אדם מחלים בקצב אחר. גיל, מצב בריאותי, מחלות רקע, סוג הניתוח וגורמים נוספים משפיעים על משך ההחלמה. אין טעם להשוות את עצמכם לאחרים – הגוף שלכם מתקדם בקצב שלו.\n\nסבלנות היא לא רק תחושה טובה – היא חלק מהטיפול. תנו לגוף את הזמן, את התנאים ואת ההזדמנות לעשות את מה שהוא יודע לעשות כל כך טוב.",
+    "publishedAt": "2026-08-13T10:38:15Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/nBqwCDz2Doc/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-09-17T21:59:56Z",
+    "durationSeconds": 29
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "body-and-mind",
+      "postpartum",
+      "general-womens-health",
+      "gynecologic-cancers"
+    ],
+    "primaryTagIds": [
+      "surgery",
+      "wellbeing"
+    ],
+    "secondaryTagIds": [
+      "healthy-lifestyle",
+      "resilience",
+      "nutrition",
+      "sleep",
+      "prevention",
+      "womens-health"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-09-18"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-09-18"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
