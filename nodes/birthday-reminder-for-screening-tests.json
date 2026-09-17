@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0057",
+  "slug": "birthday-reminder-for-screening-tests",
+  "youtube": {
+    "videoId": "gD3OI5mqphs",
+    "orientation": "short",
+    "title": "בדיקות סקר לפי גיל – אילו בדיקות צריך לעשות ומתי?",
+    "description": "בדיקות סקר מאפשרות לזהות מחלות או מצבים רפואיים בשלב מוקדם, לפעמים עוד לפני שמרגישים שמשהו לא בסדר. לכן יום הולדת הוא הזדמנות טובה לעצור לרגע ולבדוק: אילו בדיקות הגיע הזמן לעשות?\n\nבישראל, לאוכלוסייה בסיכון רגיל:\n\nמגיל 25 – צוואר הרחם\nבדיקת סקר ל-HPV. כיום HPV היא בדיקת הסקר הראשונית, ותדירות המעקב נקבעת בהתאם לגיל ולתוצאות.\n\nמגיל 50 – שד ומעי גס\nממוגרפיה אחת לשנתיים, בגיל 50–74.\nבדיקת דם סמוי בצואה אחת לשנה, בגיל 50–74. אם הבדיקה חיובית, ממשיכים לבירור בקולונוסקופיה.\n\nמגיל 60 – סרטן הריאה, למי שעומדים בקריטריונים\n סי.טי חזה במינון קרינה נמוך (LDCT) בגיל 60–74, למעשנים או למי שהפסיקו לעשן ב-15 השנים האחרונות, עם היסטוריה של לפחות 20 שנות קופסה. כשהבדיקה תקינה, הסקר מתבצע אחת לשנתיים.\n\nמגיל 65 – בריאות העצם\nבדיקת צפיפות עצם (DEXA), בדרך כלל אחת לחמש שנים.\n\nואל תשכחו גם את הדברים הפשוטים: לחץ דם, סוכר ושומנים בדם הם חלק חשוב מהרפואה המונעת וחשוב לעקוב אחריהם בהתאם לגיל ולגורמי הסיכון.\n\nאלה המלצות לאוכלוסייה בסיכון רגיל. סיפור משפחתי, נשאות גנטית, מחלות רקע, ממצאים קודמים או גורמי סיכון אחרים יכולים לשנות את גיל תחילת המעקב, סוג הבדיקה והתדירות.",
+    "publishedAt": "2026-08-16T12:07:49Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/gD3OI5mqphs/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-09-17T22:16:34Z",
+    "durationSeconds": 14
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "preventive-medicine",
+      "general-womens-health"
+    ],
+    "primaryTagIds": [
+      "screening",
+      "preventive-care",
+      "routine-checkup",
+      "hpv-testing",
+      "pap-smear",
+      "mammography",
+      "bone-health",
+      "healthy-lifestyle"
+    ],
+    "secondaryTagIds": []
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-09-18"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-09-18"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
