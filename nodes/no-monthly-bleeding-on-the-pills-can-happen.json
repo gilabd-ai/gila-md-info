@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0058",
+  "slug": "no-monthly-bleeding-on-the-pills-can-happen",
+  "youtube": {
+    "videoId": "QN0vldYhrjY",
+    "orientation": "short",
+    "title": "לוקחת גלולות ואין דימום חודשי – האם זה תקין?",
+    "description": "בזמן נטילת גלולות למניעת הריון אנחנו בדרך כלל מצפים לדימום חודשי שמופיע בהפסקה בין החפיסות (חפיסות של 21 יום) או בזמן נטילת גלולות הדמה ( חפיסות של 28 יום). \n\nאבל אצל חלק מהנשים הדימום לא מופיע בכלל — וזה תקין.\n\nהגלולות גורמות לרירית הרחם להישאר דקה מאוד, ולכן לפעמים פשוט אין כמעט רירית שתדמם.\n\nזה לא אומר שדם מצטבר ברחם, וזה לא פוגע בפוריות העתידית. לאחר הפסקת הגלולות רירית הרחם חוזרת בהדרגה להגיב למחזור ההורמונלי הטבעי.\n\nאך אם היו גלולות שנשכחו, נטילה לא סדירה או שיש אפשרות להריון — כדאי לבצע בדיקת הריון.",
+    "publishedAt": "2026-08-20T09:31:45Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/QN0vldYhrjY/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-09-21T19:16:52Z",
+    "durationSeconds": 15
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "contraception",
+      "menstruation",
+      "common-myths"
+    ],
+    "primaryTagIds": [
+      "birth-control-pills",
+      "missed-period",
+      "endometrium",
+      "pregnancy-test"
+    ],
+    "secondaryTagIds": [
+      "fertility-impact",
+      "misconceptions",
+      "menstrual-cycle",
+      "continuous-pill-use",
+      "endometriosis",
+      "menstruation",
+      "ovulation"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-09-21"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-09-21"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
