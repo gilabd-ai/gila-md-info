@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0064",
+  "slug": "fasting-and-regular-medications-can-you-change-the-timing",
+  "youtube": {
+    "videoId": "iU1Y4oudkDA",
+    "orientation": "short",
+    "title": "צום ותרופות קבועות – האם מותר להפסיק או לשנות את שעות הנטילה?",
+    "description": "צום עשוי לשנות את שגרת נטילת התרופות, אבל ההנחיות אינן זהות לכולם. הן תלויות בסוג התרופה, במינון, במספר הפעמים שנוטלים אותה ובמצב הרפואי.\n\nלעיתים אפשר להתאים את שעות הנטילה לצום, ולעיתים אסור לדלג על מנה או לדחות אותה. לכן חשוב לבדוק מראש כיצד לנהוג ולא לחכות ליום הצום עצמו.",
+    "publishedAt": "2026-09-20T05:55:17Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/iU1Y4oudkDA/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-09-21T20:05:17Z",
+    "durationSeconds": 20
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "general-womens-health",
+      "preventive-medicine"
+    ],
+    "primaryTagIds": [
+      "appointment-planning",
+      "healthy-lifestyle",
+      "preventive-care",
+      "prevention"
+    ],
+    "secondaryTagIds": [
+      "wellbeing",
+      "womens-health",
+      "warning-signs",
+      "nutrition",
+      "pregnancy-care"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-09-21"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-09-21"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
