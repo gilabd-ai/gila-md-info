@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0062",
+  "slug": "lung-cancer-screening-for-smokers-now-in-health-basket",
+  "youtube": {
+    "videoId": "IGwSFDdvtf0",
+    "orientation": "short",
+    "title": "בדיקת סקר לגילוי מוקדם של סרטן הריאה למעשנים – מי זכאי?",
+    "description": "גילוי מוקדם של סרטן הריאה יכול לאפשר אבחון בשלב שבו אפשרויות הטיפול טובות יותר.\n\nבדיקת הסקר נעשית באמצעות CT חזה במינון קרינה נמוך (LDCT), ללא חומר ניגוד.\n\n הבדיקה מיועדת לאנשים שנמצאים בסיכון מוגבר בגלל היסטוריית עישון, ונכללת כיום בסל הבריאות.\n\nהזכאות היא לבני 60–74 שמעשנים כיום או הפסיקו לעשן במהלך 15 השנים האחרונות, עם היסטוריה של לפחות 20 שנות קופסה.\n\nבדיקת הסקר מבוצעת אחת לשנתיים.\nאם אתם מתאימים לקריטריונים, כדאי לפנות לרופא המשפחה ולברר לגבי ביצוע הבדיקה.",
+    "publishedAt": "2026-09-17T08:53:51Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/IGwSFDdvtf0/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-09-21T19:55:19Z",
+    "durationSeconds": 16
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "preventive-medicine",
+      "general-womens-health"
+    ],
+    "primaryTagIds": [
+      "screening",
+      "preventive-care",
+      "prevention",
+      "routine-checkup"
+    ],
+    "secondaryTagIds": [
+      "healthy-lifestyle",
+      "womens-health",
+      "new-guidelines",
+      "appointment-planning",
+      "warning-signs",
+      "cervical-cancer",
+      "breast-cancer-risk"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-09-21"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-09-21"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
