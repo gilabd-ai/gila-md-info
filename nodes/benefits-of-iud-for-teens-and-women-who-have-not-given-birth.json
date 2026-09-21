@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0060",
+  "slug": "benefits-of-iud-for-teens-and-women-who-have-not-given-birth",
+  "youtube": {
+    "videoId": "5sClspQ5TZs",
+    "orientation": "short",
+    "title": "יתרונות התקן תוך־רחמי לנערות ולנשים שעוד לא ילדו",
+    "description": "התקן תוך־רחמי יכול להיות אפשרות טובה גם לנערות ולנשים שעדיין לא ילדו. הוא אחד מאמצעי המניעה היעילים ביותר, אינו דורש לזכור לקחת גלולה בכל יום, ומספק הגנה ממושכת מפני היריון.\n\nחשוב גם לדעת שהשימוש בהתקן אינו פוגע בפוריות העתידית, ולאחר הוצאתו ניתן להרות. הבחירה באמצעי המניעה המתאים היא אישית, וכדאי לעשות אותה בהתאם לצרכים ולהעדפות של כל אישה.",
+    "publishedAt": "2026-09-03T13:11:27Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/5sClspQ5TZs/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-09-21T19:33:56Z",
+    "durationSeconds": 17
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "contraception",
+      "adolescent-and-sexual-development"
+    ],
+    "primaryTagIds": [
+      "iud",
+      "teen-contraception",
+      "fertility-impact",
+      "contraception-myths",
+      "prevention",
+      "office-procedures",
+      "myths"
+    ],
+    "secondaryTagIds": [
+      "hormonal-iud",
+      "copper-iud",
+      "adolescent-health",
+      "birth-control-pills",
+      "misconceptions",
+      "pelvic-exam"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-09-21"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-09-21"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
