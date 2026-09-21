@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0059",
+  "slug": "iud-for-teens-and-women-who-have-not-given-birth",
+  "youtube": {
+    "videoId": "lzAuSXQM3ck",
+    "orientation": "short",
+    "title": "התקן תוך־רחמי לנערות ולנשים שלא ילדו – האם זה אפשרי?",
+    "description": "פעם היה מקובל לחשוב שהתקן תוך־רחמי מתאים רק לנשים שכבר ילדו. היום אנחנו יודעים שגם נערות, ונשים צעירות שעדיין לא ילדו יכולות להשתמש בהתקן כאמצעי מניעה יעיל ובטוח.\n\nהשימוש בהתקן אינו פוגע בפוריות העתידית, ולאחר הוצאתו הפוריות חוזרת במהירות.\n\nלכן, עבור נערה שמעוניינת באמצעי מניעה ולא רוצה או לא יכולה ליטול גלולות, התקן הוא בהחלט אחת האפשרויות שכדאי להכיר ולשקול יחד עם שאר אמצעי המניעה.",
+    "publishedAt": "2026-08-24T13:06:23Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/lzAuSXQM3ck/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-09-21T19:29:02Z",
+    "durationSeconds": 14
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "contraception",
+      "adolescent-and-sexual-development",
+      "common-myths"
+    ],
+    "primaryTagIds": [
+      "iud",
+      "teen-contraception",
+      "fertility-impact",
+      "contraception-myths",
+      "prevention",
+      "office-procedures"
+    ],
+    "secondaryTagIds": [
+      "hormonal-iud",
+      "copper-iud",
+      "adolescent-health",
+      "birth-control-pills",
+      "misconceptions",
+      "pelvic-exam"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-09-21"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-09-21"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
