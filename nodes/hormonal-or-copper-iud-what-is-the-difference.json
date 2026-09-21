@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0061",
+  "slug": "hormonal-or-copper-iud-what-is-the-difference",
+  "youtube": {
+    "videoId": "0Sb9LnKMnBM",
+    "orientation": "short",
+    "title": "התקן הורמונלי או התקן נחושת – מה ההבדל ואיך בוחרים?",
+    "description": "התקן תוך־רחמי הוא אמצעי מניעה יעיל מאוד וארוך טווח, אבל יש הבדלים משמעותיים בין הסוגים השונים.התקן הורמונלי יכול להתאים במיוחד למי שמעוניינת להפחית את הדימום במחזור, ואצל חלק מהנשים אף לגרום לכך שהדימום ייעלם. התקן נחושת מאפשר מניעה יעילה ללא הורמונים כלל.שני הסוגים יכולים להישאר ברחם במשך שנים, לא דורשים לזכור לקחת אמצעי מניעה מדי יום, והבחירה ביניהם תלויה בין היתר באופי המחזור ובהעדפה האישית.",
+    "publishedAt": "2026-09-08T21:00:42Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/0Sb9LnKMnBM/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-09-21T19:43:33Z",
+    "durationSeconds": 26
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "contraception",
+      "menstruation"
+    ],
+    "primaryTagIds": [
+      "iud",
+      "hormonal-iud",
+      "copper-iud",
+      "heavy-bleeding",
+      "benefits-and-risks"
+    ],
+    "secondaryTagIds": [
+      "menstrual-cycle",
+      "spotting",
+      "birth-control-pills",
+      "office-procedures",
+      "prevention",
+      "womens-health"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-09-21"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-09-21"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
