@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0063",
+  "slug": "menopause-hormone-therapy-vs-birth-control-pills",
+  "youtube": {
+    "videoId": "RRv8LQESDsI",
+    "orientation": "short",
+    "title": "גלולות למניעת היריון לעומת הורמונים לגיל המעבר – מה ההבדל?",
+    "description": "טיפול הורמונלי לגיל המעבר מותאם לתקופה אחרת בחיים ולצרכים אחרים של הגוף.\n\nגלולות נועדו לשלוט בפעילות ההורמונלית של מערכת הרבייה ולמנוע היריון, בעוד שטיפול הורמונלי לגיל המעבר נועד לתת מענה לירידה ההורמונלית שמתרחשת בתקופה הזו ולהקל על התסמינים שנלווים אליה.\n\nהמטרה שונה, המינונים שונים, וגם אופן הטיפול וההתאמה לאישה שונים.\n\nלכן, כששוקלים טיפול הורמונלי לגיל המעבר, חשוב להתייחס אליו כטיפול בפני עצמו ולא להסיק עליו אוטומטית מניסיון קודם עם גלולות למניעת היריון.",
+    "publishedAt": "2026-09-17T08:57:36Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/RRv8LQESDsI/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-09-21T20:00:44Z",
+    "durationSeconds": 22
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "menopause-and-hrt",
+      "contraception",
+      "common-myths"
+    ],
+    "primaryTagIds": [
+      "hormone-therapy",
+      "birth-control-pills",
+      "menopause",
+      "hrt-types",
+      "misconceptions"
+    ],
+    "secondaryTagIds": [
+      "estrogen",
+      "progesterone",
+      "menopause-symptoms",
+      "hrt-myths",
+      "perimenopause",
+      "prevention",
+      "womens-health"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-09-21"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-09-21"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
