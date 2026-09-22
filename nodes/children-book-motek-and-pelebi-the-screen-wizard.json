@@ -41,5 +41,6 @@
   "timestamps": {
     "createdAt": null,
     "updatedAt": null
-  }
+  },
+  "displayOrder": 1
 }

@@ -299,6 +299,10 @@ def validate_classification_and_priority(node: dict, registry: dict) -> list[str
     if priority not in (0, 1, 2, 3):
         errors.append(f"[{slug} — {source}] priority must be 0, 1, 2, or 3 (currently missing/invalid: {priority!r})")
 
+    display_order = node.get("displayOrder")
+    if display_order is not None and (not isinstance(display_order, int) or isinstance(display_order, bool)):
+        errors.append(f"[{slug} — {source}] displayOrder must be an integer, or omitted/null (got {display_order!r})")
+
     return errors
 
 
@@ -1483,6 +1487,32 @@ def build_about_page(active_topics: list[dict]) -> Path:
 # never tags, never priority. See derive_active_topics(), the ONE
 # place that decides which Topics exist and what's on each of them.
 
+def _order_topic_nodes(category_id: str, matching_nodes: list[dict], registry: dict) -> list[dict]:
+    """
+    Orders one Topic page's Node list. A Node is only ever pulled into
+    manual position on ONE Topic page — its own first public category
+    (the same one _first_public_topic_id() uses for the "more content on
+    this topic" button) — and only if it has a top-level `displayOrder`
+    set. Those Nodes come first, ascending by displayOrder (ties keep
+    matching_nodes' existing alphabetical-by-slug order, since sort() is
+    stable). Every other Node — no displayOrder, or this Topic is merely
+    a secondary category for it — keeps its existing alphabetical
+    position, appended after.
+
+    This scoping is deliberate: a multi-category Node's displayOrder can
+    only ever collide with another Node's on its OWN first-category page,
+    never on a Topic page where it's just tangentially present.
+    """
+    ordered = [
+        n for n in matching_nodes
+        if n.get("displayOrder") is not None and _first_public_topic_id(n, registry) == category_id
+    ]
+    ordered.sort(key=lambda n: n["displayOrder"])
+    ordered_ids = {n["id"] for n in ordered}
+    rest = [n for n in matching_nodes if n["id"] not in ordered_ids]
+    return ordered + rest
+
+
 def derive_active_topics(nodes: list[dict], registry: dict) -> list[dict]:
     """
     The single source of truth for "what Topics are active right now" —
@@ -1500,7 +1530,9 @@ def derive_active_topics(nodes: list[dict], registry: dict) -> list[dict]:
     remaining category collects every Node whose primaryCategoryIds
     contains it. A category with zero matching Nodes is dropped
     entirely — never appears, never gets a page, never reaches the
-    sitemap. Priority and tags are never consulted anywhere here.
+    sitemap. Priority and tags are never consulted anywhere here. Each
+    Topic's own Node list is then ordered by _order_topic_nodes() —
+    see that function for the displayOrder rule.
 
     Returns an ordered list of {"id", "label", "nodes"}.
     """
@@ -1519,7 +1551,7 @@ def derive_active_topics(nodes: list[dict], registry: dict) -> list[dict]:
         topics.append({
             "id": category_id,
             "label": registry["categoryLabelsHe"][category_id],
-            "nodes": matching_nodes,
+            "nodes": _order_topic_nodes(category_id, matching_nodes, registry),
         })
     return topics
 

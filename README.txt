@@ -76,6 +76,30 @@ HOW TO ADD A NEW KNOWLEDGE NODE
                                               "classification", not inside
                                               it. No default: the build
                                               fails if it's missing.
+         - displayOrder                      OPTIONAL top-level integer,
+                                              sibling of "priority". Lets
+                                              you force this Node's exact
+                                              position on ONE Topic page —
+                                              its own first public
+                                              category's page (the same
+                                              "first public category" the
+                                              "more content on this topic"
+                                              button uses). Lower numbers
+                                              show first. Leave it out
+                                              (or null) and the Node just
+                                              falls back to
+                                              alphabetical-by-slug order,
+                                              same as always. Has NO effect
+                                              on any OTHER Topic page this
+                                              Node might also appear on if
+                                              it has more than one
+                                              category — those stay plain
+                                              alphabetical. Never affects
+                                              Related Knowledge, which is
+                                              a separate, unrelated
+                                              mechanism with its own
+                                              documented alphabetical
+                                              tie-break.
          - clinical.lastReviewedAt           set automatically to today's real
                                               date the moment the Node is
                                               published — you never need to

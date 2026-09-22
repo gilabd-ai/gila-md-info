@@ -74,6 +74,23 @@ priority                     0 | 1 | 2 | 3 — a TOP-LEVEL field, a sibling
                              0 = never recommend this Node elsewhere,
                              1 = highest, 2 = normal, 3 = lowest. No
                              default: the build fails if it's missing.
+displayOrder                 OPTIONAL top-level integer, sibling of
+                             "priority". Forces this Node's position on
+                             ONE Topic page — its own first public
+                             category (the same one
+                             `_first_public_topic_id()` uses for the
+                             "more content on this topic" button). Lower
+                             numbers show first; Nodes without it (the
+                             normal case) fall back to
+                             alphabetical-by-slug, same as always. Has NO
+                             effect on any OTHER Topic page a
+                             multi-category Node also appears on — those
+                             stay plain alphabetical, so one Node's
+                             number can only ever collide with another's
+                             on its own first-category page, never a
+                             secondary one. Never consulted by Related
+                             Knowledge, which keeps its own separate,
+                             documented alphabetical tie-break.
 clinical:
   lastReviewedAt              real date; feeds the page's JSON-LD
                              `lastReviewed` field. Filled in automatically
@@ -135,7 +152,7 @@ Fully automatic since the classification-registry upgrade — there is no manual
 `derive_active_topics()` in `build.py` is the ONE place that decides which Topics are active and what's on each — reused, unchanged, by the Homepage Topic Selector, the All-Topics page, and every individual Topic page, so the three can never disagree. Topic membership is decided by `classification.primaryCategoryIds` ONLY — priority and tags are never consulted here, a deliberate, complete separation from Related Knowledge. An "active Topic" is any registry category (in registry `categories` array order — never alphabetical, so the site owner controls display order by editing one file) that is NOT in `internalCategoryIds` and is assigned to at least one published, available Node; a category with zero matching Nodes never appears anywhere and never gets a page.
 
 * Homepage Topic Selector — a native `<select>` (never free text, never a `#` link) in `homepage-template.html`, showing only active Topics' approved Hebrew names; English category ids never reach the visible page. Navigates to `/topics/{category-id}/` on change. This `<select>` is always the complete, working implementation on its own — it's the no-JavaScript fallback. A progressive enhancement (inline script at the bottom of `homepage-template.html`) hides it and shows a custom RTL modal/popup instead, but only after everything else initializes successfully; the modal's rows are built directly from this `<select>`'s own already-rendered `<option>` elements (never a second source of Topic data). The modal has a fixed header (title "בחירת נושא" / a close button, both from `uiLabels.topicModalTitle` / `uiLabels.topicModalCloseAriaLabel`), a scrollable Topic list with full-row links, a focus trap, and closes only on: selecting a Topic, the close button, or Escape — deliberately NOT on clicking outside the modal.
-* Individual Topic pages (`topic-template.html` → `dist/topics/{category-id}/index.html`) — every matching published+available Node as a card, reusing `render_node_card_html()` (no duplicated card logic), plus the same shared `.more-link` pink button (top-level `allTopicsButton` config, `/topics/` destination) used on Node pages and the homepage, placed above the disclaimer.
+* Individual Topic pages (`topic-template.html` → `dist/topics/{category-id}/index.html`) — every matching published+available Node as a card, reusing `render_node_card_html()` (no duplicated card logic), plus the same shared `.more-link` pink button (top-level `allTopicsButton` config, `/topics/` destination) used on Node pages and the homepage, placed above the disclaimer. Card order within a Topic is decided by `_order_topic_nodes()`: Nodes with a top-level `displayOrder` set, for which this Topic is their own first public category, come first (ascending); everything else falls back to alphabetical-by-slug — see the `displayOrder` schema field above.
 * All-Topics page (`topics-index-template.html` → `dist/topics/index.html`) — one tile per active Topic (Hebrew name + Node count, rendered as "`{count} תכנים`").
 * A Node with multiple `primaryCategoryIds` appears on every one of its Topics' pages. `/topics/` and every active Topic page are added to `sitemap.xml` automatically — only ever the real active set.
 * Each Node page has two pink nav buttons, both reusing the exact same `.more-link` CSS, stacked vertically. The first — `render_more_link_button_html()` in `build.py`, text from `moreLinkButton.text` — links to `/topics/{id}/` where `{id}` is `_first_public_topic_id()`: the first non-internal id in that Node's own `classification.primaryCategoryIds`, in array order (array order is the deliberate priority signal here — never any score). If a Node's `primaryCategoryIds` are all internal (e.g. the Template Node), this first button is omitted entirely rather than pointed at a placeholder. The second button is static and always rendered — same top-level `allTopicsButton` config and same `/topics/` destination as the homepage's own button.

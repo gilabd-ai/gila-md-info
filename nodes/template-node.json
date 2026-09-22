@@ -23,6 +23,7 @@
     "secondaryTagIds": []
   },
   "priority": 0,
+  "displayOrder": null,
   "clinical": {
     "lastReviewedAt": "2026-08-02"
   },
