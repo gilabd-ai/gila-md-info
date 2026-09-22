@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0065",
+  "slug": "childrens-book-whose-body-is-this",
+  "youtube": {
+    "videoId": "Of1R3FNXHpY",
+    "orientation": "wide",
+    "title": "סיפור לילדים על גבולות הגוף והמרחב האישי | שֶׁל מִי הַגּוּף הַזֶּה?",
+    "description": "שֶׁל מִי הַגּוּף הַזֶּה?\n\nלצפייה בסיפור במסך מלא ביוטיוב:\nhttps://youtu.be/Of1R3FNXHpY\n\nרוני מבלה עם החברים בבריכה, עד שרגע אחד גורם לו להרגיש לא בנוח. דרך הסיפור הוא מגלה שהגוף שלו שייך לו, שמותר לו להציב גבול ולהתרחק כשמשהו לא נעים.\n\nסיפור קצר ורגיש על הקשבה לתחושות שלנו ועל מילות הקסם ששמות סימן של ״עד כאן״.",
+    "publishedAt": "2026-09-22T13:20:26Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/Of1R3FNXHpY/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-09-22T13:48:36Z",
+    "durationSeconds": 158
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "childrens-books"
+    ],
+    "primaryTagIds": [
+      "children",
+      "childrens-books",
+      "bedtime-story",
+      "learning-through-story"
+    ],
+    "secondaryTagIds": [
+      "emotions",
+      "social-skills",
+      "emotional-development",
+      "parenting-and-children"
+    ]
+  },
+  "priority": 1,
+  "clinical": {
+    "lastReviewedAt": "2026-09-22"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-09-22"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
