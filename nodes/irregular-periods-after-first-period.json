@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0068",
+  "slug": "irregular-periods-after-first-period",
+  "youtube": {
+    "videoId": "n5Ve2uX-MsI",
+    "orientation": "short",
+    "title": "מחזור לא סדיר אצל נערות אחרי קבלת הווסת הראשונה",
+    "description": "לוקח זמן עד שהמערכת ההורמונלית שמווסתת את המחזור מבשילה ומתייצבת\n\nלכן לאחר קבלת הווסת הראשונה שכיח שהמחזורים עדיין לא מגיעים במרווחים קבועים ולא מופיעים בכל חודש בדיוק כפי שאולי מצפים\n\nעם זאת גם בשנים הראשונות יש מצבים שבהם כדאי לפנות לבירור\nלמשל אם עוברים יותר משלושה חודשים בלי וסת\nאם הדימום כבד מאוד או ממושך\nאו אם יש תסמינים נוספים שמדאיגים אותך",
+    "publishedAt": "2026-09-28T15:52:59Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/n5Ve2uX-MsI/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-09-28T19:10:51Z",
+    "durationSeconds": 12
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "menstruation",
+      "adolescent-and-sexual-development"
+    ],
+    "primaryTagIds": [
+      "irregular-periods",
+      "first-period",
+      "menarche",
+      "puberty",
+      "menstrual-cycle",
+      "adolescent-health"
+    ],
+    "secondaryTagIds": [
+      "missed-period",
+      "heavy-bleeding",
+      "warning-signs",
+      "menstrual-education",
+      "normal-development",
+      "adolescence",
+      "vaginal-discharge"
+    ]
+  },
+  "priority": 1,
+  "displayOrder": null,
+  "clinical": {
+    "lastReviewedAt": "2026-09-28"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-09-28"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
