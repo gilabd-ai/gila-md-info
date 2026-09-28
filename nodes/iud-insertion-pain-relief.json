@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0067",
+  "slug": "iud-insertion-pain-relief",
+  "youtube": {
+    "videoId": "Iei4g8gaMLs",
+    "orientation": "short",
+    "title": "כאב בהחדרת התקן תוך־רחמי – איך אפשר להקל על הכאב?",
+    "description": "הכנסת התקן תוך־רחמי עלולה להיות מלווה בכאב. עוצמת הכאב משתנה מאוד מאישה לאישה, ובנערות ובנשים שעדיין לא ילדו הכאב עשוי להיות משמעותי יותר.\n\nלכן כדאי לדבר על הנושא כבר לפני הפעולה ולהתאים את ההחדרה למטופלת.\n\nיש סוגים וגדלים שונים של התקנים וגם מערכות ההחדרה אינן זהות. בחירת ההתקן המתאים היא אחד הדברים שאפשר לשקול, לצד אפשרויות לאלחוש מקומי ולהקלה על ההתכווצויות והכאבים לאחר ההחדרה.\n\nאם את חוששת במיוחד מהפעולה או שחווית בעבר בדיקה או פעולה גינקולוגית כואבת, כדאי לומר זאת מראש לרופא או לרופאה כדי שאפשר יהיה לתכנן את ההחדרה בהתאם.",
+    "publishedAt": "2026-09-27T18:51:48Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/Iei4g8gaMLs/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-09-28T19:04:25Z",
+    "durationSeconds": 25
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "contraception",
+      "adolescent-and-sexual-development"
+    ],
+    "primaryTagIds": [
+      "iud",
+      "examination-pain",
+      "patient-comfort",
+      "office-procedures",
+      "teen-contraception"
+    ],
+    "secondaryTagIds": [
+      "hormonal-iud",
+      "copper-iud",
+      "examination-anxiety",
+      "pelvic-cramps",
+      "adolescent-health",
+      "pelvic-exam",
+      "speculum-exam",
+      "exam-preparation",
+      "pain-during-sex"
+    ]
+  },
+  "priority": 1,
+  "displayOrder": null,
+  "clinical": {
+    "lastReviewedAt": "2026-09-28"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-09-28"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
