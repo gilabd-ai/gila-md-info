@@ -20,6 +20,15 @@ Claude must NEVER invent, guess, or assume any editorial, clinical, or classific
 
 Both `build.py` and `youtube_sync.py` have their own CLI entry points and are meant to map onto two independent future UI buttons ("Sync" and "Build").
 
+### Read-only research helpers (for proposing a new Node, before it exists)
+
+Two small, fixed-purpose, read-only CLI scripts exist specifically so the research phase of proposing a new Node — before any file is created — never needs an ad-hoc `python -c "..."` one-liner (which is arbitrary code execution and can never be safely allowlisted, even though it never actually writes anything in practice):
+
+* `fetch_video_preview.py --video-id VIDEOID` — fetches a video's real YouTube metadata (title, description, publishedAt, thumbnailUrl, durationSeconds) and prints it as JSON. Never touches any file. Use this for a video that has no Node yet; `youtube_sync.py --node SLUG` remains the only way to write that data into an actual Node file.
+* `active_categories_report.py [--category ID ...]` — prints which registry categories are currently "active" (≥1 published, available Node — same rule as `build.py`'s `derive_active_topics()`) with counts, and optionally the existing Nodes/tags already in a given category, so a new Node's classification stays consistent with what's already there. Never writes anything.
+
+Both are safe to blanket-allow in `.claude/settings.json` (`Bash(python fetch_video_preview.py *)`, `Bash(python active_categories_report.py *)`) precisely because their scope is fixed and narrow — unlike a bare `python`/`python3` invocation.
+
 ## Node Schema v1.0
 
 There is no separate schema/template file. The de facto template for creating a new Node is the real file `nodes/template-node.json` — copy it as the starting point for any new Node. This file exists only to be copied: it uses the reserved `template-node` internal category/tag and `priority: 0`. It IS published (`publishing.status: "published"`) — it has a real, directly-accessible page at `/nodes/template-node/`, since the site owner wants to be able to view it directly — but the internal category keeps it out of `sitemap.xml`, marks its page `noindex`, and excludes it from Topic navigation; priority 0 excludes it from Related Knowledge. See "Internal categories" below. Never assign the `template-node` category/tag to a real content Node.
