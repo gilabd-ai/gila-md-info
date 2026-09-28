@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0066",
+  "slug": "uterine-polyp-in-fertility-patients",
+  "youtube": {
+    "videoId": "HMS4LqqVAlA",
+    "orientation": "short",
+    "title": "פוליפ ברחם ופוריות – האם צריך להסיר פוליפ כשמנסים להיכנס להריון?",
+    "description": "כשמבררים קושי להרות, חשוב להתייחס לא רק לביוץ ולזרע אלא גם לחלל הרחם – המקום שבו העובר משתרש ומתפתח.\n\nפוליפ בחלל הרחם עלול להשפיע על תהליך ההשתרשות. לכן, אם נמצא פוליפ בחלל הרחם, מומלץ להסירו בלי קשר לגודלו.\n\nהסרת הפוליפ נעשית בדרך כלל בהיסטרוסקופיה, שמאפשרת לראות את חלל הרחם ולהסיר את הפוליפ בצורה ממוקדת.\n\nלאחר ההסרה הפוליפ נשלח לבדיקה פתולוגית, וברוב המקרים מדובר בממצא שפיר.",
+    "publishedAt": "2026-09-22T09:22:32Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/HMS4LqqVAlA/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-09-28T18:55:51Z",
+    "durationSeconds": 18
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "fertility",
+      "gynecologic-cancers"
+    ],
+    "primaryTagIds": [
+      "endometrial-polyp",
+      "trying-to-conceive",
+      "fertility",
+      "hysteroscopy",
+      "conception"
+    ],
+    "secondaryTagIds": [
+      "fertility-evaluation",
+      "fertility-treatment",
+      "uterine-health",
+      "pelvic-exam"
+    ]
+  },
+  "priority": 1,
+  "displayOrder": null,
+  "clinical": {
+    "lastReviewedAt": "2026-09-28"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-09-28"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
