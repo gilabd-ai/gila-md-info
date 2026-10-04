@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0069",
+  "slug": "ovarian-cyst-in-reproductive-age",
+  "youtube": {
+    "videoId": "vTcs3V1z6jw",
+    "orientation": "short",
+    "title": "ציסטה בשחלה בגיל הפוריות – האם צריך לדאוג?",
+    "description": "המילה \"ציסטה\" מתארת ממצאים שונים, ולא כל ציסטה בשחלה מקבלת אותה התייחסות.\n\nבגיל הפוריות השחלות פעילות לאורך המחזור החודשי, ובמסגרת תהליך הביוץ יכולים להיווצר זקיקים וציסטות תפקודיות. לכן ציסטות בשחלות הן ממצא שכיח בגיל הזה, ורבות מהן חולפות מעצמן.\n\nכשמוצאים ציסטה באולטרסאונד מסתכלים על הגודל שלה, על המראה והתוכן שלה ועל מאפיינים נוספים באולטרסאונד. \n\nגם גיל האישה והתסמינים שלה משפיעים על ההחלטה אם מספיק מעקב או שיש צורך בבירור נוסף.",
+    "publishedAt": "2026-09-30T15:04:21Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/vTcs3V1z6jw/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-10-04T07:25:10Z",
+    "durationSeconds": 17
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "gynecologic-cancers"
+    ],
+    "primaryTagIds": [
+      "ovarian-cyst",
+      "ovaries",
+      "ovarian-health",
+      "ultrasound",
+      "ovulation"
+    ],
+    "secondaryTagIds": [
+      "menstrual-cycle",
+      "pelvic-evaluation",
+      "diagnosis",
+      "warning-signs",
+      "pelvic-pain",
+      "pcos"
+    ]
+  },
+  "priority": 1,
+  "displayOrder": null,
+  "clinical": {
+    "lastReviewedAt": "2026-10-04"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-10-04"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
