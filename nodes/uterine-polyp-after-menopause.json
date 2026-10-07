@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0071",
+  "slug": "uterine-polyp-after-menopause",
+  "youtube": {
+    "videoId": "iVUzDuA03DM",
+    "orientation": "short",
+    "title": "פוליפ ברחם אחרי גיל המעבר –  מתי צריך להסיר ומתי אפשר לעקוב?",
+    "description": "פוליפ ברחם שמתגלה אחרי גיל המעבר דורש התייחסות והחלטה אם יש צורך בהסרה או שאפשר להסתפק במעקב.\n\nברוב המקרים הממצא יהיה שפיר, אבל אי אפשר להניח זאת מראש.\n\nכשיש דימום, מומלץ להסיר את הפוליפ ולשלוח אותו לבדיקה פתולוגית.\n\nכאשר הפוליפ התגלה במקרה, אין דימום והוא קטן מ־2 ס״מ, במקרים מסוימים אפשר לבחור במעקב תקופתי במקום להסיר אותו מיד.\n\nההחלטה אינה נקבעת לפי הגודל בלבד, אלא גם לפי המראה של הפוליפ, גורמי הסיכון וממצאים נוספים בבדיקה.\n\nואם בוחרים במעקב — חשוב לזכור שזה אכן מעקב, ולא פשוט להתעלם מהממצא.",
+    "publishedAt": "2026-10-04T12:47:43Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/iVUzDuA03DM/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-10-07T20:07:31Z",
+    "durationSeconds": 21
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "gynecologic-cancers",
+      "menopause-and-hrt"
+    ],
+    "primaryTagIds": [
+      "endometrial-polyp",
+      "menopause",
+      "abnormal-bleeding",
+      "uterine-bleeding",
+      "hysteroscopy"
+    ],
+    "secondaryTagIds": [
+      "endometrium",
+      "uterine-health",
+      "ultrasound",
+      "diagnosis",
+      "warning-signs",
+      "biopsy",
+      "endometrial-cancer"
+    ]
+  },
+  "priority": 1,
+  "displayOrder": null,
+  "clinical": {
+    "lastReviewedAt": "2026-10-07"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-10-07"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
