@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0075",
+  "slug": "vulvar-itching-negative-infection-tests",
+  "youtube": {
+    "videoId": "lMTDCvuDA-0",
+    "orientation": "short",
+    "title": "גרד באזור האינטימי – מה הסיבות כשהבדיקות לזיהומים שליליות?",
+    "description": "גרד באזור האינטימי לא תמיד מעיד על זיהום, וגם כשהבדיקות תקינות, אין פירוש הדבר שאין סיבה לגרד.\n\nהעור באזור האינטימי רגיש, וחשיפה חוזרת לחומרים שונים כמו תחתוניות תחתונים סינטטים אבקת כביסה וכדומה עלולה לגרום לגירוי ולתגובה דלקתית.\n\n בנוסף, יש מחלות עור שמתבטאות בגרד כדוגמת \nמחלות עור כמו ליכן לסוגיו, פסוריאזיס, ודרמטיטיס.\n\nכשמדובר בגרד ממושך או כזה שחוזר שוב ושוב, לא בנוסף לבדיקות לזיהומים, כדאי לבצע גם תשאול מקיף , בדיקה מדוקדקת של העור והריריות, ובדיקות נוספות בהתאם לממצאים.\n\nהאבחנה חשובה, משום שהטיפול משתנה בהתאם לגורם לגרד",
+    "publishedAt": "2026-10-15T13:04:50Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/lMTDCvuDA-0/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-10-15T20:46:04Z",
+    "durationSeconds": 33
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "vulva-and-vagina",
+      "gynecological-exams"
+    ],
+    "primaryTagIds": [
+      "itching",
+      "vaginal-itching",
+      "vulva",
+      "diagnosis"
+    ],
+    "secondaryTagIds": [
+      "yeast-infection",
+      "bacterial-vaginosis",
+      "vaginal-discharge",
+      "sti",
+      "treatment",
+      "misconceptions",
+      "facts-vs-myths",
+      "pelvic-exam",
+      "pelvic-evaluation",
+      "adolescent-health"
+    ]
+  },
+  "priority": 1,
+  "displayOrder": null,
+  "clinical": {
+    "lastReviewedAt": "2026-10-15"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-10-15"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
