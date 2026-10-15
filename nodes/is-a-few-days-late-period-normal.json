@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0073",
+  "slug": "is-a-few-days-late-period-normal",
+  "youtube": {
+    "videoId": "tFZORVLjw-E",
+    "orientation": "short",
+    "title": "מחזור לא סדיר – האם איחור של כמה ימים במחזור נחשב תקין?",
+    "description": "מחזור סדיר לא חייב להגיע בדיוק באותו תאריך בכל חודש.\n\nאצל נשים בוגרות, מחזור שמופיע בדרך כלל בטווח של 24–38 ימים נחשב בטווח התקין, וגם פער של מספר ימים באורך המחזור מחודש לחודש זה תקין.\n\nכלומר, סדירות לא נמדדת לפי התאריך בלוח השנה, אלא לפי המרווח בין וסת לווסת והדפוס לאורך זמן.",
+    "publishedAt": "2026-10-11T12:15:15Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/tFZORVLjw-E/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-10-15T20:35:57Z",
+    "durationSeconds": 13
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "menstruation",
+      "common-myths"
+    ],
+    "primaryTagIds": [
+      "irregular-periods",
+      "menstrual-cycle",
+      "period-length",
+      "period-delay",
+      "missed-period"
+    ],
+    "secondaryTagIds": [
+      "menstrual-education",
+      "menstrual-health",
+      "ovulation",
+      "myths",
+      "facts-vs-myths",
+      "fertile-window",
+      "trying-to-conceive",
+      "irregular-ovulation",
+      "adolescent-health",
+      "birth-control-pills"
+    ]
+  },
+  "priority": 1,
+  "displayOrder": null,
+  "clinical": {
+    "lastReviewedAt": "2026-10-15"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-10-15"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
