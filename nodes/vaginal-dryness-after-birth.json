@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0072",
+  "slug": "vaginal-dryness-after-birth",
+  "youtube": {
+    "videoId": "GzyW_vdE_3o",
+    "orientation": "short",
+    "title": "יובש נרתיקי אחרי לידה – צריבה וכאב ביחסי מין",
+    "description": "יובש נרתיקי אחרי לידה קשור לירידה ברמות האסטרוגן. הוא חולף לבד ויכול להיות ממושך יותר בנשים מניקות. \n\nאבל חשוב לזכור שלא כל צריבה, אי-נוחות או כאב ביחסי מין אחרי לידה נובעים מיובש נרתיקי.\n\nלפעמים הסיבה יכולה להיות צלקת רגישה באזור הקרע או התפרים, זיהום, ולעיתים הכאב קשור לרצפת האגן.\n\nלכן אם הכאב משמעותי, נמשך או לא משתפר, כדאי להיבדק כדי להבין מה מקורו ולהתאים את הטיפול.",
+    "publishedAt": "2026-10-08T15:45:49Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/GzyW_vdE_3o/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-10-15T19:16:55Z",
+    "durationSeconds": 29
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "postpartum",
+      "vulva-and-vagina"
+    ],
+    "primaryTagIds": [
+      "vaginal-dryness",
+      "pain-during-sex",
+      "painful-intercourse",
+      "postpartum",
+      "postpartum-recovery",
+      "estrogen",
+      "pelvic-exam"
+    ],
+    "secondaryTagIds": [
+      "breastfeeding",
+      "pelvic-floor",
+      "pelvic-floor-recovery",
+      "lubricants",
+      "vaginal-lubrication",
+      "sexual-function",
+      "postpartum-checkup",
+      "urinary-incontinence"
+    ]
+  },
+  "priority": 1,
+  "displayOrder": null,
+  "clinical": {
+    "lastReviewedAt": "2026-10-15"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-10-15"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
