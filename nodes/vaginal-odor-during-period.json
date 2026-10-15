@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0074",
+  "slug": "vaginal-odor-during-period",
+  "youtube": {
+    "videoId": "N-F5JdZ1AWg",
+    "orientation": "short",
+    "title": "ריח חזק מהנרתיק בזמן המחזור – למה זה קורה ומתי צריך לבדוק?",
+    "description": "ריח שונה או חזק יותר בזמן המחזור הוא תופעה מוכרת, ולא בהכרח מעיד על זיהום או על בעיה רפואית.\n\nבמהלך הווסת מתרחשים שינויים טבעיים בסביבה הנרתיקית, ולכן גם הריח שאנחנו רגילות אליו עשוי להשתנות.\n\nחשוב להבחין בין שינוי בריח שמופיע בזמן המחזור לבין ריח חריג, במיוחד ריח דגי או לא נעים במיוחד, שעלול להעיד על וגינוזיס חיידקי (BV) או על זיהום אחר.\n\nאם הריח מלווה בגרד, צריבה, כאב או הפרשה חריגה, מומלץ לפנות לבדיקה.\n\nואין צורך בשטיפות פנימיות של הנרתיק או בתכשירים מבושמים כדי להעלים את הריח. הם עלולים דווקא לגרום לגירוי ולשבש את האיזון הטבעי בנרתיק.",
+    "publishedAt": "2026-10-13T11:10:14Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/N-F5JdZ1AWg/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-10-15T20:39:45Z",
+    "durationSeconds": 29
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "vulva-and-vagina",
+      "menstruation"
+    ],
+    "primaryTagIds": [
+      "vaginal-odor",
+      "bacterial-vaginosis",
+      "vaginal-discharge",
+      "vagina",
+      "menstruation"
+    ],
+    "secondaryTagIds": [
+      "itching",
+      "vaginal-itching",
+      "yeast-infection",
+      "pelvic-infection",
+      "warning-signs",
+      "menstrual-cycle",
+      "menstrual-health",
+      "misconceptions",
+      "facts-vs-myths",
+      "pelvic-exam",
+      "menstrual-education"
+    ]
+  },
+  "priority": 1,
+  "displayOrder": null,
+  "clinical": {
+    "lastReviewedAt": "2026-10-15"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-10-15"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
