@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0076",
+  "slug": "first-period-not-arrived-when-to-check",
+  "youtube": {
+    "videoId": "RFGrCtZevhE",
+    "orientation": "short",
+    "title": "מחזור ראשון שלא הגיע – באיזה גיל צריך לפנות לבירור? | אל-וסת ראשונית",
+    "description": "הגיל שבו מופיעה הווסת הראשונה משתנה מנערה לנערה, וגם הרקע המשפחתי יכול לרמוז על קצב ההתבגרות.\n\nגיל 15, שלוש שנים מתחילת התפתחות החזה וגיל 13 ללא התפתחות החזה הם נקודות ציון מקובלות להחלטה על בירור, אך הן אינן כללים מוחלטים.\n\nיש מצבים שבהם כדאי לפנות לבירור מוקדם יותר, למשל כאבי בטן או אגן מחזוריים ללא הופעת וסת, ירידה משמעותית במשקל, הפרעות אכילה, פעילות גופנית אינטנסיבית או סימנים אחרים המעידים על בעיה.\n\nוברפואה כמו ברפואה יש להתייחס לתמונה הקלינית המלאה, ולא רק לגיל.",
+    "publishedAt": "2026-10-18T15:37:04Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/RFGrCtZevhE/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-10-22T17:03:06Z",
+    "durationSeconds": 18
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "adolescent-and-sexual-development",
+      "menstruation"
+    ],
+    "primaryTagIds": [
+      "first-period",
+      "menarche",
+      "puberty",
+      "missed-period",
+      "breast-development",
+      "adolescent-health"
+    ],
+    "secondaryTagIds": [
+      "normal-development",
+      "growth",
+      "adolescence",
+      "menstrual-education",
+      "warning-signs",
+      "pelvic-pain",
+      "weight",
+      "exercise",
+      "mental-health",
+      "healthy-lifestyle",
+      "pelvic-evaluation",
+      "pelvic-exam"
+    ]
+  },
+  "priority": 1,
+  "displayOrder": null,
+  "clinical": {
+    "lastReviewedAt": "2026-10-22"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-10-22"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
