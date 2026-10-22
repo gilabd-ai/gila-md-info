@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0078",
+  "slug": "preventing-bumps-after-shaving-groin",
+  "youtube": {
+    "videoId": "Cfqzy5F7qQ4",
+    "orientation": "short",
+    "title": "איך למנוע פצעים אחרי גילוח במפשעה? טיפים לגילוח נכון",
+    "description": "פצעונים אחרי גילוח במפשעה הם תופעה שכיחה, אבל אפשר להפחית את הסיכון להופעתם באמצעות שינוי הרגלי הגילוח.\n\nהמטרה היא לצמצם את הפגיעה בעור ובזקיקי השיער, ולהימנע מגילוח אגרסיבי שמגביר את הגירוי המקומי ואת הסיכון לשערות חודרניות.\n\nגם למה שקורה אחרי הגילוח יש משמעות. העור עשוי להיות רגיש יותר, וחיכוך מתמשך, במיוחד בשילוב לחות והזעה, עלול להחמיר את הגירוי.\n\nאם כבר הופיעו פצעים, רצוי להימנע מגילוח האזור עד שהעור מחלים.\n\nואם הפצעים ממשיכים להופיע, כדאי לשקול שיטות אחרות להסרת שיער, כמו שימוש בטרימר שמשאיר את השיער מעט מעל פני העור, או הסרת שיער בלייזר.",
+    "publishedAt": "2026-10-22T04:08:27Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/Cfqzy5F7qQ4/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-10-22T17:09:17Z",
+    "durationSeconds": 21
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "vulva-and-vagina",
+      "adolescent-and-sexual-development"
+    ],
+    "primaryTagIds": [
+      "vulva",
+      "prevention",
+      "preventive-care"
+    ],
+    "secondaryTagIds": [
+      "itching",
+      "treatment",
+      "adolescent-health",
+      "excess-hair",
+      "hirsutism",
+      "healthy-lifestyle",
+      "diagnosis",
+      "warning-signs",
+      "pelvic-evaluation"
+    ]
+  },
+  "priority": 1,
+  "displayOrder": null,
+  "clinical": {
+    "lastReviewedAt": "2026-10-22"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-10-22"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
