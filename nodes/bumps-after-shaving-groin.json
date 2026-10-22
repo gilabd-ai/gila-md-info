@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0077",
+  "slug": "bumps-after-shaving-groin",
+  "youtube": {
+    "videoId": "VrkXRqTYbkY",
+    "orientation": "short",
+    "title": "למה יוצאים פצעים אחרי גילוח במפשעה? שערות חודרניות ודלקת בזקיקי השיער",
+    "description": "אחרי גילוח באזור המפשעה עלולים להופיע פצעונים, ולעיתים גם נגעים כואבים שמכילים מוגלה.\n\nאחת הסיבות היא שערה חודרנית. כשהשערה מתחילה לצמוח מחדש, היא עלולה להתעקל ולחדור לתוך העור במקום לצמוח החוצה. הגוף מגיב אליה בתגובה דלקתית מקומית, שיכולה לגרום לאודם, נפיחות וכאב.\n\nאבל לא כל פצעון אחרי גילוח נגרם משערה חודרנית. לפעמים הגילוח גורם לפגיעה בזקיק השיער, ובעקבותיה מתפתחת דלקת מקומית, שלעיתים מלווה גם בזיהום חיידקי.\n\nכאשר מופיעים שוב ושוב גושים עמוקים וכואבים, לעיתים עם הפרשה מוגלתית, במיוחד אם הם חוזרים באותם אזורים או משאירים צלקות, כדאי לפנות לבדיקה. במקרים כאלה חשוב לשלול מחלות עור דלקתיות שיכולות לגרום לנגעים חוזרים במפשעה, ולא להניח שהגילוח הוא בהכרח הסיבה.",
+    "publishedAt": "2026-10-20T10:59:42Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/VrkXRqTYbkY/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-10-22T17:06:24Z",
+    "durationSeconds": 25
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "vulva-and-vagina",
+      "adolescent-and-sexual-development"
+    ],
+    "primaryTagIds": [
+      "vulva",
+      "diagnosis",
+      "warning-signs"
+    ],
+    "secondaryTagIds": [
+      "treatment",
+      "itching",
+      "adolescent-health",
+      "pelvic-evaluation",
+      "excess-hair",
+      "hirsutism"
+    ]
+  },
+  "priority": 1,
+  "displayOrder": null,
+  "clinical": {
+    "lastReviewedAt": "2026-10-22"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-10-22"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
