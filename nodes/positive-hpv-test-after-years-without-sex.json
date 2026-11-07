@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0082",
+  "slug": "positive-hpv-test-after-years-without-sex",
+  "youtube": {
+    "videoId": "5lrzqgRCfls",
+    "orientation": "short",
+    "title": "בדיקת פפילומה (HPV) חיובית אחרי שנים ללא יחסי מין – מה הסיבות?",
+    "description": "בדיקת פפילומה חיובית אחרי שנים ללא יחסי מין יכולה להיות מפתיעה, במיוחד אם כל הבדיקות הקודמות היו תקינות.\n\n\nאז כדאי לדעת שתוצאה חיובית חדשה לא בהכרח מעידה על הדבקה חדשה.\n\n\nנגיף הפפילומה יכול להישאר בגוף במשך שנים ברמה נמוכה, מתחת לסף הזיהוי של הבדיקה, ולהתגלות רק בשלב מאוחר יותר.\n\n\nבנוסף, בדיקות הסקר השתנו לאורך השנים. בעבר חיפשו בעיקר שינויים בתאי צוואר הרחם, ואילו כיום ניתן לזהות ישירות את הנגיף, גם כשאין שינויים בתאים.\n\n\nלכן, בהחלט ייתכן שההדבקה התרחשה לפני שנים רבות, ורק עכשיו התקבלה לראשונה תשובה חיובית.",
+    "publishedAt": "2026-11-03T13:46:10Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/5lrzqgRCfls/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-11-07T21:05:00Z",
+    "durationSeconds": 28
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "hpv-and-cervical-health",
+      "common-myths"
+    ],
+    "primaryTagIds": [
+      "hpv",
+      "hpv-testing",
+      "hpv-infection",
+      "hpv-transmission",
+      "hpv-clearance"
+    ],
+    "secondaryTagIds": [
+      "high-risk-hpv",
+      "screening",
+      "pap-smear",
+      "cervix",
+      "sti",
+      "misconceptions",
+      "facts-vs-myths",
+      "medical-myths",
+      "anxiety",
+      "mental-health",
+      "intimacy",
+      "sexual-health",
+      "preventive-care",
+      "prevention",
+      "new-guidelines",
+      "menopause"
+    ]
+  },
+  "priority": 1,
+  "displayOrder": null,
+  "clinical": {
+    "lastReviewedAt": "2026-11-07"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-11-07"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
