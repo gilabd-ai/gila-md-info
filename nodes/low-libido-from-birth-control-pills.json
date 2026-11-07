@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0080",
+  "slug": "low-libido-from-birth-control-pills",
+  "youtube": {
+    "videoId": "r_YwNWzksOk",
+    "orientation": "short",
+    "title": "ירידה בחשק המיני בעקבות גלולות למניעת היריון – למה זה קורה ומה אפשר לעשות?",
+    "description": "החשק המיני מושפע משילוב של גורמים הורמונליים, גופניים, רגשיים וזוגיים.\n\nאחת הסיבות האפשריות לשינוי בחשק המיני היא שימוש באמצעי מניעה הורמונליים, שאצל חלק מהנשים עלולים להשפיע על החשק המיני.\n\nאם את מרגישה שינוי משמעותי בחשק המיני מאז שהתחלת להשתמש באמצעי מניעה הורמונלי, כדאי להעלות את הנושא בשיחה עם רופאת הנשים.\n\nהחשק המיני הוא חלק חשוב מהקשר הזוגי ומאיכות החיים, ולפעמים הפתרון יכול להיות פשוט יחסית — שינוי בסוג הגלולה או באמצעי המניעה.",
+    "publishedAt": "2026-10-28T16:33:49Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/r_YwNWzksOk/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-11-07T20:54:34Z",
+    "durationSeconds": 26
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "contraception",
+      "body-and-mind",
+      "adolescent-and-sexual-development"
+    ],
+    "primaryTagIds": [
+      "birth-control-pills",
+      "combined-pill",
+      "low-libido",
+      "sexual-function"
+    ],
+    "secondaryTagIds": [
+      "intimacy",
+      "sexual-health",
+      "mini-pill",
+      "hormonal-iud",
+      "contraceptive-ring",
+      "contraceptive-patch",
+      "benefits-and-risks",
+      "wellbeing",
+      "teen-contraception",
+      "adolescent-health",
+      "mental-health",
+      "pain-during-sex"
+    ]
+  },
+  "priority": 1,
+  "displayOrder": null,
+  "clinical": {
+    "lastReviewedAt": "2026-11-07"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-11-07"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
