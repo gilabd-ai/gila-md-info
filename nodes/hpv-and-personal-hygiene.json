@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0083",
+  "slug": "hpv-and-personal-hygiene",
+  "youtube": {
+    "videoId": "wbMCFtO9T04",
+    "orientation": "short",
+    "title": "האם יש קשר בין  הדבקה בנגיף הפפילומה (HPV)  להיגיינה אישית?",
+    "description": "הדבקה בנגיף הפפילומה (HPV) אינה קשורה להרגלי ניקיון או להיגיינה אישית לקויה.\n\nהידבקות בפפילומה אינה מעידה על חוסר ניקיון, הזנחה או התנהגות לא היגיינית.\n\nמדובר בנגיף נפוץ מאוד, שרוב האנשים הפעילים מינית ייחשפו אליו במהלך חייהם.\n\nהיגיינה אישית חשובה לבריאות, אבל היא אינה אמצעי למניעת הדבקה בפפילומה.",
+    "publishedAt": "2026-11-05T22:56:39Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/wbMCFtO9T04/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-11-07T21:12:47Z",
+    "durationSeconds": 16
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "hpv-and-cervical-health",
+      "common-myths"
+    ],
+    "primaryTagIds": [
+      "hpv",
+      "hpv-infection",
+      "hpv-transmission",
+      "misconceptions",
+      "facts-vs-myths"
+    ],
+    "secondaryTagIds": [
+      "hpv-testing",
+      "hpv-clearance",
+      "high-risk-hpv",
+      "sti",
+      "medical-myths",
+      "sexual-health",
+      "mental-health",
+      "prevention",
+      "preventive-care",
+      "hpv-vaccine",
+      "vagina",
+      "vaginal-odor"
+    ]
+  },
+  "priority": 1,
+  "displayOrder": null,
+  "clinical": {
+    "lastReviewedAt": "2026-11-07"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-11-07"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
