@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0081",
+  "slug": "positive-hpv-test-not-sign-of-infidelity",
+  "youtube": {
+    "videoId": "epmExwARp8E",
+    "orientation": "short",
+    "title": "בדיקת פפילומה (HPV) חיובית  - האם זה מעיד על בגידה של בן הזוג?",
+    "description": "תשובה חיובית לפפילומה יכולה לעורר לא מעט שאלות, במיוחד כשמדובר בזוגיות ארוכת שנים ובבדיקות קודמות שהיו תקינות.\n\nאבל חשוב לדעת: בדיקה חיובית אינה מאפשרת לקבוע מתי התרחשה ההדבקה, ובוודאי שאינה הוכחה לכך שבן הזוג לא היה נאמן.\n\nנגיף הפפילומה יכול להישאר בגוף במשך שנים רבות בלי להתגלות, ולכן גם תוצאה חיובית חדשה אינה מעידה בהכרח על הדבקה חדשה.",
+    "publishedAt": "2026-11-01T19:00:18Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/epmExwARp8E/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-11-07T20:59:02Z",
+    "durationSeconds": 16
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "hpv-and-cervical-health",
+      "common-myths"
+    ],
+    "primaryTagIds": [
+      "hpv",
+      "hpv-testing",
+      "hpv-infection",
+      "hpv-transmission",
+      "hpv-clearance"
+    ],
+    "secondaryTagIds": [
+      "high-risk-hpv",
+      "screening",
+      "pap-smear",
+      "cervix",
+      "sti",
+      "misconceptions",
+      "facts-vs-myths",
+      "medical-myths",
+      "anxiety",
+      "mental-health",
+      "intimacy",
+      "sexual-health",
+      "preventive-care",
+      "prevention"
+    ]
+  },
+  "priority": 1,
+  "displayOrder": null,
+  "clinical": {
+    "lastReviewedAt": "2026-11-07"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-11-07"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
