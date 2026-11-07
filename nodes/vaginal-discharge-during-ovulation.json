@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "1.0",
+  "id": "node-0079",
+  "slug": "vaginal-discharge-during-ovulation",
+  "youtube": {
+    "videoId": "OPQSJBqKrDs",
+    "orientation": "short",
+    "title": "למה יש יותר הפרשות נרתיקיות בזמן הביוץ ומה המשמעות שלהן?",
+    "description": "ההפרשות הנרתיקיות משתנות לאורך המחזור החודשי, גם בכמות וגם במרקם, בהתאם לשינויים ההורמונליים.\n\nבימים הפוריים, ריר צוואר הרחם משתנה באופן שמקל על תנועת תאי הזרע ומסייע להם לשרוד בדרכם אל הביצית.\n\nלכן, השינוי בהפרשות הוא לא רק תופעה טבעית, אלא גם חלק מהמנגנון שמאפשר הפריה.\n\nהשינויים האלה לא תמיד מורגשים באותה מידה. אצל חלק מהנשים הם בולטים יותר, ואחרות מבחינות בהם בעיקר כשהן מתחילות לשים לב לדפוס ההפרשות שלהן לאורך החודש.\n\nהיכרות עם השינויים האלה יכולה לעזור לזהות את הימים הפוריים ולהבין טוב יותר את המחזור החודשי.",
+    "publishedAt": "2026-10-25T18:06:44Z",
+    "thumbnailUrl": "https://i.ytimg.com/vi/OPQSJBqKrDs/maxresdefault.jpg",
+    "availability": "available",
+    "lastSyncedAt": "2026-11-07T20:49:29Z",
+    "durationSeconds": 19
+  },
+  "classification": {
+    "primaryCategoryIds": [
+      "vulva-and-vagina",
+      "fertility",
+      "menstruation"
+    ],
+    "primaryTagIds": [
+      "vaginal-discharge",
+      "ovulation",
+      "fertile-window",
+      "menstrual-cycle",
+      "cervix"
+    ],
+    "secondaryTagIds": [
+      "trying-to-conceive",
+      "conception",
+      "sperm",
+      "fertility",
+      "menstrual-education",
+      "menstrual-health",
+      "adolescent-health",
+      "misconceptions",
+      "facts-vs-myths"
+    ]
+  },
+  "priority": 1,
+  "displayOrder": null,
+  "clinical": {
+    "lastReviewedAt": "2026-11-07"
+  },
+  "publishing": {
+    "status": "published",
+    "publishedAt": "2026-11-07"
+  },
+  "timestamps": {
+    "createdAt": null,
+    "updatedAt": null
+  }
+}
